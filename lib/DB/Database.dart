@@ -1,0 +1,115 @@
+// <Implement>
+import 'package:flutter/foundation.dart';
+import 'package:moor/ffi.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+import 'dart:io';
+// </Implement>
+
+import 'package:moor/moor.dart';
+
+import '../Model/User.dart';
+import '../Model/Category.dart';
+import '../Model/Item.dart';
+import '../Model/Table.dart';
+import '../Model/Bill.dart';
+
+part 'Database.g.dart';
+
+// <Implement>
+LazyDatabase _openConnection() {
+  // the LazyDatabase util lets us find the right location for the file async.
+  return LazyDatabase(() async {
+    // put the database file, called db.sqlite here, into the documents folder
+    // for your app.
+    final dbFolder = await getApplicationDocumentsDirectory();
+    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    return VmDatabase(file);
+  });
+}
+// </Implement>
+
+// <Implement>
+@UseMoor(tables: [
+  Users,
+  Categories,
+  Items,
+  ItemCategories,
+  ItemProperties,
+  Tables,
+  Bills,
+  BillItems,
+  BillItemProperties
+])
+class AppDatabase extends _$AppDatabase {
+  AppDatabase() : super(_openConnection());
+
+  @override
+  int get schemaVersion => 1;
+
+  void insertTest() async {
+    into(users)
+        .insert(UsersCompanion.insert(username: 'Admon', password: '1234567'));
+
+    into(categories).insert(CategoriesCompanion.insert(name: 'Đồ Ăn'));
+
+    into(items).insert(ItemsCompanion.insert(
+        name: 'Trứng',
+        image: 'trung.jpg',
+        price: 300.000,
+        status: Status.InStock));
+
+    into(itemCategories)
+        .insert(ItemCategoriesCompanion.insert(itemId: 1, categoryId: 1));
+
+    into(itemProperties).insert(ItemPropertiesCompanion.insert(
+        itemId: 1, name: 'Thêm đường', amount: 3000.50));
+
+    into(tables).insert(TablesCompanion.insert(name: 'Bàn 1', order: 1));
+
+    into(bills).insert(BillsCompanion.insert(
+        totalQuantities: 10,
+        totalPrice: 1000,
+        issueId: 1,
+        payment: BillPayment.Cash));
+    into(billItems).insert(BillItemsCompanion.insert(
+        billId: 1, itemId: 1, quality: 10, price: 100));
+
+    into(billItemProperties).insert(BillItemPropertiesCompanion.insert(
+        billItemId: 1, name: 'Thêm muối', amount: 10));
+  }
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
+        print('onCreate');
+        return m.createAll();
+      }, onUpgrade: (Migrator m, int from, int to) async {
+        print('onUpgrade');
+      }, beforeOpen: (details) async {
+        await customStatement('PRAGMA foreign_keys = ON');
+        if (details.wasCreated) {
+          print('db created in before open');
+          insertTest();
+        }
+
+        print('beforeOpen');
+      });
+}
+// </Implement>
+
+// <MockData>
+
+// @UseMoor(tables: [
+//   Users,
+//   Categories,
+//   Items,
+//   ItemCategories,
+//   ItemProperties,
+//   Tables,
+//   Bills,
+//   BillItems,
+//   BillItemProperties
+// ])
+// class AppDatabase {}
+
+// </MockData>

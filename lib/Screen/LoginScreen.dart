@@ -49,6 +49,7 @@ class LoginScreen extends GetWidget<LoginController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Get.theme.primaryColor,
       body: SafeArea(
         child: Container(
           child: Center(

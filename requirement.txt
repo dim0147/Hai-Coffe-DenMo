@@ -1,0 +1,10 @@
+- giao diện gọn là 1 nè, thứ 2 
+- hình ảnh m làm  tông màu sáng cho dễ nhìn với chi tiết chữ dễ nhìn
+- Đặt bàn
+- Chỗ chỉnh giá nước, menu
+- Quản lí doanh thu ngày, tuần, tháng
+- Quản lí tiền lương nhân viên, chi phí thu chi trong tháng
+
+*** ***
+
+tạo 1 cái app hẳn hoi luôn, là chuyên để tính tiền với mấy cá thu chi mà t liệt kê cho m đó

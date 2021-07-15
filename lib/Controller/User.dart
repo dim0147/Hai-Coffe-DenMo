@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:hai_noob/Model/User.dart';
 
 class UserController extends GetxController {
-  Rx<UserModel?> _user = null.obs;
+  Rx<Users?> _user = null.obs;
 
-  UserModel? get user => _user.value;
+  Users? get user => _user.value;
 
-  void setUser(UserModel user) {
+  void setUser(Users user) {
     _user.value = user;
   }
 }
