@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/Controller/StartupController.dart';
 
-class StartupScreen extends StatelessWidget {
+class StartupScreen extends GetWidget<StartupController> {
   const StartupScreen({Key? key}) : super(key: key);
 
   @override
@@ -26,16 +27,20 @@ class StartupScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(bottom: 5),
-                        child: SizedBox(
-                          width: 250,
-                          child: LinearProgressIndicator(
-                            color: Color.fromRGBO(212, 112, 25, 1.0),
-                            backgroundColor: Color.fromRGBO(237, 209, 159, 1.0),
-                          ),
-                        ),
-                      ),
-                      Text('Đang tải dữ liệu...'),
+                          padding: EdgeInsets.only(bottom: 5),
+                          child: controller.obx(
+                            (state) => Text(''),
+                            onLoading: SizedBox(
+                              width: 250,
+                              child: LinearProgressIndicator(
+                                color: Color.fromRGBO(212, 112, 25, 1.0),
+                                backgroundColor:
+                                    Color.fromRGBO(237, 209, 159, 1.0),
+                              ),
+                            ),
+                            onError: (err) => Text(''),
+                          )),
+                      Obx(() => Text(controller.statusText.value)),
                     ],
                   ),
                 ),

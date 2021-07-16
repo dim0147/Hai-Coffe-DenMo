@@ -5,9 +5,9 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'dart:io';
 // </Implement>
-
 import 'package:moor/moor.dart';
 
+import '../DAO/UserDAO.dart';
 import '../Model/User.dart';
 import '../Model/Category.dart';
 import '../Model/Item.dart';
@@ -79,6 +79,13 @@ class AppDatabase extends _$AppDatabase {
         billItemId: 1, name: 'Thêm muối', amount: 10));
   }
 
+  void _seedData() async {
+    UserDAO userDAO = UserDAO(this);
+
+    // Create admin account
+    await userDAO.createAdminAccount();
+  }
+
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
         print('onCreate');
@@ -88,13 +95,17 @@ class AppDatabase extends _$AppDatabase {
       }, beforeOpen: (details) async {
         await customStatement('PRAGMA foreign_keys = ON');
         if (details.wasCreated) {
-          print('db created in before open');
-          insertTest();
+          print('First Time Init Database, Start Seed Data');
+          _seedData();
         }
 
         print('beforeOpen');
       });
 }
+
+
+
+
 // </Implement>
 
 // <MockData>

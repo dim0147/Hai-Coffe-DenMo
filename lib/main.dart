@@ -1,19 +1,14 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import 'DB/Database.dart';
+import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/Controller/StartupController.dart';
 
 import 'Screen/LoginScreen.dart';
 import 'Screen/StartupScreen.dart';
 
 import 'Blinding/SpashBlinding.dart';
 
-import 'Controller/User.dart';
-import 'Controller/Login.dart';
+import 'Controller/LoginController.dart';
 
 void main() {
   runApp(MyApp());
@@ -29,21 +24,26 @@ class MyApp extends StatelessWidget {
         primaryColor: Color.fromRGBO(218, 172, 88, 1.0),
       ),
       title: 'Hải Bên Lề',
-      initialRoute: '/login',
+      initialRoute: '/startup',
       initialBinding: SpashBinding(),
-      getPages: [
-        GetPage(
-          name: '/startup',
-          page: () => StartupScreen(),
-        ),
-        GetPage(
-          name: '/login',
-          page: () => LoginScreen(),
-          binding: BindingsBuilder(() {
-            Get.lazyPut(() => LoginController());
-          }),
-        ),
-      ],
+      // getPages: [
+      //   GetPage(
+      //     name: '/startup',
+      //     page: () => StartupScreen(),
+      //     binding: BindingsBuilder(() {
+      //       Get.lazyPut(() => StartupController());
+      //     }),
+      //   ),
+      //   GetPage(
+      //     name: '/login',
+      //     transition: Transition.downToUp,
+      //     page: () => LoginScreen(),
+      //     binding: BindingsBuilder(() {
+      //       Get.lazyPut(() => LoginController());
+      //     }),
+      //   ),
+      // ],
+      getPages: AppConfig.GetPages,
     );
   }
 }
