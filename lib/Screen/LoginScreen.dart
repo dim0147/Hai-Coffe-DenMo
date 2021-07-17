@@ -1,86 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Config.dart';
+
+import './Component.dart';
 import '../Controller/LoginController.dart';
 import '../Model/User.dart';
-
-class InputLoginScreen extends StatelessWidget {
-  const InputLoginScreen(
-      {Key? key,
-      required this.title,
-      this.onChanged,
-      required this.icon,
-      required this.textEditingController,
-      this.obscureText,
-      required this.mainColor})
-      : super(key: key);
-
-  final String title;
-  final void Function(String)? onChanged;
-  final Icon icon;
-  final TextEditingController textEditingController;
-  final bool? obscureText;
-  final Color? mainColor;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-      child: TextField(
-        decoration: InputDecoration(
-          labelText: title,
-          labelStyle: TextStyle(
-            color: mainColor,
-          ),
-          focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.amber, width: 2.0),
-          ),
-          enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.amber, width: 2.0),
-          ),
-          prefixIcon: icon,
-        ),
-        obscureText: obscureText ?? false,
-        onChanged: onChanged,
-        controller: textEditingController,
-      ),
-    );
-  }
-}
-
-class LoginBtn extends StatelessWidget {
-  const LoginBtn({Key? key, required this.onClick}) : super(key: key);
-
-  final void Function() onClick;
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      style: ButtonStyle(
-        padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-            EdgeInsets.symmetric(horizontal: 20, vertical: 10)),
-        foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
-        backgroundColor: MaterialStateProperty.all<Color>(Colors.black),
-      ),
-      onPressed: onClick,
-      child: Text(
-        'Đăng Nhập',
-        style: TextStyle(
-          fontWeight: FontWeight.bold,
-          color: Colors.amber[300],
-        ),
-      ),
-    );
-  }
-}
 
 class LoginScreen extends GetWidget<LoginController> {
   @override
   Widget build(BuildContext context) {
     bool keyboardIsOpen = context.mediaQueryViewInsets.bottom != 0;
-    return Scaffold(
-      backgroundColor: Get.theme.primaryColor,
-      body: SafeArea(
-        child: Container(
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Get.theme.primaryColor,
+        body: Container(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -101,21 +34,21 @@ class LoginScreen extends GetWidget<LoginController> {
                 SizedBox(
                   height: 10,
                 ),
-                new InputLoginScreen(
+                new PrimaryInput(
                   title: 'Username',
-                  icon: Icon(Icons.person, color: controller.mainColor),
+                  iconData: Icons.person,
                   textEditingController: controller.textUsernameC,
-                  mainColor: controller.mainColor,
+                  mainColor: AppConfig.MAIN_COLOR,
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                new InputLoginScreen(
+                new PrimaryInput(
                   title: 'Mật Khẩu',
-                  icon: Icon(Icons.password, color: controller.mainColor),
+                  iconData: Icons.password,
                   textEditingController: controller.textPasswordC,
                   obscureText: true,
-                  mainColor: controller.mainColor,
+                  mainColor: AppConfig.MAIN_COLOR,
                 ),
                 SizedBox(
                   height: 10,
@@ -147,7 +80,8 @@ class LoginScreen extends GetWidget<LoginController> {
 
                 // Button login
                 controller.obx(
-                    (state) => LoginBtn(
+                    (state) => PrimaryBtn(
+                          title: 'Đăng Nhập',
                           onClick: controller.onLoginClick,
                         ),
                     onLoading: CircularProgressIndicator(
@@ -159,7 +93,8 @@ class LoginScreen extends GetWidget<LoginController> {
                               err ?? 'Có lỗi xảy ra',
                               style: TextStyle(color: Colors.red),
                             ),
-                            LoginBtn(
+                            PrimaryBtn(
+                              title: 'Đăng Nhập',
                               onClick: controller.onLoginClick,
                             ),
                           ],

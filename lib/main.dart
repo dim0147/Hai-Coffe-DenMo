@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(
         fontFamily: 'QuickSand',
-        primaryColor: Color.fromRGBO(218, 172, 88, 1.0),
+        primaryColor: AppConfig.BACKGROUND_COLOR,
       ),
       title: 'Hải Bên Lề',
       initialRoute: '/startup',

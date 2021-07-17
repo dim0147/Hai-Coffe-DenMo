@@ -31,10 +31,15 @@ class StartupController extends GetxController with StateMixin<void> {
       // Done
       statusText.value = 'Khởi tạo thành công';
       change(null, status: RxStatus.success());
-      Get.offNamed('/login');
+
+      print('Does We Run?');
+
+      // Redirect
+      Get.offNamed('/category/add');
     } catch (error) {
       change(null, status: RxStatus.error());
-      statusText.value = 'Có lỗi khi khởi tạo, liên hệ anh đức đẹp trai';
+      statusText.value =
+          'Có lỗi khi khởi tạo, liên hệ anh đức đẹp trai, lỗi: ${error.toString()}';
     }
   }
 
