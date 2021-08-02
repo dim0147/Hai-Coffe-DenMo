@@ -21,28 +21,70 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       theme: ThemeData(
         fontFamily: 'QuickSand',
-        primaryColor: AppConfig.BACKGROUND_COLOR,
+      ).copyWith(
+        // Color Scheme
+        colorScheme: ThemeData().colorScheme.copyWith(
+              primary: AppConfig.MAIN_COLOR,
+            ),
+
+        // Color
+        scaffoldBackgroundColor: AppConfig.BACKGROUND_COLOR,
+        primaryColor: AppConfig.MAIN_COLOR,
+
+        // Chip
+        chipTheme: ThemeData().chipTheme.copyWith(
+              backgroundColor: AppConfig.MAIN_COLOR,
+              deleteIconColor: AppConfig.CHIP_DELETE_ICON_COLOR,
+            ),
+
+        // Checkbox
+        checkboxTheme: CheckboxThemeData(
+          fillColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
+          overlayColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
+        ),
+
+        // Text Button
+        textButtonTheme: TextButtonThemeData(
+          style: ButtonStyle(
+            padding: MaterialStateProperty.all(
+              EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            ),
+            backgroundColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
+            foregroundColor: MaterialStateProperty.resolveWith<Color>(
+              (states) {
+                if (states.contains(MaterialState.focused) ||
+                    states.contains(MaterialState.pressed) ||
+                    states.contains(MaterialState.hovered))
+                  return AppConfig.TEXT_BTN_COLOR_HOVER;
+
+                return AppConfig.TEXT_BTN_COLOR;
+              },
+            ),
+          ),
+        ),
+
+        // Text Field
+        inputDecorationTheme: InputDecorationTheme(
+          labelStyle: TextStyle(
+            color: AppConfig.MAIN_COLOR,
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.amber, width: 2.0),
+          ),
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.amber, width: 2.0),
+          ),
+        ),
+
+        // Text Theme
+        textTheme: TextTheme().copyWith(
+          bodyText1: TextStyle(color: AppConfig.MAIN_COLOR),
+          bodyText2: TextStyle(color: AppConfig.MAIN_COLOR),
+        ),
       ),
       title: 'Hải Bên Lề',
       initialRoute: '/startup',
       initialBinding: SpashBinding(),
-      // getPages: [
-      //   GetPage(
-      //     name: '/startup',
-      //     page: () => StartupScreen(),
-      //     binding: BindingsBuilder(() {
-      //       Get.lazyPut(() => StartupController());
-      //     }),
-      //   ),
-      //   GetPage(
-      //     name: '/login',
-      //     transition: Transition.downToUp,
-      //     page: () => LoginScreen(),
-      //     binding: BindingsBuilder(() {
-      //       Get.lazyPut(() => LoginController());
-      //     }),
-      //   ),
-      // ],
       getPages: AppConfig.GetPages,
     );
   }

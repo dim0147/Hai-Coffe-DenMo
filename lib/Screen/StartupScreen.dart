@@ -9,7 +9,6 @@ class StartupScreen extends GetWidget<StartupController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Get.theme.primaryColor,
         body: SafeArea(
           child: Container(
             child: Center(

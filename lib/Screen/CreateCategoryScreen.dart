@@ -12,7 +12,6 @@ class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Get.theme.primaryColor,
         body: Container(
           child: Center(
             child: Column(
@@ -22,18 +21,21 @@ class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
                   child: Text(
                     'Tạo Danh Mục',
                     style: TextStyle(
-                      color: Colors.amber[300],
+                      color: AppConfig.MAIN_COLOR,
                       fontSize: 40,
                     ),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsets.all(10),
-                  child: PrimaryInput(
-                    title: 'Tên danh mục',
-                    iconData: Icons.category,
-                    textEditingController: controller.nameC,
-                    mainColor: AppConfig.MAIN_COLOR,
+                  child: TextField(
+                    decoration: InputDecoration(
+                      labelText: 'Tên danh mục',
+                      prefixIcon: Icon(
+                        Icons.category,
+                      ),
+                    ),
+                    controller: controller.nameC,
                   ),
                 ),
 
@@ -50,11 +52,11 @@ class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
                           ),
                         ),
                       ),
-                      PrimaryBtnIcon(
-                        onClick: controller.onCreate,
-                        title: 'Tạo',
-                        iconData: Icons.add,
-                      ),
+                      TextButton.icon(
+                        onPressed: controller.onCreate,
+                        icon: Icon(Icons.add),
+                        label: Text('Tạo'),
+                      )
                     ],
                   ),
                   onLoading: CircularProgressIndicator(
@@ -71,11 +73,11 @@ class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
                           ),
                         ),
                       ),
-                      PrimaryBtnIcon(
-                        onClick: controller.onCreate,
-                        title: 'Tạo',
-                        iconData: Icons.add,
-                      ),
+                      TextButton.icon(
+                        onPressed: controller.onCreate,
+                        icon: Icon(Icons.add),
+                        label: Text('Tạo'),
+                      )
                     ],
                   ),
                 ),

@@ -31,6 +31,7 @@ dependencies:
   path: ^1.8.0
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  flutter_masked_text: ^0.8.0
 
 
   # The following adds the Cupertino Icons font to your application.

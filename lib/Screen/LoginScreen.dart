@@ -12,7 +12,6 @@ class LoginScreen extends GetWidget<LoginController> {
     bool keyboardIsOpen = context.mediaQueryViewInsets.bottom != 0;
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Get.theme.primaryColor,
         body: Container(
           child: Center(
             child: Column(
@@ -34,21 +33,27 @@ class LoginScreen extends GetWidget<LoginController> {
                 SizedBox(
                   height: 10,
                 ),
-                new PrimaryInput(
-                  title: 'Username',
-                  iconData: Icons.person,
-                  textEditingController: controller.textUsernameC,
-                  mainColor: AppConfig.MAIN_COLOR,
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Username',
+                    prefixIcon: Icon(
+                      Icons.person,
+                    ),
+                  ),
+                  controller: controller.textUsernameC,
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                new PrimaryInput(
-                  title: 'Mật Khẩu',
-                  iconData: Icons.password,
-                  textEditingController: controller.textPasswordC,
+                TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Mật Khẩu',
+                    prefixIcon: Icon(
+                      Icons.password,
+                    ),
+                  ),
+                  controller: controller.textPasswordC,
                   obscureText: true,
-                  mainColor: AppConfig.MAIN_COLOR,
                 ),
                 SizedBox(
                   height: 10,
@@ -56,34 +61,20 @@ class LoginScreen extends GetWidget<LoginController> {
 
                 // Save account
                 Obx(
-                  () => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Checkbox(
-                        value: controller.saveAccount.value,
-                        activeColor: controller.mainColor,
-                        onChanged: controller.onSaveAccountCheckbox,
-                      ),
-                      GestureDetector(
-                        onTap: () => controller.onSaveAccountCheckbox(
-                            !controller.saveAccount.value),
-                        child: Text(
-                          'Lưu Tài Khoản',
-                          style: TextStyle(
-                            color: controller.mainColor,
-                          ),
-                        ),
-                      ),
-                    ],
+                  () => Center(
+                    child: CheckboxPrimary(
+                      title: 'Lưu Tài Khoản',
+                      value: controller.saveAccount.value,
+                      onChanged: controller.onSaveAccountCheckbox,
+                    ),
                   ),
                 ),
 
                 // Button login
                 controller.obx(
-                    (state) => PrimaryBtn(
-                          title: 'Đăng Nhập',
-                          onClick: controller.onLoginClick,
-                        ),
+                    (state) => TextButton(
+                        onPressed: controller.onLoginClick,
+                        child: Text('Đăng Nhập')),
                     onLoading: CircularProgressIndicator(
                       color: controller.mainColor,
                     ),
@@ -93,10 +84,9 @@ class LoginScreen extends GetWidget<LoginController> {
                               err ?? 'Có lỗi xảy ra',
                               style: TextStyle(color: Colors.red),
                             ),
-                            PrimaryBtn(
-                              title: 'Đăng Nhập',
-                              onClick: controller.onLoginClick,
-                            ),
+                            TextButton(
+                                onPressed: controller.onLoginClick,
+                                child: Text('Đăng Nhập')),
                           ],
                         )),
               ],
