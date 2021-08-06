@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:hai_noob/Controller/CreateItemController.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Model/Item.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
-class CreateItemScreen extends StatelessWidget {
+class CreateItemScreen extends GetWidget<CreateItemController> {
   const CreateItemScreen({Key? key}) : super(key: key);
 
   @override
@@ -52,49 +53,51 @@ class CreateItemScreen extends StatelessWidget {
                   child: Column(
                     children: [
                       // Title
-                      RichText(
-                        text: TextSpan(
-                          style: TextStyle(
-                              fontSize: 25, color: Get.theme.primaryColor),
-                          children: [
-                            WidgetSpan(
-                                child: Icon(Icons.category,
-                                    color: Get.theme.primaryColor)),
-                            TextSpan(text: ' Danh Mục'),
-                          ],
+                      Center(
+                        child: RichText(
+                          text: TextSpan(
+                            style: TextStyle(
+                                fontSize: 25, color: Get.theme.primaryColor),
+                            children: [
+                              WidgetSpan(
+                                  child: Icon(Icons.category,
+                                      color: Get.theme.primaryColor)),
+                              TextSpan(text: ' Danh Mục'),
+                            ],
+                          ),
                         ),
                       ),
 
-                      // Checkboxs
-                      Wrap(
-                        children: [
-                          CheckboxPrimary(
-                            title: 'Đồ ăn',
-                            value: true,
-                            onChanged: (checked) => {},
-                          ),
-                          CheckboxPrimary(
-                            title: 'Đồ ăn',
-                            value: true,
-                            onChanged: (checked) => {},
-                          ),
-                          CheckboxPrimary(
-                            title: 'Đồ ăn',
-                            value: true,
-                            onChanged: (checked) => {},
-                          ),
-                          CheckboxPrimary(
-                            title: 'Đồ uống',
-                            value: true,
-                            onChanged: (checked) => {},
-                          ),
-                          CheckboxPrimary(
-                            title: 'Tráng miệng',
-                            value: true,
-                            onChanged: (checked) => {},
-                          ),
-                        ],
-                      ),
+                      // Category Checkboxes
+                      Obx(() {
+                        // Loading
+                        if (controller.isLoadingCategory.value)
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: CircularProgressIndicator(),
+                          );
+
+                        // DON'T HAVE ANY category
+                        if (controller.categories.length == 0)
+                          return Center(
+                            child: Text('Không có danh mục nào'),
+                          );
+
+                        return Wrap(
+                          children: controller.categories
+                              .map(
+                                (category) => CheckboxPrimary(
+                                  title: category.name,
+                                  value: category.checked,
+                                  onChanged: (checked) => {
+                                    controller.onChangeCategoryCheckbox(
+                                        checked, category.id)
+                                  },
+                                ),
+                              )
+                              .toList(),
+                        );
+                      })
                     ],
                   ),
                 ),
@@ -168,7 +171,7 @@ class CreateItemScreen extends StatelessWidget {
                       child: Padding(
                         padding: EdgeInsets.all(10),
                         child: TextButton.icon(
-                          onPressed: () => {},
+                          onPressed: () {},
                           label: Text('Thêm thuộc tính'),
                           icon: Icon(Icons.add),
                         ),

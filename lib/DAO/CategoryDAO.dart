@@ -26,4 +26,8 @@ class CategoryDAO extends DatabaseAccessor<AppDatabase>
     await into(table!).insert(category);
     return true;
   }
+
+  Future<int> deleteAll() async {
+    return delete(table!).go();
+  }
 }

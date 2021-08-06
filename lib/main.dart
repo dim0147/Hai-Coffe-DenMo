@@ -49,14 +49,16 @@ class MyApp extends StatelessWidget {
             padding: MaterialStateProperty.all(
               EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             ),
-            backgroundColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
-            foregroundColor: MaterialStateProperty.resolveWith<Color>(
+            backgroundColor: MaterialStateProperty.resolveWith<Color>(
               (states) {
                 if (states.contains(MaterialState.focused) ||
-                    states.contains(MaterialState.pressed) ||
-                    states.contains(MaterialState.hovered))
-                  return AppConfig.TEXT_BTN_COLOR_HOVER;
-
+                    states.contains(MaterialState.pressed))
+                  return AppConfig.MAIN_COLOR.withOpacity(0.5);
+                return AppConfig.MAIN_COLOR;
+              },
+            ),
+            foregroundColor: MaterialStateProperty.resolveWith<Color?>(
+              (states) {
                 return AppConfig.TEXT_BTN_COLOR;
               },
             ),

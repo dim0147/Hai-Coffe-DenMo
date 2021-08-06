@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/Controller/CreateItemController.dart';
 
 import '../Screen/StartupScreen.dart';
 import '../Screen/LoginScreen.dart';
@@ -25,8 +26,6 @@ class AppConfig {
 
   // Button
   static final Color TEXT_BTN_COLOR = (Colors.yellowAccent[100] as Color);
-  static final Color TEXT_BTN_COLOR_HOVER =
-      (Colors.yellowAccent[100] as Color).withOpacity(0.04);
 
   // Chip
   static final Color? CHIP_DELETE_ICON_COLOR = Colors.amber[800];
@@ -63,7 +62,7 @@ class AppConfig {
       name: '/item/add',
       page: () => CreateItemScreen(),
       binding: BindingsBuilder(() {
-        // Get.lazyPut(() => CreateCategoryController());
+        Get.lazyPut(() => CreateItemController());
       }),
     ),
   ];
