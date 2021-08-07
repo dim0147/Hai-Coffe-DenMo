@@ -39,6 +39,7 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: controller.titleC,
                     decoration: InputDecoration(
                       labelText: 'Tên',
                       prefixIcon: Icon(
@@ -319,7 +320,7 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                     padding: const EdgeInsets.fromLTRB(11.0, 0.0, 11.0, 11.0),
                     child: ElevatedButton.icon(
                       icon: Icon(Icons.add_circle),
-                      onPressed: () {},
+                      onPressed: controller.onCreateItem,
                       label: Text(
                         'Tạo',
                         style: TextStyle(fontSize: 20),

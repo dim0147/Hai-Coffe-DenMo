@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:moor/moor.dart' as moor;
 import 'package:path/path.dart' as p;
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
@@ -10,7 +11,6 @@ import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Item.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
 
 class CategoryCheckbox {
   int id;
@@ -125,8 +125,31 @@ class CreateItemController extends GetxController {
   }
 
   void onCreateItem() async {
-    String fileExtension = p.extension(img.value!.path);
+    String title = titleC.text;
+    double? price = Utils.convertStringToDouble(priceC.text);
 
-    var path = await getExternalStorageDirectory();
+    // Validate
+    if (title.length == 0) return Get.snackbar('Lỗi', 'Tên trống');
+    if (price == null) return Get.snackbar('Lỗi', 'Giá không hợp lệ');
+
+    // Save image if have
+    String? imgName;
+    if (img.value != null) {
+      File? imgSaved = await Utils.saveImg(img.value as File);
+      if (imgSaved == null) return;
+      imgName = p.basename(imgSaved.path);
+    }
+
+    ItemsCompanion itemToInsert = ItemsCompanion.insert(
+      name: title,
+      image: imgName ?? '',
+      price: price,
+      status: status.value,
+      visibility: moor.Value(visibility.value),
+    );
+
+    var rs = await itemDAO.createItem(itemToInsert, categories, properties);
+    print(rs);
+    Get.snackbar('ok', ' success');
   }
 }
