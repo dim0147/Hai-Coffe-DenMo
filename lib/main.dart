@@ -44,29 +44,21 @@ class MyApp extends StatelessWidget {
         ),
 
         // Text Button
-        textButtonTheme: TextButtonThemeData(
+        elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             padding: MaterialStateProperty.all(
               EdgeInsets.symmetric(horizontal: 20, vertical: 10),
             ),
-            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-              (states) {
-                if (states.contains(MaterialState.focused) ||
-                    states.contains(MaterialState.pressed))
-                  return AppConfig.MAIN_COLOR.withOpacity(0.5);
-                return AppConfig.MAIN_COLOR;
-              },
-            ),
-            foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (states) {
-                return AppConfig.TEXT_BTN_COLOR;
-              },
-            ),
+            foregroundColor:
+                MaterialStateProperty.all<Color>(AppConfig.TEXT_BTN_COLOR),
           ),
         ),
 
         // Text Field
         inputDecorationTheme: InputDecorationTheme(
+          hintStyle: TextStyle(
+            color: AppConfig.MAIN_COLOR,
+          ),
           labelStyle: TextStyle(
             color: AppConfig.MAIN_COLOR,
           ),
@@ -80,8 +72,7 @@ class MyApp extends StatelessWidget {
 
         // Text Theme
         textTheme: TextTheme().copyWith(
-          bodyText1: TextStyle(color: AppConfig.MAIN_COLOR),
-          bodyText2: TextStyle(color: AppConfig.MAIN_COLOR),
+          bodyText2: TextStyle(fontSize: 14.0, color: AppConfig.MAIN_COLOR),
         ),
       ),
       title: 'Hải Bên Lề',

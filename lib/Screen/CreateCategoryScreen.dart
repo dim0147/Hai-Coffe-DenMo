@@ -21,7 +21,7 @@ class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
                   child: Text(
                     'Tạo Danh Mục',
                     style: TextStyle(
-                      color: AppConfig.MAIN_COLOR,
+                      color: AppConfig.HEADER_COLOR,
                       fontSize: 40,
                     ),
                   ),
@@ -52,7 +52,7 @@ class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
                           ),
                         ),
                       ),
-                      TextButton.icon(
+                      ElevatedButton.icon(
                         onPressed: controller.onCreate,
                         icon: Icon(Icons.add),
                         label: Text('Tạo'),

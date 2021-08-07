@@ -24,6 +24,9 @@ class AppConfig {
       Color.fromRGBO(218, 172, 88, 1.0) as Color;
   static final Color MAIN_COLOR = Colors.amber[300] as Color;
 
+  // Header
+  static final Color HEADER_COLOR = Colors.amber as Color;
+
   // Button
   static final Color TEXT_BTN_COLOR = (Colors.yellowAccent[100] as Color);
 

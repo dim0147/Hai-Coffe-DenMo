@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -28,8 +30,7 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                     child: Text(
                       'Tạo Item',
                       style: TextStyle(
-                        fontSize: 40,
-                      ),
+                          fontSize: 73.0, color: AppConfig.HEADER_COLOR),
                     ),
                   ),
                 ),
@@ -47,6 +48,26 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                   ),
                 ),
 
+                // Item price
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: Container(
+                      width: Get.width * 0.5,
+                      child: TextField(
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Giá tiền',
+                          prefixIcon: Icon(
+                            Icons.local_offer,
+                          ),
+                        ),
+                        controller: controller.priceC,
+                      ),
+                    ),
+                  ),
+                ),
+
                 // Category
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -57,11 +78,11 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                         child: RichText(
                           text: TextSpan(
                             style: TextStyle(
-                                fontSize: 25, color: Get.theme.primaryColor),
+                                fontSize: 30, color: AppConfig.HEADER_COLOR),
                             children: [
                               WidgetSpan(
                                   child: Icon(Icons.category,
-                                      color: Get.theme.primaryColor)),
+                                      color: AppConfig.HEADER_COLOR)),
                               TextSpan(text: ' Danh Mục'),
                             ],
                           ),
@@ -79,8 +100,11 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
 
                         // DON'T HAVE ANY category
                         if (controller.categories.length == 0)
-                          return Center(
-                            child: Text('Không có danh mục nào'),
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Center(
+                              child: Text('Không có danh mục nào'),
+                            ),
                           );
 
                         return Wrap(
@@ -111,11 +135,11 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(
-                              fontSize: 25, color: Get.theme.primaryColor),
+                              fontSize: 25, color: AppConfig.HEADER_COLOR),
                           children: [
                             WidgetSpan(
                                 child: Icon(Icons.inventory_2,
-                                    color: Get.theme.primaryColor)),
+                                    color: AppConfig.HEADER_COLOR)),
                             TextSpan(text: ' Thuộc tính'),
                           ],
                         ),
@@ -128,41 +152,47 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                           flex: 2,
                           child: TextField(
                             decoration: InputDecoration(
-                              labelText: 'Thêm đường',
+                              hintText: 'Thêm đường',
+                              labelText: 'Tên',
                               prefixIcon: Icon(Icons.library_add),
                             ),
+                            controller: controller.propertyNameC,
                           ),
                         ),
                         Expanded(
                           flex: 1,
                           child: TextField(
+                            keyboardType: TextInputType.number,
                             decoration: InputDecoration(
                               labelText: 'Giá',
                               prefixIcon: Icon(
                                 Icons.local_offer,
                               ),
                             ),
-                            controller: MoneyMaskedTextController(
-                              decimalSeparator: '.',
-                              precision: 3,
-                            ),
+                            controller: controller.propertyAmountC,
                           ),
                         ),
                       ],
                     ),
 
                     // Chips
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Wrap(
-                        spacing: 8.0,
-                        children: [
-                          Chip(
-                            label: Text('Thêm đường | 15.000'),
-                            deleteIcon: Icon(Icons.delete),
-                            onDeleted: () => {},
-                          ),
-                        ],
+                    Obx(
+                      () => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Wrap(
+                          spacing: 8.0,
+                          children: controller.properties
+                              .map(
+                                (property) => Chip(
+                                  label: Text(
+                                      '${property.name} | ${property.amount}đ'),
+                                  deleteIcon: Icon(Icons.close),
+                                  onDeleted: () =>
+                                      controller.removeProperty(property),
+                                ),
+                              )
+                              .toList(),
+                        ),
                       ),
                     ),
 
@@ -170,8 +200,8 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                     Center(
                       child: Padding(
                         padding: EdgeInsets.all(10),
-                        child: TextButton.icon(
-                          onPressed: () {},
+                        child: ElevatedButton.icon(
+                          onPressed: controller.addProperty,
                           label: Text('Thêm thuộc tính'),
                           icon: Icon(Icons.add),
                         ),
@@ -185,23 +215,27 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Tình trạng',
+                      'Tình Trạng:',
+                      style: TextStyle(color: AppConfig.HEADER_COLOR),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: DropdownButton<Status>(
-                        dropdownColor: AppConfig.MAIN_COLOR,
-                        items: [
-                          DropdownMenuItem<Status>(
-                            value: Status.InStock,
-                            child: new Text('Còn Hàng'),
-                          ),
-                          DropdownMenuItem<Status>(
-                            value: Status.OutStock,
-                            child: new Text('Hết Hàng'),
-                          ),
-                        ],
-                        onChanged: (val) {},
+                      child: Obx(
+                        () => DropdownButton<Status>(
+                          dropdownColor: AppConfig.MAIN_COLOR,
+                          items: [
+                            DropdownMenuItem<Status>(
+                              value: Status.InStock,
+                              child: Text('Còn Hàng'),
+                            ),
+                            DropdownMenuItem<Status>(
+                              value: Status.OutStock,
+                              child: Text('Hết Hàng'),
+                            ),
+                          ],
+                          value: controller.status.value,
+                          onChanged: controller.onChangeStatus,
+                        ),
                       ),
                     ),
                   ],
@@ -213,22 +247,26 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                   children: [
                     Text(
                       'Hiển Thị',
+                      style: TextStyle(color: AppConfig.HEADER_COLOR),
                     ),
                     Padding(
                       padding: EdgeInsets.all(10),
-                      child: DropdownButton<bool>(
-                        dropdownColor: AppConfig.MAIN_COLOR,
-                        items: [
-                          DropdownMenuItem<bool>(
-                            value: true,
-                            child: new Text('Có'),
-                          ),
-                          DropdownMenuItem<bool>(
-                            value: false,
-                            child: new Text('Không'),
-                          ),
-                        ],
-                        onChanged: (val) {},
+                      child: Obx(
+                        () => DropdownButton<bool>(
+                          dropdownColor: AppConfig.MAIN_COLOR,
+                          items: [
+                            DropdownMenuItem<bool>(
+                              value: true,
+                              child: Text('Có'),
+                            ),
+                            DropdownMenuItem<bool>(
+                              value: false,
+                              child: Text('Không'),
+                            ),
+                          ],
+                          value: controller.visibility.value,
+                          onChanged: controller.onChangeVisibility,
+                        ),
                       ),
                     ),
                   ],
@@ -238,23 +276,38 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                 Column(
                   children: [
                     Center(
-                      child: TextButton.icon(
-                        onPressed: () async {
-                          final ImagePicker _picker = ImagePicker();
-                          // Pick an image
-                          final XFile? image = await _picker.pickImage(
-                              source: ImageSource.gallery);
-                        },
+                      child: ElevatedButton.icon(
+                        onPressed: controller.onAddImg,
                         icon: Icon(Icons.collections),
                         label: Text("Thêm Hình ảnh"),
                       ),
                     ),
-                    Center(
-                      child: Image.network(
-                        'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/1200px-A_small_cup_of_coffee.JPG',
-                        width: 100.0,
-                        height: 100.0,
-                      ),
+                    Obx(
+                      () => controller.img.value != null
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    Image.file(
+                                      controller.img.value as File,
+                                      width: 100.0,
+                                      height: 100.0,
+                                    ),
+                                    TextButton.icon(
+                                        onPressed: controller.onRemoveImg,
+                                        icon: Icon(Icons.close),
+                                        label: Text('Huỷ ảnh'))
+                                  ],
+                                ),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Center(
+                                child: Text('Không có ảnh nào'),
+                              ),
+                            ),
                     ),
                   ],
                 ),
@@ -263,8 +316,8 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                 SizedBox(
                   width: double.infinity,
                   child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextButton.icon(
+                    padding: const EdgeInsets.fromLTRB(11.0, 0.0, 11.0, 11.0),
+                    child: ElevatedButton.icon(
                       icon: Icon(Icons.add_circle),
                       onPressed: () {},
                       label: Text(

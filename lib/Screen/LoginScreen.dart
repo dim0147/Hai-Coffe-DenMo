@@ -25,7 +25,7 @@ class LoginScreen extends GetWidget<LoginController> {
                 Text(
                   'Đăng Nhập',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: AppConfig.HEADER_COLOR,
                     fontSize: 25.0,
                     fontWeight: FontWeight.bold,
                   ),
@@ -72,7 +72,7 @@ class LoginScreen extends GetWidget<LoginController> {
 
                 // Button login
                 controller.obx(
-                    (state) => TextButton(
+                    (state) => ElevatedButton(
                         onPressed: controller.onLoginClick,
                         child: Text('Đăng Nhập')),
                     onLoading: CircularProgressIndicator(
@@ -84,7 +84,7 @@ class LoginScreen extends GetWidget<LoginController> {
                               err ?? 'Có lỗi xảy ra',
                               style: TextStyle(color: Colors.red),
                             ),
-                            TextButton(
+                            ElevatedButton(
                                 onPressed: controller.onLoginClick,
                                 child: Text('Đăng Nhập')),
                           ],
