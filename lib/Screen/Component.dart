@@ -23,7 +23,7 @@ class CheckboxPrimary extends StatelessWidget {
           value: value,
           onChanged: onChanged,
         ),
-        GestureDetector(
+        InkWell(
           onTap: () => onChanged(!value),
           child: Text(title),
         ),

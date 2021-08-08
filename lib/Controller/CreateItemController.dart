@@ -52,7 +52,7 @@ class CreateItemController extends GetxController {
 
   // Loading
   final Rx<bool> isLoadingCategory = true.obs;
-  bool isCreateItem = false;
+  final isCreateItem = false.obs;
 
   @override
   void onInit() async {
@@ -125,21 +125,33 @@ class CreateItemController extends GetxController {
   }
 
   void onCreateItem() async {
+    isCreateItem.value = true;
     String title = titleC.text;
     double? price = Utils.convertStringToDouble(priceC.text);
+    String? imgName;
 
     // Validate
-    if (title.length == 0) return Get.snackbar('Lỗi', 'Tên trống');
-    if (price == null) return Get.snackbar('Lỗi', 'Giá không hợp lệ');
+    if (title.length == 0) {
+      isCreateItem.value = false;
+      return Get.snackbar('Lỗi', 'Tên trống');
+    }
+
+    if (price == null) {
+      isCreateItem.value = false;
+      return Get.snackbar('Lỗi', 'Giá không hợp lệ');
+    }
 
     // Save image if have
-    String? imgName;
     if (img.value != null) {
       File? imgSaved = await Utils.saveImg(img.value as File);
-      if (imgSaved == null) return;
+      if (imgSaved == null) {
+        isCreateItem.value = false;
+        return;
+      }
       imgName = p.basename(imgSaved.path);
     }
 
+    // Create item to insert
     ItemsCompanion itemToInsert = ItemsCompanion.insert(
       name: title,
       image: imgName ?? '',
@@ -148,8 +160,13 @@ class CreateItemController extends GetxController {
       visibility: moor.Value(visibility.value),
     );
 
-    var rs = await itemDAO.createItem(itemToInsert, categories, properties);
-    print(rs);
-    Get.snackbar('ok', ' success');
+    // Create item
+    try {
+      await itemDAO.createItem(itemToInsert, categories, properties);
+      Get.snackbar('Thành công', 'Tạo item \'$title\' thành công');
+    } catch (err) {
+      Get.snackbar('Lỗi', 'Có lỗi xảy ra khi tạo item: \n ${err.toString()}');
+    }
+    isCreateItem.value = false;
   }
 }

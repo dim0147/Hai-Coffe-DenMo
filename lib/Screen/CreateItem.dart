@@ -318,13 +318,20 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
                   width: double.infinity,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(11.0, 0.0, 11.0, 11.0),
-                    child: ElevatedButton.icon(
-                      icon: Icon(Icons.add_circle),
-                      onPressed: controller.onCreateItem,
-                      label: Text(
-                        'Tạo',
-                        style: TextStyle(fontSize: 20),
-                      ),
+                    child: Obx(
+                      () => controller.isCreateItem.value
+                          ? ElevatedButton(
+                              onPressed: null,
+                              child: CircularProgressIndicator(),
+                            )
+                          : ElevatedButton.icon(
+                              icon: Icon(Icons.add_circle),
+                              onPressed: controller.onCreateItem,
+                              label: Text(
+                                'Tạo',
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ),
                     ),
                   ),
                 )

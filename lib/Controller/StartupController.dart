@@ -35,7 +35,7 @@ class StartupController extends GetxController with StateMixin<void> {
       print('Does We Run?');
 
       // Redirect
-      Get.offNamed('/item/add');
+      Get.offNamed('/menu');
     } catch (error) {
       change(null, status: RxStatus.error());
       statusText.value =

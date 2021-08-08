@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/Controller/CreateItemController.dart';
+import 'package:hai_noob/Controller/MenuController.dart';
+import 'package:hai_noob/Screen/MenuScreen.dart';
 
 import '../Screen/StartupScreen.dart';
 import '../Screen/LoginScreen.dart';
@@ -32,6 +34,9 @@ class AppConfig {
 
   // Chip
   static final Color? CHIP_DELETE_ICON_COLOR = Colors.amber[800];
+
+  // Item menu
+  static final Color MENU_ITEM_CONTAINER_COLOR = Colors.yellowAccent as Color;
 
   static final List<GetPage> GetPages = [
     GetPage(
@@ -66,6 +71,15 @@ class AppConfig {
       page: () => CreateItemScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => CreateItemController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
+      transitionDuration: new Duration(seconds: 1),
+      name: '/menu',
+      page: () => MenuScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => MenuController());
       }),
     ),
   ];
