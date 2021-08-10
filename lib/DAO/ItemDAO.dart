@@ -1,36 +1,46 @@
 import 'package:hai_noob/Controller/CreateItemController.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:collection/collection.dart';
 import 'package:moor/moor.dart';
 import 'package:hai_noob/Model/Item.dart';
 
 part 'ItemDAO.g.dart';
 
+class EntryItemWithCategoryWithProperties {
+  Item item;
+  Category? categories;
+  ItemProperty? properties;
+
+  EntryItemWithCategoryWithProperties(
+      {required this.item, this.categories, this.properties});
+}
+
+class ItemDataClass {
+  Item item;
+  List<Category>? categories;
+  List<ItemProperty>? properties;
+
+  ItemDataClass({required this.item, this.categories, this.properties});
+}
+
 @UseDao(tables: [Items, ItemCategories, ItemProperty])
 class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
-  $ItemsTable? itemTable;
-  $ItemCategoriesTable? itemCategoryTable;
-  $ItemPropertiesTable? itemPropertyTable;
+  ItemsDAO(AppDatabase db) : super(db);
 
-  ItemsDAO(AppDatabase db) : super(db) {
-    itemTable = db.items;
-    itemCategoryTable = db.itemCategories;
-    itemPropertyTable = db.itemProperties;
-  }
+  // Future removeAll() async {
+  //   var categoriesI = await delete(db.itemCategories).go();
+  //   var propertiesI = await delete(db.itemProperties).go();
+  //   var items = await delete(db.items).go();
+  //   print('');
+  // }
 
-  Future removeAll() async {
-    var categoriesI = await delete(db.itemCategories).go();
-    var propertiesI = await delete(db.itemProperties).go();
-    var items = await delete(db.items).go();
-    print('');
-  }
-
-  Future test() async {
-    var items = await select(db.items).get();
-    var categories = await select(db.categories).get();
-    var categoriesI = await select(db.itemCategories).get();
-    var propertiesI = await select(db.itemProperties).get();
-    print('');
-  }
+  // Future test() async {
+  //   var items = await select(db.items).get();
+  //   var categories = await select(db.categories).get();
+  //   var categoriesI = await select(db.itemCategories).get();
+  //   var propertiesI = await select(db.itemProperties).get();
+  //   print('');
+  // }
 
   Future createItem(ItemsCompanion item, List<CategoryCheckbox> categories,
       List<Property> properties) async {
@@ -63,5 +73,64 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
 
       return true;
     });
+  }
+
+  Future<List<ItemDataClass>> getAllItems() async {
+    var query = select(db.items).join([
+      leftOuterJoin(
+          db.itemCategories, db.itemCategories.itemId.equalsExp(db.items.id)),
+      leftOuterJoin(
+          db.itemProperties, db.itemProperties.itemId.equalsExp(db.items.id)),
+      leftOuterJoin(db.categories,
+          db.categories.id.equalsExp(db.itemCategories.categoryId))
+    ]);
+
+    // Raw query result
+    var queryResult = await query.get();
+
+    // Convert to list entry data
+    List<EntryItemWithCategoryWithProperties> listEntryData =
+        queryResult.map((row) {
+      return EntryItemWithCategoryWithProperties(
+          item: row.readTable(db.items),
+          categories: row.readTableOrNull(db.categories),
+          properties: row.readTableOrNull(db.itemProperties));
+    }).toList();
+
+    // Implement group by
+    var MapGroupBy = groupBy(
+        listEntryData, (EntryItemWithCategoryWithProperties e) => e.item.id);
+
+    // Shape result
+    List<ItemDataClass> listData = MapGroupBy.entries.map((entry) {
+      List<EntryItemWithCategoryWithProperties> value = entry.value;
+
+      // Get first index with item property
+      var item = value[0].item;
+
+      // Unique categories
+      bool isCategoryAllNull = value.every((e) => e.categories == null);
+      var categories = isCategoryAllNull
+          ? null
+          : value.map((e) => e.categories).toSet().toList() as List<Category>;
+
+      // Unnique properties
+      bool isPropertyAllNull = value.every((e) => e.properties == null);
+      var properties = isPropertyAllNull
+          ? null
+          : value.map((e) => e.properties).toSet().toList()
+              as List<ItemProperty>;
+
+      // Create item class
+      ItemDataClass itemData = ItemDataClass(
+        item: item,
+        categories: categories,
+        properties: properties,
+      );
+
+      return itemData;
+    }).toList();
+
+    return listData;
   }
 }

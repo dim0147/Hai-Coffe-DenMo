@@ -18,23 +18,15 @@ class CreateItemScreen extends GetWidget<CreateItemController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          title: Text('Tạo Item'),
+        ),
+        drawer: NavigateMenu(),
         body: SingleChildScrollView(
           child: Container(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Heading
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(10),
-                    child: Text(
-                      'Tạo Item',
-                      style: TextStyle(
-                          fontSize: 73.0, color: AppConfig.HEADER_COLOR),
-                    ),
-                  ),
-                ),
-
                 // Item name
                 Padding(
                   padding: const EdgeInsets.all(8.0),

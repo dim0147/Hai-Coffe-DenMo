@@ -17,7 +17,7 @@ class Bills extends Table {
 class BillItems extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get billId => integer().customConstraint('REFERENCES bills(id)')();
-  IntColumn get itemId => integer().customConstraint('REFERENCES items(id)')();
+  TextColumn get itemName => text()();
   IntColumn get quality => integer()();
   RealColumn get price => real()();
 }

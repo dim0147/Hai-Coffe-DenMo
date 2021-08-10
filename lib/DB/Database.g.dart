@@ -1846,13 +1846,13 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
 class BillItem extends DataClass implements Insertable<BillItem> {
   final int id;
   final int billId;
-  final int itemId;
+  final String itemName;
   final int quality;
   final double price;
   BillItem(
       {required this.id,
       required this.billId,
-      required this.itemId,
+      required this.itemName,
       required this.quality,
       required this.price});
   factory BillItem.fromData(Map<String, dynamic> data, GeneratedDatabase db,
@@ -1863,8 +1863,8 @@ class BillItem extends DataClass implements Insertable<BillItem> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       billId: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}bill_id'])!,
-      itemId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}item_id'])!,
+      itemName: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}item_name'])!,
       quality: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}quality'])!,
       price: const RealType()
@@ -1876,7 +1876,7 @@ class BillItem extends DataClass implements Insertable<BillItem> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['bill_id'] = Variable<int>(billId);
-    map['item_id'] = Variable<int>(itemId);
+    map['item_name'] = Variable<String>(itemName);
     map['quality'] = Variable<int>(quality);
     map['price'] = Variable<double>(price);
     return map;
@@ -1886,7 +1886,7 @@ class BillItem extends DataClass implements Insertable<BillItem> {
     return BillItemsCompanion(
       id: Value(id),
       billId: Value(billId),
-      itemId: Value(itemId),
+      itemName: Value(itemName),
       quality: Value(quality),
       price: Value(price),
     );
@@ -1898,7 +1898,7 @@ class BillItem extends DataClass implements Insertable<BillItem> {
     return BillItem(
       id: serializer.fromJson<int>(json['id']),
       billId: serializer.fromJson<int>(json['billId']),
-      itemId: serializer.fromJson<int>(json['itemId']),
+      itemName: serializer.fromJson<String>(json['itemName']),
       quality: serializer.fromJson<int>(json['quality']),
       price: serializer.fromJson<double>(json['price']),
     );
@@ -1909,18 +1909,22 @@ class BillItem extends DataClass implements Insertable<BillItem> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'billId': serializer.toJson<int>(billId),
-      'itemId': serializer.toJson<int>(itemId),
+      'itemName': serializer.toJson<String>(itemName),
       'quality': serializer.toJson<int>(quality),
       'price': serializer.toJson<double>(price),
     };
   }
 
   BillItem copyWith(
-          {int? id, int? billId, int? itemId, int? quality, double? price}) =>
+          {int? id,
+          int? billId,
+          String? itemName,
+          int? quality,
+          double? price}) =>
       BillItem(
         id: id ?? this.id,
         billId: billId ?? this.billId,
-        itemId: itemId ?? this.itemId,
+        itemName: itemName ?? this.itemName,
         quality: quality ?? this.quality,
         price: price ?? this.price,
       );
@@ -1929,7 +1933,7 @@ class BillItem extends DataClass implements Insertable<BillItem> {
     return (StringBuffer('BillItem(')
           ..write('id: $id, ')
           ..write('billId: $billId, ')
-          ..write('itemId: $itemId, ')
+          ..write('itemName: $itemName, ')
           ..write('quality: $quality, ')
           ..write('price: $price')
           ..write(')'))
@@ -1940,14 +1944,14 @@ class BillItem extends DataClass implements Insertable<BillItem> {
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
       $mrjc(billId.hashCode,
-          $mrjc(itemId.hashCode, $mrjc(quality.hashCode, price.hashCode)))));
+          $mrjc(itemName.hashCode, $mrjc(quality.hashCode, price.hashCode)))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is BillItem &&
           other.id == this.id &&
           other.billId == this.billId &&
-          other.itemId == this.itemId &&
+          other.itemName == this.itemName &&
           other.quality == this.quality &&
           other.price == this.price);
 }
@@ -1955,37 +1959,37 @@ class BillItem extends DataClass implements Insertable<BillItem> {
 class BillItemsCompanion extends UpdateCompanion<BillItem> {
   final Value<int> id;
   final Value<int> billId;
-  final Value<int> itemId;
+  final Value<String> itemName;
   final Value<int> quality;
   final Value<double> price;
   const BillItemsCompanion({
     this.id = const Value.absent(),
     this.billId = const Value.absent(),
-    this.itemId = const Value.absent(),
+    this.itemName = const Value.absent(),
     this.quality = const Value.absent(),
     this.price = const Value.absent(),
   });
   BillItemsCompanion.insert({
     this.id = const Value.absent(),
     required int billId,
-    required int itemId,
+    required String itemName,
     required int quality,
     required double price,
   })  : billId = Value(billId),
-        itemId = Value(itemId),
+        itemName = Value(itemName),
         quality = Value(quality),
         price = Value(price);
   static Insertable<BillItem> custom({
     Expression<int>? id,
     Expression<int>? billId,
-    Expression<int>? itemId,
+    Expression<String>? itemName,
     Expression<int>? quality,
     Expression<double>? price,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (billId != null) 'bill_id': billId,
-      if (itemId != null) 'item_id': itemId,
+      if (itemName != null) 'item_name': itemName,
       if (quality != null) 'quality': quality,
       if (price != null) 'price': price,
     });
@@ -1994,13 +1998,13 @@ class BillItemsCompanion extends UpdateCompanion<BillItem> {
   BillItemsCompanion copyWith(
       {Value<int>? id,
       Value<int>? billId,
-      Value<int>? itemId,
+      Value<String>? itemName,
       Value<int>? quality,
       Value<double>? price}) {
     return BillItemsCompanion(
       id: id ?? this.id,
       billId: billId ?? this.billId,
-      itemId: itemId ?? this.itemId,
+      itemName: itemName ?? this.itemName,
       quality: quality ?? this.quality,
       price: price ?? this.price,
     );
@@ -2015,8 +2019,8 @@ class BillItemsCompanion extends UpdateCompanion<BillItem> {
     if (billId.present) {
       map['bill_id'] = Variable<int>(billId.value);
     }
-    if (itemId.present) {
-      map['item_id'] = Variable<int>(itemId.value);
+    if (itemName.present) {
+      map['item_name'] = Variable<String>(itemName.value);
     }
     if (quality.present) {
       map['quality'] = Variable<int>(quality.value);
@@ -2032,7 +2036,7 @@ class BillItemsCompanion extends UpdateCompanion<BillItem> {
     return (StringBuffer('BillItemsCompanion(')
           ..write('id: $id, ')
           ..write('billId: $billId, ')
-          ..write('itemId: $itemId, ')
+          ..write('itemName: $itemName, ')
           ..write('quality: $quality, ')
           ..write('price: $price')
           ..write(')'))
@@ -2057,12 +2061,10 @@ class $BillItemsTable extends BillItems
       typeName: 'INTEGER',
       requiredDuringInsert: true,
       $customConstraints: 'REFERENCES bills(id)');
-  final VerificationMeta _itemIdMeta = const VerificationMeta('itemId');
-  late final GeneratedColumn<int?> itemId = GeneratedColumn<int?>(
-      'item_id', aliasedName, false,
-      typeName: 'INTEGER',
-      requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES items(id)');
+  final VerificationMeta _itemNameMeta = const VerificationMeta('itemName');
+  late final GeneratedColumn<String?> itemName = GeneratedColumn<String?>(
+      'item_name', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
   final VerificationMeta _qualityMeta = const VerificationMeta('quality');
   late final GeneratedColumn<int?> quality = GeneratedColumn<int?>(
       'quality', aliasedName, false,
@@ -2072,7 +2074,7 @@ class $BillItemsTable extends BillItems
       'price', aliasedName, false,
       typeName: 'REAL', requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, billId, itemId, quality, price];
+  List<GeneratedColumn> get $columns => [id, billId, itemName, quality, price];
   @override
   String get aliasedName => _alias ?? 'bill_items';
   @override
@@ -2091,11 +2093,11 @@ class $BillItemsTable extends BillItems
     } else if (isInserting) {
       context.missing(_billIdMeta);
     }
-    if (data.containsKey('item_id')) {
-      context.handle(_itemIdMeta,
-          itemId.isAcceptableOrUnknown(data['item_id']!, _itemIdMeta));
+    if (data.containsKey('item_name')) {
+      context.handle(_itemNameMeta,
+          itemName.isAcceptableOrUnknown(data['item_name']!, _itemNameMeta));
     } else if (isInserting) {
-      context.missing(_itemIdMeta);
+      context.missing(_itemNameMeta);
     }
     if (data.containsKey('quality')) {
       context.handle(_qualityMeta,

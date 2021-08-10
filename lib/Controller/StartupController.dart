@@ -22,11 +22,11 @@ class StartupController extends GetxController with StateMixin<void> {
     try {
       // Init Database Services
       statusText.value = 'Đang khởi tạo database...';
-      await Get.putAsync(() => DbService().init());
+      await Get.putAsync(() => DbService().init(), permanent: true);
 
       // Init Hiv services
       statusText.value = 'Đang khởi tạo Hiv services...';
-      await Get.putAsync(() => HivService().init());
+      await Get.putAsync(() => HivService().init(), permanent: true);
 
       // Done
       statusText.value = 'Khởi tạo thành công';

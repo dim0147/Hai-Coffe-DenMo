@@ -73,7 +73,7 @@ class AppDatabase extends _$AppDatabase {
         issueId: 1,
         payment: BillPayment.Cash));
     into(billItems).insert(BillItemsCompanion.insert(
-        billId: 1, itemId: 1, quality: 10, price: 100));
+        billId: 1, itemName: 'Bia 333', quality: 10, price: 100));
 
     into(billItemProperties).insert(BillItemPropertiesCompanion.insert(
         billItemId: 1, name: 'Thêm muối', amount: 10));

@@ -12,20 +12,12 @@ class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(title: Text('Tạo danh mục')),
+        drawer: NavigateMenu(),
         body: Container(
           child: Center(
             child: Column(
               children: [
-                Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    'Tạo Danh Mục',
-                    style: TextStyle(
-                      color: AppConfig.HEADER_COLOR,
-                      fontSize: 40,
-                    ),
-                  ),
-                ),
                 Padding(
                   padding: EdgeInsets.all(10),
                   child: TextField(

@@ -72,6 +72,7 @@ class MyApp extends StatelessWidget {
 
         // Text Theme
         textTheme: TextTheme().copyWith(
+          bodyText1: TextStyle(fontSize: 14.0, color: AppConfig.MAIN_COLOR),
           bodyText2: TextStyle(fontSize: 14.0, color: AppConfig.MAIN_COLOR),
         ),
       ),
