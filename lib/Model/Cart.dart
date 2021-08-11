@@ -7,10 +7,13 @@ part 'Cart.g.dart';
 class Cart {
   @HiveField(0)
   final int tableId;
+
   @HiveField(1)
   List<CartItem> items;
+
   @HiveField(2)
   int totalQuantities;
+
   @HiveField(3)
   double totalPrice;
 
@@ -25,8 +28,10 @@ class Cart {
 class Item {
   @HiveField(1)
   final int id;
+
   @HiveField(2)
   final String name;
+
   @HiveField(3)
   final double price;
 
@@ -37,10 +42,13 @@ class Item {
 class CartItem {
   @HiveField(0)
   Item item;
+
   @HiveField(1)
   int quality;
+
   @HiveField(2)
   double price;
+
   @HiveField(3)
   List<CartItemProperty> properties;
 
@@ -55,6 +63,7 @@ class CartItem {
 class CartItemProperty {
   @HiveField(0)
   final String name;
+
   @HiveField(1)
   final double amount;
 

@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:hai_noob/Controller/CreateItemController.dart';
 import 'package:hai_noob/Controller/MenuController.dart';
 import 'package:hai_noob/Screen/MenuScreen.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../Screen/StartupScreen.dart';
 import '../Screen/LoginScreen.dart';
@@ -37,6 +38,12 @@ class AppConfig {
 
   // Item menu
   static final Color MENU_ITEM_CONTAINER_COLOR = Colors.yellowAccent as Color;
+
+  // Get img directory
+  static Future<String?> getImgDirectory() async {
+    var pathStorage = await getExternalStorageDirectory();
+    return pathStorage == null ? null : pathStorage.path;
+  }
 
   static final List<GetPage> GetPages = [
     GetPage(

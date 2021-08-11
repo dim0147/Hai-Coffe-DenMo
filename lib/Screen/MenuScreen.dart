@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path/path.dart' as p;
+
 import 'package:hai_noob/App/Config.dart';
 
 import 'package:hai_noob/Controller/MenuController.dart';
@@ -45,8 +49,8 @@ class MenuScreen extends GetWidget<MenuController> {
   }
 }
 
-class RightPanel extends StatelessWidget {
-  const RightPanel({
+class RightPanel extends GetView<MenuController> {
+  RightPanel({
     Key? key,
   }) : super(key: key);
 
@@ -55,21 +59,64 @@ class RightPanel extends StatelessWidget {
     return Expanded(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Wrap(
-          spacing: 8.0,
-          runSpacing: 8.0,
+        child: Obx(
+          () => Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: controller.itemsDataDisplay
+                .where((e) {
+                  // Mean all categories
+                  if (controller.choosenCategoryId.value == null) return true;
+
+                  if (e.categories == null) return false;
+
+                  return e.categories?.any(
+                          (e) => e.id == controller.choosenCategoryId.value)
+                      as bool;
+                })
+                .map((e) => MenuItem(itemDataDisplay: e))
+                .toList(),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class CategoryBtns extends GetView<MenuController> {
+  const CategoryBtns({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
           children: [
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
-            MenuItem(),
+            ...controller.categories
+                .map((e) => OutlinedButton(
+                      onPressed: () => controller.changeCategory(e.id),
+                      child: Text(e.name),
+                      style: controller.choosenCategoryId.value == e.id
+                          ? OutlinedButton.styleFrom(
+                              backgroundColor:
+                                  Get.theme.primaryColor.withOpacity(0.5),
+                            )
+                          : null,
+                    ))
+                .toList(),
+            // All category
+            OutlinedButton(
+              onPressed: () => controller.changeCategory(null),
+              child: Text('Tất cả'),
+              style: controller.choosenCategoryId.value == null
+                  ? OutlinedButton.styleFrom(
+                      backgroundColor: Get.theme.primaryColor.withOpacity(0.5),
+                    )
+                  : null,
+            )
           ],
         ),
       ),
@@ -77,42 +124,24 @@ class RightPanel extends StatelessWidget {
   }
 }
 
-class CategoryBtns extends StatelessWidget {
-  const CategoryBtns({
-    Key? key,
-  }) : super(key: key);
+class MenuItem extends GetView<MenuController> {
+  MenuItem({Key? key, required this.itemDataDisplay}) : super(key: key);
+  final ItemDataDisplay itemDataDisplay;
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          OutlinedButton(
-            onPressed: () {},
-            child: Text('Đồ Ăn'),
-            style: OutlinedButton.styleFrom(
-                backgroundColor: Get.theme.primaryColor.withOpacity(0.5)),
-          ),
-          OutlinedButton(onPressed: () {}, child: Text('Đồ Ăn')),
-          OutlinedButton(onPressed: () {}, child: Text('Đồ Ăn')),
-          OutlinedButton(onPressed: () {}, child: Text('Đồ Ăn')),
-          OutlinedButton(onPressed: () {}, child: Text('Đồ Ăn')),
-        ],
-      ),
-    );
+  ImageProvider<Object> getImg() {
+    if (controller.imgPath.value == null || itemDataDisplay.item.image == '')
+      return AssetImage('assets/img/background.png');
+
+    return FileImage(File(
+        '${p.join(controller.imgPath.value as String, itemDataDisplay.item.image)}'));
   }
-}
-
-class MenuItem extends GetWidget<MenuController> {
-  const MenuItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () => controller.increaseItem(itemDataDisplay),
       child: Container(
-        width: Get.width * 0.3,
+        width: Get.width * (context.isPhone ? 0.3 : 0.2),
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.black12,
@@ -124,8 +153,10 @@ class MenuItem extends GetWidget<MenuController> {
             // Image
             ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                'https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/1200px-A_small_cup_of_coffee.JPG',
+              child: FadeInImage(
+                placeholder: AssetImage('assets/img/background.png'),
+                image: getImg(),
+                height: Get.height * 0.1,
               ),
             ),
 
@@ -138,36 +169,58 @@ class MenuItem extends GetWidget<MenuController> {
             // Price
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Text('10.000đ',
+              child: Text(itemDataDisplay.item.price.toString() + 'đ',
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                   )),
             ),
 
-            // Quality if have
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: RichText(
-                text: TextSpan(
-                    style: TextStyle(color: Get.theme.primaryColor),
-                    children: [
-                      TextSpan(text: 'Số lượng: '),
-                      TextSpan(
-                          text: '5',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                    ]),
+            if (itemDataDisplay.quality > 0)
+              Column(
+                children: [
+                  // Quality if have
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: RichText(
+                      text: TextSpan(
+                          style: TextStyle(color: Get.theme.primaryColor),
+                          children: [
+                            TextSpan(text: 'Số lượng: '),
+                            TextSpan(
+                                text: itemDataDisplay.quality.toString(),
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ]),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Center(
+                      child: RichText(
+                        text: TextSpan(
+                            style: TextStyle(color: Get.theme.primaryColor),
+                            children: [
+                              TextSpan(text: 'Tổng giá: '),
+                              TextSpan(
+                                  text: itemDataDisplay.totalPrice.toString() +
+                                      'đ',
+                                  style:
+                                      TextStyle(fontWeight: FontWeight.bold)),
+                            ]),
+                      ),
+                    ),
+                  ),
+                  // Decrease quality
+                  ElevatedButton.icon(
+                    style: ButtonStyle(
+                        padding: MaterialStateProperty.all(EdgeInsets.all(5))),
+                    onPressed: () => controller.decreaseItem(itemDataDisplay),
+                    label: Text('Giảm'),
+                    icon: Icon(
+                      Icons.remove,
+                    ),
+                  )
+                ],
               ),
-            ),
-
-            // Decrease quality
-            IconButton(
-              padding: EdgeInsets.all(4.0),
-              onPressed: () {},
-              icon: Icon(
-                Icons.remove,
-                color: Get.theme.primaryColor,
-              ),
-            )
           ],
         ),
       ),
