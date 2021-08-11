@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_masked_text/flutter_masked_text.dart';
+import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:moor/moor.dart' as moor;
 import 'package:path/path.dart' as p;
 import 'package:get/get.dart';

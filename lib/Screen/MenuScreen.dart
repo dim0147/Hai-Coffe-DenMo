@@ -163,7 +163,7 @@ class MenuItem extends GetView<MenuController> {
             // Name
             Padding(
               padding: const EdgeInsets.only(top: 10),
-              child: Text('Cà phê nhiều đường'),
+              child: Text(itemDataDisplay.item.name),
             ),
 
             // Price
@@ -194,19 +194,16 @@ class MenuItem extends GetView<MenuController> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: Center(
-                      child: RichText(
-                        text: TextSpan(
-                            style: TextStyle(color: Get.theme.primaryColor),
-                            children: [
-                              TextSpan(text: 'Tổng giá: '),
-                              TextSpan(
-                                  text: itemDataDisplay.totalPrice.toString() +
-                                      'đ',
-                                  style:
-                                      TextStyle(fontWeight: FontWeight.bold)),
-                            ]),
-                      ),
+                    child: RichText(
+                      text: TextSpan(
+                          style: TextStyle(color: Get.theme.primaryColor),
+                          children: [
+                            TextSpan(text: 'Tổng giá: '),
+                            TextSpan(
+                                text:
+                                    itemDataDisplay.totalPrice.toString() + 'đ',
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                          ]),
                     ),
                   ),
                   // Decrease quality
