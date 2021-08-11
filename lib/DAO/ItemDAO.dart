@@ -112,14 +112,21 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
       bool isCategoryAllNull = value.every((e) => e.categories == null);
       var categories = isCategoryAllNull
           ? null
-          : value.map((e) => e.categories).toSet().toList() as List<Category>;
+          : value
+              .map((e) => e.categories)
+              .whereType<Category>()
+              .toSet()
+              .toList();
 
       // Unnique properties
       bool isPropertyAllNull = value.every((e) => e.properties == null);
       var properties = isPropertyAllNull
           ? null
-          : value.map((e) => e.properties).toSet().toList()
-              as List<ItemProperty>;
+          : value
+              .map((e) => e.properties)
+              .whereType<ItemProperty>()
+              .toSet()
+              .toList();
 
       // Create item class
       ItemDataClass itemData = ItemDataClass(

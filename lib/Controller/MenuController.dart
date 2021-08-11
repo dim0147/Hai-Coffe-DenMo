@@ -36,29 +36,33 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   void onInit() async {
     super.onInit();
 
-    // Init required
-    itemsDAO = ItemsDAO(db);
-    categoryDAO = CategoryDAO(db);
-    imgPath.value = await AppConfig.getImgDirectory();
+    try {
+      // Init required
+      itemsDAO = ItemsDAO(db);
+      categoryDAO = CategoryDAO(db);
+      imgPath.value = await AppConfig.getImgDirectory();
 
-    // Get items
-    List<ItemDataClass> items = await itemsDAO.getAllItems();
-    itemsDataDisplay.value = items
-        .map((e) => ItemDataDisplay(
-            item: e.item,
-            categories: e.categories,
-            properties: e.properties,
-            quality: 0,
-            totalPrice: 0.0))
-        .toList();
+      // Get items
+      List<ItemDataClass> items = await itemsDAO.getAllItems();
+      itemsDataDisplay.value = items
+          .map((e) => ItemDataDisplay(
+              item: e.item,
+              categories: e.categories,
+              properties: e.properties,
+              quality: 0,
+              totalPrice: 0.0))
+          .toList();
 
-    // Get categories
-    categories.value = await categoryDAO.listAllCategory();
+      // Get categories
+      categories.value = await categoryDAO.listAllCategory();
 
-    // Assign default choosen category
-    if (categories.length > 0) choosenCategoryId.value = categories.first.id;
+      // Assign default choosen category
+      if (categories.length > 0) choosenCategoryId.value = categories.first.id;
 
-    isLoading.value = false;
+      isLoading.value = false;
+    } catch (err) {
+      Get.snackbar('Lỗi', err.toString());
+    }
   }
 
   void changeCategory(int? categoryId) {
