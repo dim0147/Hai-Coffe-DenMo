@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
@@ -69,12 +70,25 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
     choosenCategoryId.value = categoryId;
   }
 
-  void increaseItem(ItemDataDisplay item) {
+  void increaseItem(ItemDataDisplay item) async {
+    var knowledgeItem =
+        itemsDataDisplay.firstWhereOrNull((e) => e.item.id == item.item.id);
+
+    if (knowledgeItem == null) return;
+
+    if (knowledgeItem.properties != null) {
+      var rs =
+          await Get.toNamed('/menu/add-special-item', arguments: knowledgeItem);
+    }
+
     var newList = itemsDataDisplay.map((e) {
       if (e.item.id == item.item.id) {
-        int quantityAdded = 1;
-        double itemPrice = e.item.price;
-        double priceAdded = itemPrice * quantityAdded;
+        int quantityAdded;
+        double itemPrice, priceAdded;
+
+        quantityAdded = 1;
+        itemPrice = e.item.price;
+        priceAdded = itemPrice * quantityAdded;
 
         e.quality += quantityAdded;
         e.totalPrice += priceAdded;
@@ -103,4 +117,6 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
     }).toList();
     itemsDataDisplay.value = newList;
   }
+
+  void addItemWithSpecial(ItemDataDisplay item) {}
 }

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/Controller/AddSpecialItemController.dart';
 import 'package:hai_noob/Controller/CreateItemController.dart';
 import 'package:hai_noob/Controller/MenuController.dart';
+import 'package:hai_noob/Screen/AddSpecialItemScreen.dart';
 import 'package:hai_noob/Screen/MenuScreen.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -45,6 +47,8 @@ class AppConfig {
     return pathStorage == null ? null : pathStorage.path;
   }
 
+  static final String initRoute = '/menu';
+
   static final List<GetPage> GetPages = [
     GetPage(
       name: '/startup',
@@ -87,6 +91,15 @@ class AppConfig {
       page: () => MenuScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => MenuController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
+      transitionDuration: new Duration(seconds: 1),
+      name: '/menu/add-special-item',
+      page: () => AddSpecialItemScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => AddSpecialItemController());
       }),
     ),
   ];

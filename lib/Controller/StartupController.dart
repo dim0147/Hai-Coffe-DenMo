@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Config.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -35,7 +36,7 @@ class StartupController extends GetxController with StateMixin<void> {
       print('Does We Run?');
 
       // Redirect
-      Get.offNamed('/menu');
+      Get.offNamed(AppConfig.initRoute);
     } catch (error) {
       change(null, status: RxStatus.error());
       statusText.value =

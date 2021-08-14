@@ -146,6 +146,9 @@ class MenuItem extends GetView<MenuController> {
         decoration: BoxDecoration(
           color: Colors.black12,
           borderRadius: BorderRadius.circular(10),
+          border: itemDataDisplay.quality > 0
+              ? Border.all(color: Get.theme.primaryColor, width: 2.0)
+              : null,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
