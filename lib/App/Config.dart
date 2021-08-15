@@ -10,7 +10,7 @@ import 'package:path_provider/path_provider.dart';
 import '../Screen/StartupScreen.dart';
 import '../Screen/LoginScreen.dart';
 import '../Screen/CreateCategoryScreen.dart';
-import '../Screen/CreateItem.dart';
+import '../Screen/CreateItemScreen.dart';
 
 import '../Controller/LoginController.dart';
 import '../Controller/StartupController.dart';
@@ -41,14 +41,8 @@ class AppConfig {
   // Item menu
   static final Color MENU_ITEM_CONTAINER_COLOR = Colors.yellowAccent as Color;
 
-  // Get img directory
-  static Future<String?> getImgDirectory() async {
-    var pathStorage = await getExternalStorageDirectory();
-    return pathStorage == null ? null : pathStorage.path;
-  }
-
+  // Route
   static final String initRoute = '/menu';
-
   static final List<GetPage> GetPages = [
     GetPage(
       name: '/startup',

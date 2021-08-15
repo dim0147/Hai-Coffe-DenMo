@@ -154,13 +154,28 @@ class MenuItem extends GetView<MenuController> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Image
-            ClipRRect(
-              borderRadius: BorderRadius.circular(10.0),
-              child: FadeInImage(
-                placeholder: AssetImage('assets/img/background.png'),
-                image: getImg(),
-                height: Get.height * 0.1,
-              ),
+            Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: FadeInImage(
+                    placeholder: AssetImage('assets/img/background.png'),
+                    image: getImg(),
+                    height: Get.height * 0.1,
+                  ),
+                ),
+                if (itemDataDisplay.quality > 0)
+                  Container(
+                    padding: EdgeInsets.all(8.0),
+                    decoration: BoxDecoration(
+                        color: AppConfig.BACKGROUND_COLOR.withOpacity(0.8)),
+                    child: Text(
+                      itemDataDisplay.quality.toString(),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                // Quality if have
+              ],
             ),
 
             // Name
@@ -181,34 +196,6 @@ class MenuItem extends GetView<MenuController> {
             if (itemDataDisplay.quality > 0)
               Column(
                 children: [
-                  // Quality if have
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: RichText(
-                      text: TextSpan(
-                          style: TextStyle(color: Get.theme.primaryColor),
-                          children: [
-                            TextSpan(text: 'Số lượng: '),
-                            TextSpan(
-                                text: itemDataDisplay.quality.toString(),
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ]),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: RichText(
-                      text: TextSpan(
-                          style: TextStyle(color: Get.theme.primaryColor),
-                          children: [
-                            TextSpan(text: 'Tổng giá: '),
-                            TextSpan(
-                                text:
-                                    itemDataDisplay.totalPrice.toString() + 'đ',
-                                style: TextStyle(fontWeight: FontWeight.bold)),
-                          ]),
-                    ),
-                  ),
                   // Decrease quality
                   ElevatedButton.icon(
                     style: ButtonStyle(
@@ -228,7 +215,7 @@ class MenuItem extends GetView<MenuController> {
   }
 }
 
-class Footer extends StatelessWidget {
+class Footer extends GetView<MenuController> {
   const Footer({
     Key? key,
   }) : super(key: key);
@@ -241,69 +228,71 @@ class Footer extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.orangeAccent[200],
       ),
-      child: Row(
-        children: [
-          // Cart quality badge
-          Stack(
+      child: Obx(() => Row(
             children: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(
-                  Icons.shopping_cart,
-                  color: Colors.deepPurpleAccent,
+              // Cart quality badge
+              Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.shopping_cart,
+                      color: Colors.deepPurpleAccent,
+                    ),
+                  ),
+                  if (controller.cart.value.totalQuantities > 0)
+                    Positioned(
+                      child: new Container(
+                        padding: EdgeInsets.all(2),
+                        decoration: new BoxDecoration(
+                          color: Colors.deepPurpleAccent,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        constraints: BoxConstraints(
+                          minWidth: 18,
+                          minHeight: 18,
+                        ),
+                        child: Text(
+                          controller.cart.value.totalQuantities.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    )
+                ],
+              ),
+
+              // Select table
+              Expanded(
+                flex: 3,
+                child: OutlinedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.table_chart),
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                        width: 2.0,
+                        color: Get.theme.primaryColor.withOpacity(0.5)),
+                  ),
+                  label: Text('Chọn Bàn'),
                 ),
               ),
-              Positioned(
-                child: new Container(
-                  padding: EdgeInsets.all(2),
-                  decoration: new BoxDecoration(
-                    color: Colors.deepPurpleAccent,
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  constraints: BoxConstraints(
-                    minWidth: 18,
-                    minHeight: 18,
-                  ),
-                  child: Text(
-                    '5',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
-                    textAlign: TextAlign.center,
-                  ),
+
+              SizedBox(width: 5),
+
+              // Payment
+              Expanded(
+                flex: 3,
+                child: ElevatedButton.icon(
+                  onPressed: () {},
+                  icon: Icon(Icons.payment),
+                  label: Text('Payment'),
                 ),
               )
             ],
-          ),
-
-          // Select table
-          Expanded(
-            flex: 3,
-            child: OutlinedButton.icon(
-              onPressed: () {},
-              icon: Icon(Icons.table_chart),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                    width: 2.0, color: Get.theme.primaryColor.withOpacity(0.5)),
-              ),
-              label: Text('Chọn Bàn'),
-            ),
-          ),
-
-          SizedBox(width: 5),
-
-          // Payment
-          Expanded(
-            flex: 3,
-            child: ElevatedButton.icon(
-              onPressed: () {},
-              icon: Icon(Icons.payment),
-              label: Text('Payment'),
-            ),
-          )
-        ],
-      ),
+          )),
     );
   }
 }

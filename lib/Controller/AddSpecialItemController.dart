@@ -13,6 +13,19 @@ class PropertyAdded {
       {this.quantity = 0, this.totalPrice = 0.0});
 }
 
+class ItemDataReturn {
+  final int id;
+  final List<PropertyAdded> propertiesAdded;
+  final int quantity;
+  final double totalPrice;
+
+  ItemDataReturn(
+      {required this.id,
+      required this.propertiesAdded,
+      required this.quantity,
+      required this.totalPrice});
+}
+
 class AddSpecialItemController extends GetxController {
   final ItemDataDisplay itemDataDisplay = Get.arguments;
   final listPropertyAdded = <PropertyAdded>[].obs;
@@ -54,7 +67,7 @@ class AddSpecialItemController extends GetxController {
     }).toList();
 
     listPropertyAdded.value = newListPropertyAdded;
-    totalProperty.value = getTotalProperty();
+    totalProperty.value = _getTotalProperty();
   }
 
   void removeProperty(PropertyAdded property) {
@@ -68,7 +81,7 @@ class AddSpecialItemController extends GetxController {
     }).toList();
 
     listPropertyAdded.value = newListPropertyAdded;
-    totalProperty.value = getTotalProperty();
+    totalProperty.value = _getTotalProperty();
   }
 
   void addCustomProperty() {
@@ -85,7 +98,7 @@ class AddSpecialItemController extends GetxController {
     }
   }
 
-  double getTotalProperty() {
+  double _getTotalProperty() {
     var propertiesHaveQuantity =
         listPropertyAdded.where((e) => e.quantity > 0).toList();
 
@@ -101,7 +114,25 @@ class AddSpecialItemController extends GetxController {
       totalDonGia.value = 0.0;
       return;
     }
+    itemAmount.value = amount;
+    totalDonGia.value = itemAmount.value * itemDataDisplay.item.price;
+  }
 
-    totalDonGia.value = amount * itemDataDisplay.item.price;
+  void confirm() {
+    double totalPriceOfAll = totalDonGia.value + totalProperty.value;
+    List<PropertyAdded> listPropertyHaveQuantity =
+        listPropertyAdded.where((e) => e.quantity > 0).toList();
+
+    ItemDataReturn data = ItemDataReturn(
+        id: itemDataDisplay.item.id,
+        propertiesAdded: listPropertyHaveQuantity,
+        quantity: itemAmount.value,
+        totalPrice: totalPriceOfAll);
+
+    Get.back(result: data);
+  }
+
+  void cancel() {
+    Get.back();
   }
 }

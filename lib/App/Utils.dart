@@ -45,4 +45,10 @@ class Utils {
       return null;
     }
   }
+
+  // Get img directory
+  static Future<String?> getImgDirectory() async {
+    var pathStorage = await getExternalStorageDirectory();
+    return pathStorage == null ? null : pathStorage.path;
+  }
 }

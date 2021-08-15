@@ -227,7 +227,8 @@ class Amount extends GetView<AddSpecialItemController> {
                 child: TextField(
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: 'Số lượng'),
-                  controller: TextEditingController(text: '1'),
+                  controller: TextEditingController(
+                      text: controller.itemAmount.toString()),
                   onChanged: controller.onChangeItemAmount,
                 ),
               ),
@@ -365,7 +366,7 @@ class Footer extends GetView<AddSpecialItemController> {
               child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: controller.cancel,
               child: Text('Huỷ'),
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
@@ -376,7 +377,8 @@ class Footer extends GetView<AddSpecialItemController> {
           Expanded(
               child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(onPressed: () {}, child: Text('Xác nhận')),
+            child: ElevatedButton(
+                onPressed: controller.confirm, child: Text('Xác nhận')),
           )),
         ],
       ),
