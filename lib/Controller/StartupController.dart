@@ -29,6 +29,10 @@ class StartupController extends GetxController with StateMixin<void> {
       statusText.value = 'Đang khởi tạo Hiv services...';
       await Get.putAsync(() => HivService().init(), permanent: true);
 
+      // Init global config
+      statusText.value = 'Đang khởi tạo config...';
+      await Get.putAsync(() => ConfigService().init(), permanent: true);
+
       // Done
       statusText.value = 'Khởi tạo thành công';
       change(null, status: RxStatus.success());

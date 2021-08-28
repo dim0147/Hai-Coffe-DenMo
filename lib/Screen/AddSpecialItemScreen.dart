@@ -12,7 +12,7 @@ class AddSpecialItemScreen extends GetWidget<AddSpecialItemController> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Thêm Item \'${controller.itemDataDisplay.item.name}\''),
+          title: Text('Thêm Item \'${controller.cartItem.item.name}\''),
         ),
         bottomNavigationBar: Footer(),
         body: GestureDetector(
@@ -260,7 +260,7 @@ class Amount extends GetView<AddSpecialItemController> {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Text(
-                              '${controller.itemDataDisplay.item.price} đ',
+                              '${controller.cartItem.item.price} đ',
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white),
                             ),
@@ -307,45 +307,53 @@ class TotalPrice extends GetView<AddSpecialItemController> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Obx(() => Column(
-            children: [
-              Container(
-                child: Column(
-                  children: [
-                    if (controller.totalProperty.value > 0.0)
-                      Text(
-                        'Tổng thuộc tính: ${controller.totalProperty.value.toString()}đ +',
-                        style: TextStyle(
-                          fontSize: 14.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+      child: Obx(() {
+        double allTotalPropertyMinusTotalDongia =
+            (controller.totalProperty.value * controller.itemAmount.value);
+
+        double allPrice =
+            allTotalPropertyMinusTotalDongia + controller.totalDonGia.value;
+
+        return Column(
+          children: [
+            Container(
+              child: Column(
+                children: [
+                  if (controller.totalProperty.value > 0.0)
                     Text(
-                      'Tổng đơn giá: ${controller.totalDonGia.value.toString()}đ',
+                      'Tổng thuộc tính: (${controller.totalProperty}đ * ${controller.itemAmount}) = ${allTotalPropertyMinusTotalDongia.toString()}đ +',
                       style: TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                  ],
-                ),
+                  Text(
+                    'Tổng đơn giá: ${controller.totalDonGia.value.toString()}đ',
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                width: Get.width / 2,
-                child: Divider(
-                  color: Get.theme.primaryColor,
-                  thickness: 2.0,
-                ),
+            ),
+            SizedBox(
+              width: Get.width / 2,
+              child: Divider(
+                color: Get.theme.primaryColor,
+                thickness: 2.0,
               ),
-              Text(
-                'Thành tiền: ${controller.totalProperty.value + controller.totalDonGia.value} đ',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold,
-                ),
+            ),
+            Text(
+              'Thành tiền: ${allPrice.toString()} đ',
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
               ),
-            ],
-          )),
+            ),
+          ],
+        );
+      }),
     );
   }
 }

@@ -77,44 +77,71 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
     if (knowledgeItem == null) return;
 
-    // Add Special item
-    ItemDataReturn? itemAdded;
+    // Add item with properties
+    CartModel.CartItem? newCartItem;
     if (knowledgeItem.properties != null) {
+      // Create itemInCartItem
+      CartModel.Item itemInCartItem = CartModel.Item(
+          id: knowledgeItem.item.id,
+          name: knowledgeItem.item.name,
+          price: knowledgeItem.item.price);
+      // Create propertiesInCartItem
+      List<CartModel.CartItemProperty> propertiesInCartItem =
+          knowledgeItem.properties != null
+              ? knowledgeItem.properties!
+                  .map((e) => CartModel.CartItemProperty(
+                      name: e.name,
+                      amount: e.amount,
+                      quantity: 0,
+                      totalPrice: 0.0))
+                  .toList()
+              : [];
+      // Create new Cart Item
+      CartModel.CartItem cartItem = CartModel.CartItem(
+          quality: 1,
+          totalPrice: knowledgeItem.item.price,
+          item: itemInCartItem,
+          properties: propertiesInCartItem);
       // navigate to new screen
-      itemAdded =
-          await Get.toNamed('/menu/add-special-item', arguments: knowledgeItem)
-              as ItemDataReturn?;
+      newCartItem =
+          await Get.toNamed('/menu/add-special-item', arguments: cartItem)
+              // as ItemDataReturn?;
+              as CartModel.CartItem?;
 
       // If null mean cancel
-      if (itemAdded == null) return;
+      if (newCartItem == null) return;
 
       // Add item with properties
-      cart.value.addItem(item.item, itemAdded);
-    } else {
+      cart.value.addItemByCartItem(newCartItem);
+    }
+    // Add item without properties
+    else {
       // Add or increase item to cart with non-special item, we create data return payload with quantity equal 1
-      ItemDataReturn itemPayload = ItemDataReturn(
-        id: knowledgeItem.item.id,
-        propertiesAdded: List.empty(),
-        quantity: 1,
-        // We only add one item so total price equan item price
-        totalPrice: knowledgeItem.item.price,
-      );
 
-      cart.value.addItem(item.item, itemPayload);
+      newCartItem = CartModel.CartItem(
+          quality: 1,
+          totalPrice: knowledgeItem.item.price,
+          item: CartModel.Item(
+              id: knowledgeItem.item.id,
+              name: knowledgeItem.item.name,
+              price: knowledgeItem.item.price),
+          properties: []);
+
+      cart.value.addItemByCartItem(newCartItem);
     }
 
-    // Increase from current list
+    // Increase data display from current list
     List<ItemDataDisplay> newList = itemsDataDisplay.map((e) {
       if (e.item.id == item.item.id) {
-        int quantityAdded;
-        // If is custom item
-        quantityAdded = itemAdded != null ? itemAdded.quantity : 1;
+        int quantityAdded = newCartItem != null ? newCartItem.quality : 1;
+
         e.quality += quantityAdded;
       }
 
       return e;
     }).toList();
     itemsDataDisplay.value = newList;
+    itemsDataDisplay.refresh();
     cart.refresh();
   }
 
@@ -134,5 +161,8 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
     itemsDataDisplay.value = newList;
   }
 
-  void addItemWithSpecial(ItemDataDisplay item) {}
+  void onClickShowCart() async {
+    // navigate to new screen
+    var cartD = await Get.toNamed('/menu/cart', arguments: cart.value);
+  }
 }

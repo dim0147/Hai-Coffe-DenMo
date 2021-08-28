@@ -27,6 +27,35 @@ class Cart {
       this.totalQuantities = 0,
       this.totalPrice = 0.0});
 
+  void addItemByCartItem(CartItem cartItem) {
+    // Update total price and total quantities
+    this.totalPrice += cartItem.totalPrice;
+    this.totalQuantities += cartItem.quality;
+
+    // Check if have properties
+    bool haveProperties = cartItem.properties.length > 0;
+
+    // Add new cart item
+    if (haveProperties) return this.items.add(cartItem);
+    // Mean no properties
+    bool existInCart = this.items.any((e) => e.item.id == cartItem.item.id);
+
+    // We increase
+    if (existInCart) {
+      this.items.forEach((e) {
+        if (e.item.id == cartItem.item.id) {
+          e.quality += cartItem.quality;
+          e.totalPrice += cartItem.totalPrice;
+        }
+      });
+    }
+    // No exist in cart
+    else {
+      // Add new item
+      this.items.add(cartItem);
+    }
+  }
+
   void addItem(DBModel.Item item, ItemDataReturn data) {
     // Convert item to cart item
     Item itemInCartItem = Item(id: item.id, name: item.name, price: item.price);

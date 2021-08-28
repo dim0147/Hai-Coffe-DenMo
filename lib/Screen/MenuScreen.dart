@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:path/path.dart' as p;
 
 import 'package:hai_noob/App/Config.dart';
@@ -128,88 +129,82 @@ class MenuItem extends GetView<MenuController> {
   MenuItem({Key? key, required this.itemDataDisplay}) : super(key: key);
   final ItemDataDisplay itemDataDisplay;
 
-  ImageProvider<Object> getImg() {
-    if (controller.imgPath.value == null || itemDataDisplay.item.image == '')
-      return AssetImage('assets/img/background.png');
-
-    return FileImage(File(
-        '${p.join(controller.imgPath.value as String, itemDataDisplay.item.image)}'));
-  }
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => controller.increaseItem(itemDataDisplay),
-      child: Container(
-        width: Get.width * (context.isPhone ? 0.3 : 0.2),
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.black12,
-          borderRadius: BorderRadius.circular(10),
-          border: itemDataDisplay.quality > 0
-              ? Border.all(color: Get.theme.primaryColor, width: 2.0)
-              : null,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // Image
-            Stack(
+      child: Stack(
+        children: [
+          Container(
+            width: Get.width * (context.isPhone ? 0.3 : 0.2),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(10),
+              border: itemDataDisplay.quality > 0
+                  ? Border.all(color: Get.theme.primaryColor, width: 2.0)
+                  : null,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                // Img
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.0),
                   child: FadeInImage(
-                    placeholder: AssetImage('assets/img/background.png'),
-                    image: getImg(),
+                    placeholder: AssetImage(AppConfig.DEFAULT_IMG_ITEM),
+                    image: Utils.getImg(itemDataDisplay.item.image),
                     height: Get.height * 0.1,
                   ),
                 ),
+
+                // Name
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(itemDataDisplay.item.name),
+                ),
+
+                // Price
+                Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: Text(itemDataDisplay.item.price.toString() + 'đ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
+
                 if (itemDataDisplay.quality > 0)
-                  Container(
-                    padding: EdgeInsets.all(8.0),
-                    decoration: BoxDecoration(
-                        color: AppConfig.BACKGROUND_COLOR.withOpacity(0.8)),
-                    child: Text(
-                      itemDataDisplay.quality.toString(),
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
+                  Column(
+                    children: [
+                      // Decrease quality
+                      ElevatedButton.icon(
+                        style: ButtonStyle(
+                            padding:
+                                MaterialStateProperty.all(EdgeInsets.all(5))),
+                        onPressed: () =>
+                            controller.decreaseItem(itemDataDisplay),
+                        label: Text('Giảm'),
+                        icon: Icon(
+                          Icons.remove,
+                        ),
+                      )
+                    ],
                   ),
-                // Quality if have
               ],
             ),
-
-            // Name
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(itemDataDisplay.item.name),
-            ),
-
-            // Price
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text(itemDataDisplay.item.price.toString() + 'đ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  )),
-            ),
-
-            if (itemDataDisplay.quality > 0)
-              Column(
-                children: [
-                  // Decrease quality
-                  ElevatedButton.icon(
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all(EdgeInsets.all(5))),
-                    onPressed: () => controller.decreaseItem(itemDataDisplay),
-                    label: Text('Giảm'),
-                    icon: Icon(
-                      Icons.remove,
-                    ),
-                  )
-                ],
+          ),
+          if (itemDataDisplay.quality > 0)
+            // Quantiy
+            Container(
+              padding: EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                  color: AppConfig.BACKGROUND_COLOR.withOpacity(0.8)),
+              child: Text(
+                itemDataDisplay.quality.toString(),
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
-          ],
-        ),
+            ),
+        ],
       ),
     );
   }
@@ -222,77 +217,101 @@ class Footer extends GetView<MenuController> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(10),
-      height: 60,
-      decoration: BoxDecoration(
-        color: Colors.orangeAccent[200],
-      ),
-      child: Obx(() => Row(
+    return Obx(() => Container(
+          padding: EdgeInsets.all(10),
+          height: controller.cart.value.totalQuantities > 0 ? 90 : 70,
+          decoration: BoxDecoration(
+            color: Colors.orangeAccent[200],
+          ),
+          child: Column(
             children: [
-              // Cart quality badge
-              Stack(
-                children: [
-                  IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.shopping_cart,
-                      color: Colors.deepPurpleAccent,
-                    ),
+              if (controller.cart.value.totalQuantities > 0)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 5),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      Column(
+                        children: [
+                          Text('Tổng cộng: '),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Text(controller.cart.value.totalPrice.toString() +
+                              'đ'),
+                        ],
+                      )
+                    ],
                   ),
-                  if (controller.cart.value.totalQuantities > 0)
-                    Positioned(
-                      child: new Container(
-                        padding: EdgeInsets.all(2),
-                        decoration: new BoxDecoration(
+                ),
+              Row(
+                children: [
+                  // Cart quality badge
+                  Stack(
+                    children: [
+                      IconButton(
+                        onPressed: controller.onClickShowCart,
+                        icon: Icon(
+                          Icons.shopping_cart,
                           color: Colors.deepPurpleAccent,
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        constraints: BoxConstraints(
-                          minWidth: 18,
-                          minHeight: 18,
-                        ),
-                        child: Text(
-                          controller.cart.value.totalQuantities.toString(),
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                          textAlign: TextAlign.center,
                         ),
                       ),
-                    )
+                      if (controller.cart.value.totalQuantities > 0)
+                        Positioned(
+                          child: new Container(
+                            padding: EdgeInsets.all(2),
+                            decoration: new BoxDecoration(
+                              color: Colors.deepPurpleAccent,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 18,
+                              minHeight: 18,
+                            ),
+                            child: Text(
+                              controller.cart.value.totalQuantities.toString(),
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
+
+                  // Select table
+                  Expanded(
+                    flex: 3,
+                    child: OutlinedButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.table_chart),
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(
+                            width: 2.0,
+                            color: Get.theme.primaryColor.withOpacity(0.5)),
+                      ),
+                      label: Text('Chọn Bàn'),
+                    ),
+                  ),
+
+                  SizedBox(width: 5),
+
+                  // Payment
+                  Expanded(
+                    flex: 3,
+                    child: ElevatedButton.icon(
+                      onPressed: () {},
+                      icon: Icon(Icons.payment),
+                      label: Text('Payment'),
+                    ),
+                  )
                 ],
               ),
-
-              // Select table
-              Expanded(
-                flex: 3,
-                child: OutlinedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.table_chart),
-                  style: OutlinedButton.styleFrom(
-                    side: BorderSide(
-                        width: 2.0,
-                        color: Get.theme.primaryColor.withOpacity(0.5)),
-                  ),
-                  label: Text('Chọn Bàn'),
-                ),
-              ),
-
-              SizedBox(width: 5),
-
-              // Payment
-              Expanded(
-                flex: 3,
-                child: ElevatedButton.icon(
-                  onPressed: () {},
-                  icon: Icon(Icons.payment),
-                  label: Text('Payment'),
-                ),
-              )
             ],
-          )),
-    );
+          ),
+        ));
   }
 }

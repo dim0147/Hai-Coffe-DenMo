@@ -2,6 +2,7 @@ import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/Controller/MenuController.dart';
+import 'package:hai_noob/Model/Cart.dart';
 
 class PropertyAdded {
   final String name;
@@ -27,7 +28,7 @@ class ItemDataReturn {
 }
 
 class AddSpecialItemController extends GetxController {
-  final ItemDataDisplay itemDataDisplay = Get.arguments;
+  final CartItem cartItem = Get.arguments;
   final listPropertyAdded = <PropertyAdded>[].obs;
   final itemAmount = 1.obs;
   final totalDonGia = 0.0.obs;
@@ -41,11 +42,11 @@ class AddSpecialItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    var rs = Get.arguments;
+    var itemEdit = Get.arguments;
 
     // Setup default list property
-    var defaultListPropertyAdded = itemDataDisplay.properties
-        ?.map((e) => PropertyAdded(e.name, e.amount))
+    List<PropertyAdded>? defaultListPropertyAdded = cartItem.properties
+        .map((e) => PropertyAdded(e.name, e.amount))
         .toList();
 
     if (defaultListPropertyAdded != null) {
@@ -53,11 +54,11 @@ class AddSpecialItemController extends GetxController {
     }
 
     // Default totalDongia
-    totalDonGia.value = 1 * itemDataDisplay.item.price;
+    totalDonGia.value = 1 * cartItem.item.price;
   }
 
   void increaseProperty(PropertyAdded property) {
-    var newListPropertyAdded = listPropertyAdded.map((element) {
+    List<PropertyAdded> newListPropertyAdded = listPropertyAdded.map((element) {
       if (element.name == property.name) {
         element.quantity += 1;
         element.totalPrice += element.amount;
@@ -115,21 +116,37 @@ class AddSpecialItemController extends GetxController {
       return;
     }
     itemAmount.value = amount;
-    totalDonGia.value = itemAmount.value * itemDataDisplay.item.price;
+    totalDonGia.value = itemAmount.value * cartItem.item.price;
   }
 
   void confirm() {
-    double totalPriceOfAll = totalDonGia.value + totalProperty.value;
+    double allTotalPropertyMinusTotalDongia =
+        (totalProperty.value * itemAmount.value);
+
+    double totalPriceOfAll =
+        allTotalPropertyMinusTotalDongia + totalDonGia.value;
     List<PropertyAdded> listPropertyHaveQuantity =
         listPropertyAdded.where((e) => e.quantity > 0).toList();
 
+    CartItem newCartItem = CartItem(
+        quality: itemAmount.value,
+        totalPrice: totalPriceOfAll,
+        item: cartItem.item,
+        properties: listPropertyAdded
+            .map((e) => CartItemProperty(
+                name: e.name,
+                amount: e.amount,
+                quantity: e.quantity,
+                totalPrice: e.totalPrice))
+            .toList());
+
     ItemDataReturn data = ItemDataReturn(
-        id: itemDataDisplay.item.id,
+        id: cartItem.item.id,
         propertiesAdded: listPropertyHaveQuantity,
         quantity: itemAmount.value,
         totalPrice: totalPriceOfAll);
 
-    Get.back(result: data);
+    Get.back(result: newCartItem);
   }
 
   void cancel() {
