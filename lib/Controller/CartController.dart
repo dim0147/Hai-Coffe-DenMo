@@ -1,10 +1,15 @@
 import 'package:get/get.dart';
+import 'package:hai_noob/Model/Cart.dart';
 
 class CartController extends GetxController {
+  final cart = Cart(items: []).obs;
+
   @override
   void onInit() {
     super.onInit();
-    var cart = Get.arguments;
+    Cart cartArguments = Get.arguments;
+    cart.value = cartArguments;
+
     var d;
   }
 

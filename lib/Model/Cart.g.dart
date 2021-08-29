@@ -19,23 +19,17 @@ class CartAdapter extends TypeAdapter<Cart> {
     return Cart(
       tableId: fields[0] as int?,
       items: (fields[1] as List).cast<CartItem>(),
-      totalQuantities: fields[2] as int,
-      totalPrice: fields[3] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, Cart obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(2)
       ..writeByte(0)
       ..write(obj.tableId)
       ..writeByte(1)
-      ..write(obj.items)
-      ..writeByte(2)
-      ..write(obj.totalQuantities)
-      ..writeByte(3)
-      ..write(obj.totalPrice);
+      ..write(obj.items);
   }
 
   @override
@@ -108,19 +102,22 @@ class ItemAdapter extends TypeAdapter<Item> {
       id: fields[0] as int,
       name: fields[1] as String,
       price: fields[2] as double,
+      img: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Item obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.price);
+      ..write(obj.price)
+      ..writeByte(3)
+      ..write(obj.img);
   }
 
   @override
@@ -148,22 +145,19 @@ class CartItemPropertyAdapter extends TypeAdapter<CartItemProperty> {
       name: fields[0] as String,
       amount: fields[1] as double,
       quantity: fields[2] as int,
-      totalPrice: fields[3] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, CartItemProperty obj) {
     writer
-      ..writeByte(4)
+      ..writeByte(3)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
       ..write(obj.amount)
       ..writeByte(2)
-      ..write(obj.quantity)
-      ..writeByte(3)
-      ..write(obj.totalPrice);
+      ..write(obj.quantity);
   }
 
   @override

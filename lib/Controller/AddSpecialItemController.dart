@@ -1,17 +1,16 @@
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/Controller/MenuController.dart';
 import 'package:hai_noob/Model/Cart.dart';
 
 class PropertyAdded {
   final String name;
   final double amount;
   int quantity;
-  double totalPrice;
 
-  PropertyAdded(this.name, this.amount,
-      {this.quantity = 0, this.totalPrice = 0.0});
+  double showTotalPrice() => this.amount * this.quantity;
+
+  PropertyAdded(this.name, this.amount, {this.quantity = 0});
 }
 
 class ItemDataReturn {
@@ -45,23 +44,20 @@ class AddSpecialItemController extends GetxController {
     var itemEdit = Get.arguments;
 
     // Setup default list property
-    List<PropertyAdded>? defaultListPropertyAdded = cartItem.properties
+    List<PropertyAdded> defaultListPropertyAdded = cartItem.properties
         .map((e) => PropertyAdded(e.name, e.amount))
         .toList();
 
-    if (defaultListPropertyAdded != null) {
-      listPropertyAdded.value = defaultListPropertyAdded;
-    }
+    listPropertyAdded.value = defaultListPropertyAdded;
 
     // Default totalDongia
-    totalDonGia.value = 1 * cartItem.item.price;
+    totalDonGia.value = cartItem.quality * cartItem.item.price;
   }
 
   void increaseProperty(PropertyAdded property) {
     List<PropertyAdded> newListPropertyAdded = listPropertyAdded.map((element) {
       if (element.name == property.name) {
         element.quantity += 1;
-        element.totalPrice += element.amount;
       }
 
       return element;
@@ -75,7 +71,6 @@ class AddSpecialItemController extends GetxController {
     var newListPropertyAdded = listPropertyAdded.map((element) {
       if (element.name == property.name) {
         element.quantity = 0;
-        element.totalPrice = 0;
       }
 
       return element;
@@ -103,8 +98,10 @@ class AddSpecialItemController extends GetxController {
     var propertiesHaveQuantity =
         listPropertyAdded.where((e) => e.quantity > 0).toList();
 
-    var total = propertiesHaveQuantity.fold(0.0,
-        (double previousValue, element) => previousValue + element.totalPrice);
+    var total = propertiesHaveQuantity.fold(
+        0.0,
+        (double previousValue, element) =>
+            previousValue + element.showTotalPrice());
 
     return total;
   }
@@ -120,13 +117,11 @@ class AddSpecialItemController extends GetxController {
   }
 
   void confirm() {
-    double allTotalPropertyMinusTotalDongia =
+    double allTotalPropertyMinusItemQuantity =
         (totalProperty.value * itemAmount.value);
 
     double totalPriceOfAll =
-        allTotalPropertyMinusTotalDongia + totalDonGia.value;
-    List<PropertyAdded> listPropertyHaveQuantity =
-        listPropertyAdded.where((e) => e.quantity > 0).toList();
+        allTotalPropertyMinusItemQuantity + totalDonGia.value;
 
     CartItem newCartItem = CartItem(
         quality: itemAmount.value,
@@ -134,17 +129,11 @@ class AddSpecialItemController extends GetxController {
         item: cartItem.item,
         properties: listPropertyAdded
             .map((e) => CartItemProperty(
-                name: e.name,
-                amount: e.amount,
-                quantity: e.quantity,
-                totalPrice: e.totalPrice))
+                  name: e.name,
+                  amount: e.amount,
+                  quantity: e.quantity,
+                ))
             .toList());
-
-    ItemDataReturn data = ItemDataReturn(
-        id: cartItem.item.id,
-        propertiesAdded: listPropertyHaveQuantity,
-        quantity: itemAmount.value,
-        totalPrice: totalPriceOfAll);
 
     Get.back(result: newCartItem);
   }

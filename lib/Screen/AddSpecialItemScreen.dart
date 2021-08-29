@@ -126,7 +126,7 @@ class PropertyContainer extends GetView<AddSpecialItemController> {
                     text: TextSpan(children: [
                       TextSpan(
                           text: property.quantity > 0
-                              ? '${property.totalPrice.toString()}đ'
+                              ? '${property.showTotalPrice().toString()}đ'
                               : '${property.amount.toString()}đ',
                           style: TextStyle(color: Colors.blueAccent)),
                       if (property.quantity > 0)

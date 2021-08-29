@@ -1,8 +1,6 @@
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/AddSpecialItemController.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -84,16 +82,17 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       CartModel.Item itemInCartItem = CartModel.Item(
           id: knowledgeItem.item.id,
           name: knowledgeItem.item.name,
-          price: knowledgeItem.item.price);
+          price: knowledgeItem.item.price,
+          img: knowledgeItem.item.image);
       // Create propertiesInCartItem
       List<CartModel.CartItemProperty> propertiesInCartItem =
           knowledgeItem.properties != null
               ? knowledgeItem.properties!
                   .map((e) => CartModel.CartItemProperty(
-                      name: e.name,
-                      amount: e.amount,
-                      quantity: 0,
-                      totalPrice: 0.0))
+                        name: e.name,
+                        amount: e.amount,
+                        quantity: 0,
+                      ))
                   .toList()
               : [];
       // Create new Cart Item
@@ -105,7 +104,6 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       // navigate to new screen
       newCartItem =
           await Get.toNamed('/menu/add-special-item', arguments: cartItem)
-              // as ItemDataReturn?;
               as CartModel.CartItem?;
 
       // If null mean cancel
@@ -124,7 +122,8 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
           item: CartModel.Item(
               id: knowledgeItem.item.id,
               name: knowledgeItem.item.name,
-              price: knowledgeItem.item.price),
+              price: knowledgeItem.item.price,
+              img: knowledgeItem.item.image),
           properties: []);
 
       cart.value.addItemByCartItem(newCartItem);

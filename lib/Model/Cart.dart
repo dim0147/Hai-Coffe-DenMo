@@ -1,9 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/AddSpecialItemController.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:hai_noob/DB/Database.dart' as DBModel;
 
 part 'Cart.g.dart';
 
@@ -15,29 +13,29 @@ class Cart {
   @HiveField(1)
   List<CartItem> items;
 
-  @HiveField(2)
-  int totalQuantities;
+  Cart({
+    this.tableId,
+    required this.items,
+  });
 
-  @HiveField(3)
-  double totalPrice;
+  double showTotalPrice() {
+    return this
+        .items
+        .fold(0.0, (previousValue, e) => previousValue + e.totalPrice);
+  }
 
-  Cart(
-      {this.tableId,
-      required this.items,
-      this.totalQuantities = 0,
-      this.totalPrice = 0.0});
+  int showTotalQuantity() {
+    return this.items.fold(0, (previousValue, e) => previousValue + e.quality);
+  }
 
   void addItemByCartItem(CartItem cartItem) {
-    // Update total price and total quantities
-    this.totalPrice += cartItem.totalPrice;
-    this.totalQuantities += cartItem.quality;
-
     // Check if have properties
     bool haveProperties = cartItem.properties.length > 0;
 
-    // Add new cart item
+    // Add new cart item if have any properties
     if (haveProperties) return this.items.add(cartItem);
-    // Mean no properties
+
+    // Mean no properties, we will add if don't exist in cart or increase if exist in cart
     bool existInCart = this.items.any((e) => e.item.id == cartItem.item.id);
 
     // We increase
@@ -54,79 +52,6 @@ class Cart {
       // Add new item
       this.items.add(cartItem);
     }
-  }
-
-  void addItem(DBModel.Item item, ItemDataReturn data) {
-    // Convert item to cart item
-    Item itemInCartItem = Item(id: item.id, name: item.name, price: item.price);
-
-    // Convert PropertiesAdded to CartItemProperty
-    List<CartItemProperty> properties = data.propertiesAdded
-        .map((e) => CartItemProperty(
-            name: e.name,
-            amount: e.amount,
-            quantity: e.quantity,
-            totalPrice: e.totalPrice))
-        .toList();
-
-    // Check if properties is empty
-    if (properties.length == 0)
-      _addItemWithNonProperty(item: itemInCartItem, data: data);
-    else
-      _addItemWithProperty(
-          properties: properties, item: itemInCartItem, data: data);
-
-    // Update price and quantities
-    this.totalPrice += data.totalPrice;
-    this.totalQuantities += data.quantity;
-  }
-
-  void _addItemWithNonProperty(
-      {required Item item, required ItemDataReturn data}) {
-    // Check if cart  have this item already
-    bool isExistInCart = this.items.any((e) => e.item.id == item.id);
-
-    // If exist
-    if (isExistInCart) {
-      // Update quantity and price of exist item
-      this.items = this.items.map((e) {
-        if (e.item.id == item.id) {
-          e.quality += data.quantity;
-          e.totalPrice += data.totalPrice;
-        }
-
-        return e;
-      }).toList();
-
-      return;
-    }
-    // Not exist, create new item
-    else {
-      // Create new cart
-      CartItem cartItem = CartItem(
-          quality: data.quantity,
-          totalPrice: data.totalPrice,
-          item: item,
-          properties: List.empty());
-
-      // Add new item
-      this.items.add(cartItem);
-    }
-  }
-
-  void _addItemWithProperty(
-      {required List<CartItemProperty> properties,
-      required Item item,
-      required ItemDataReturn data}) {
-    // Create new cart
-    CartItem cartItem = CartItem(
-        quality: data.quantity,
-        totalPrice: data.totalPrice,
-        item: item,
-        properties: properties);
-
-    // Add new item
-    this.items.add(cartItem);
   }
 
   void decreaseItem({String? cartItemKey, int? itemId}) {
@@ -161,18 +86,10 @@ class Cart {
     // Decrease quantity of cart item
     itemToDecrease.quality -= 1;
 
-    // Decrease price of 1 and plus the properties total price if have
-    double priceProperties = itemToDecrease.properties
-        .fold(0.0, (double previousValue, e) => previousValue + e.totalPrice);
+    // Decrease 1 item price and plus the total properties price if have
+    double priceProperties = itemToDecrease.properties.fold(
+        0.0, (double previousValue, e) => previousValue + e.showTotalPrice());
     itemToDecrease.totalPrice -= (itemToDecrease.item.price + priceProperties);
-
-    // Decease total price and quality of cart
-    this.totalPrice -= (itemToDecrease.item.price + priceProperties);
-    this.totalQuantities -= 1;
-
-    //TODO: Add remove method for itemToDecrease if smaller then 0
-
-    //TODO: Add set to 0 if totalPrice equal 0
   }
 
   void removeCartItem(String cartItemKey) {
@@ -185,10 +102,6 @@ class Cart {
     List<CartItem> newList =
         this.items.where((e) => e.uniqueKey != cartItemKey).toList();
     this.items = newList;
-
-    // Decrease total price and quantity
-    this.totalPrice -= cartItemKnowledge.totalPrice;
-    this.totalQuantities -= cartItemKnowledge.quality;
   }
 }
 
@@ -210,6 +123,10 @@ class CartItem {
   @HiveField(4)
   double totalPrice;
 
+  double showPriceWithQuality() {
+    return this.quality * this.item.price;
+  }
+
   CartItem({
     required this.quality,
     required this.totalPrice,
@@ -229,7 +146,14 @@ class Item {
   @HiveField(2)
   final double price;
 
-  Item({required this.id, required this.name, required this.price});
+  @HiveField(3)
+  final String img;
+
+  Item(
+      {required this.id,
+      required this.name,
+      required this.price,
+      required this.img});
 }
 
 @HiveType(typeId: 3)
@@ -243,12 +167,11 @@ class CartItemProperty {
   @HiveField(2)
   final int quantity;
 
-  @HiveField(3)
-  final double totalPrice;
+  double showTotalPrice() => this.amount * this.quantity;
+
+  double showTotalPriceMinusItemQuantity(int itemQuantity) =>
+      this.showTotalPrice() * itemQuantity;
 
   CartItemProperty(
-      {required this.name,
-      required this.amount,
-      required this.quantity,
-      required this.totalPrice});
+      {required this.name, required this.amount, required this.quantity});
 }

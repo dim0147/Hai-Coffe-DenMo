@@ -219,13 +219,13 @@ class Footer extends GetView<MenuController> {
   Widget build(BuildContext context) {
     return Obx(() => Container(
           padding: EdgeInsets.all(10),
-          height: controller.cart.value.totalQuantities > 0 ? 90 : 70,
+          height: controller.cart.value.showTotalQuantity() > 0 ? 90 : 70,
           decoration: BoxDecoration(
             color: Colors.orangeAccent[200],
           ),
           child: Column(
             children: [
-              if (controller.cart.value.totalQuantities > 0)
+              if (controller.cart.value.showTotalQuantity() > 0)
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5),
                   child: Row(
@@ -233,13 +233,25 @@ class Footer extends GetView<MenuController> {
                     children: [
                       Column(
                         children: [
-                          Text('Tổng cộng: '),
+                          Text(
+                            'Tổng cộng: ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber[100],
+                            ),
+                          ),
                         ],
                       ),
                       Column(
                         children: [
-                          Text(controller.cart.value.totalPrice.toString() +
-                              'đ'),
+                          Text(
+                            controller.cart.value.showTotalPrice().toString() +
+                                'đ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber[100],
+                            ),
+                          ),
                         ],
                       )
                     ],
@@ -257,7 +269,7 @@ class Footer extends GetView<MenuController> {
                           color: Colors.deepPurpleAccent,
                         ),
                       ),
-                      if (controller.cart.value.totalQuantities > 0)
+                      if (controller.cart.value.showTotalQuantity() > 0)
                         Positioned(
                           child: new Container(
                             padding: EdgeInsets.all(2),
@@ -270,7 +282,9 @@ class Footer extends GetView<MenuController> {
                               minHeight: 18,
                             ),
                             child: Text(
-                              controller.cart.value.totalQuantities.toString(),
+                              controller.cart.value
+                                  .showTotalQuantity()
+                                  .toString(),
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 12,
