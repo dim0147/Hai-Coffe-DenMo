@@ -13,6 +13,25 @@ class CartController extends GetxController {
     var d;
   }
 
+  void onClickCartItem(CartItem cartItem) async {
+    bool haveProperties = cartItem.properties.length > 0;
+
+    CartItem? newCartItem =
+        await Get.toNamed('/menu/add-special-item', arguments: cartItem)
+            as CartItem?;
+    if (newCartItem == null) return;
+
+    // Because this will gerenate new cart id
+    cart.value.updateCart(newCartItem);
+    cart.refresh();
+  }
+
+  void onRemoveCartItem(CartItem cartItem) {
+    print('Hello');
+    cart.value.removeCartItem(cartItem.uniqueKey);
+    cart.refresh();
+  }
+
   void onCancelClick() {
     Get.back();
   }

@@ -103,6 +103,21 @@ class Cart {
         this.items.where((e) => e.uniqueKey != cartItemKey).toList();
     this.items = newList;
   }
+
+  void updateCart(CartItem updatedCart) {
+    bool isExistInCart =
+        this.items.any((e) => e.uniqueKey == updatedCart.uniqueKey);
+    if (!isExistInCart) return;
+
+    List<CartItem> newList = this.items.map((e) {
+      if (e.uniqueKey == updatedCart.uniqueKey) {
+        e = updatedCart;
+      }
+      return e;
+    }).toList();
+
+    this.items = newList;
+  }
 }
 
 @HiveType(typeId: 1)

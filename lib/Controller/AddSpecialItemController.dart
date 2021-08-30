@@ -45,12 +45,14 @@ class AddSpecialItemController extends GetxController {
 
     // Setup default list property
     List<PropertyAdded> defaultListPropertyAdded = cartItem.properties
-        .map((e) => PropertyAdded(e.name, e.amount))
+        .map((e) => PropertyAdded(e.name, e.amount, quantity: e.quantity))
         .toList();
 
     listPropertyAdded.value = defaultListPropertyAdded;
 
-    // Default totalDongia
+    // Default
+    itemAmount.value = cartItem.quality;
+    totalProperty.value = _getTotalProperty();
     totalDonGia.value = cartItem.quality * cartItem.item.price;
   }
 
@@ -123,19 +125,17 @@ class AddSpecialItemController extends GetxController {
     double totalPriceOfAll =
         allTotalPropertyMinusItemQuantity + totalDonGia.value;
 
-    CartItem newCartItem = CartItem(
-        quality: itemAmount.value,
-        totalPrice: totalPriceOfAll,
-        item: cartItem.item,
-        properties: listPropertyAdded
-            .map((e) => CartItemProperty(
-                  name: e.name,
-                  amount: e.amount,
-                  quantity: e.quantity,
-                ))
-            .toList());
+    cartItem.quality = itemAmount.value;
+    cartItem.totalPrice = totalPriceOfAll;
+    cartItem.properties = listPropertyAdded
+        .map((e) => CartItemProperty(
+              name: e.name,
+              amount: e.amount,
+              quantity: e.quantity,
+            ))
+        .toList();
 
-    Get.back(result: newCartItem);
+    Get.back(result: cartItem);
   }
 
   void cancel() {

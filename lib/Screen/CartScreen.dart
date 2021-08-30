@@ -17,39 +17,32 @@ class CartScreen extends GetWidget<CartController> {
         body: SingleChildScrollView(
           child: Container(
             padding: EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Row(
+            child: Obx(() => Column(
                   children: [
-                    Expanded(flex: 6, child: Text('Tên + Giá')),
-                    Expanded(child: Text('Số Lượng')),
-                    Expanded(child: Text('Tổng Cộng')),
+                    // Item
+                    ...controller.cart.value.items
+                        .map((e) => Column(
+                              children: [
+                                CartItem(cartItem: e),
+                                Divider(
+                                  color: AppConfig.MAIN_COLOR,
+                                ),
+                              ],
+                            ))
+                        .toList(),
+
+                    // Total
+                    Container(
+                      child: Align(
+                        alignment: Alignment.topRight,
+                        child: Text(
+                          'Tổng cộng: ${controller.cart.value.showTotalPrice()}đ',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    )
                   ],
-                ),
-                Divider(),
-
-                // Item
-                ...controller.cart.value.items
-                    .map((e) => Column(
-                          children: [
-                            CartItem(cartItem: e),
-                            Divider(
-                              color: AppConfig.MAIN_COLOR,
-                            ),
-                          ],
-                        ))
-                    .toList(),
-
-                // Total
-                Container(
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: Text(
-                        'Tổng cộng: ${controller.cart.value.showTotalPrice()}đ'),
-                  ),
-                )
-              ],
-            ),
+                )),
           ),
         ),
       ),
@@ -57,7 +50,7 @@ class CartScreen extends GetWidget<CartController> {
   }
 }
 
-class CartItem extends StatelessWidget {
+class CartItem extends GetView<CartController> {
   final CartModel.CartItem cartItem;
 
   const CartItem({Key? key, required this.cartItem}) : super(key: key);
@@ -65,15 +58,21 @@ class CartItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () => controller.onClickCartItem(cartItem),
       child: Column(
         children: [
           // Item
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Container(
+                child: TextButton.icon(
+                    onPressed: () => controller.onRemoveCartItem(cartItem),
+                    icon: Icon(Icons.close),
+                    label: Text('')),
+              ),
               Expanded(
-                flex: 6,
+                flex: 5,
                 child: Row(
                   children: [
                     Padding(
@@ -82,7 +81,7 @@ class CartItem extends StatelessWidget {
                         placeholder: AssetImage(AppConfig.DEFAULT_IMG_ITEM),
                         image: Utils.getImg(cartItem.item.img),
                         height: Get.height * 0.1,
-                        width: Get.width * 0.2,
+                        width: Get.width * 0.1,
                       ),
                     ),
                     Expanded(
@@ -94,11 +93,18 @@ class CartItem extends StatelessWidget {
                   ],
                 ),
               ),
-              Expanded(flex: 1, child: Text('x${cartItem.quality}')),
               Expanded(
                   flex: 1,
-                  child:
-                      Text(cartItem.showPriceWithQuality().toString() + 'đ')),
+                  child: Text(
+                    'x${cartItem.quality}',
+                    style: TextStyle(color: Colors.white),
+                  )),
+              Expanded(
+                  flex: 1,
+                  child: Text(
+                    cartItem.showPriceWithQuality().toString() + 'đ',
+                    style: TextStyle(color: Colors.white),
+                  )),
             ],
           ),
 
@@ -106,6 +112,7 @@ class CartItem extends StatelessWidget {
             // Properties
             Column(
                 children: cartItem.properties
+                    .where((e) => e.quantity > 0)
                     .map((e) => Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -116,37 +123,19 @@ class CartItem extends StatelessWidget {
                                   child: Text(
                                       '+ ${e.name} (${e.amount}đ x ${e.quantity})'),
                                 )),
-                            Expanded(child: Text('x${cartItem.quality}')),
                             Expanded(
                                 child: Text(
-                                    '${e.showTotalPriceMinusItemQuantity(cartItem.quality)}đ'))
+                              'x${cartItem.quality}',
+                              style: TextStyle(color: Colors.white),
+                            )),
+                            Expanded(
+                                child: Text(
+                              '${e.showTotalPriceMinusItemQuantity(cartItem.quality)}đ',
+                              style: TextStyle(color: Colors.white),
+                            ))
                           ],
                         ))
-                    .toList()
-
-                // [
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [
-                //       Text('+ Thêm dường (10.0đ)'),
-                //       Text('x2'),
-                //       Text('10.000đ')
-                //     ],
-                //   ),
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [
-                //       Text('+ Thêm dường (1.0đ)'),
-                //       Text('x5'),
-                //       Text('10.000đ')
-                //     ],
-                //   ),
-                //   Row(
-                //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                //     children: [Text('+ Thêm dường'), Text('x5'), Text('10.000đ')],
-                //   ),
-                // ],
-                )
+                    .toList())
         ],
       ),
     );

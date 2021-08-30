@@ -131,6 +131,8 @@ class MenuItem extends GetView<MenuController> {
 
   @override
   Widget build(BuildContext context) {
+    int itemQuantity = controller.showItemQuantity(itemDataDisplay.item.id);
+
     return InkWell(
       onTap: () => controller.increaseItem(itemDataDisplay),
       child: Stack(
@@ -141,7 +143,8 @@ class MenuItem extends GetView<MenuController> {
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(10),
-              border: itemDataDisplay.quality > 0
+              // Quantity badge
+              border: itemQuantity > 0
                   ? Border.all(color: Get.theme.primaryColor, width: 2.0)
                   : null,
             ),
@@ -173,7 +176,7 @@ class MenuItem extends GetView<MenuController> {
                       )),
                 ),
 
-                if (itemDataDisplay.quality > 0)
+                if (itemQuantity > 0)
                   Column(
                     children: [
                       // Decrease quality
@@ -193,14 +196,14 @@ class MenuItem extends GetView<MenuController> {
               ],
             ),
           ),
-          if (itemDataDisplay.quality > 0)
+          if (itemQuantity > 0)
             // Quantiy
             Container(
               padding: EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                   color: AppConfig.BACKGROUND_COLOR.withOpacity(0.8)),
               child: Text(
-                itemDataDisplay.quality.toString(),
+                itemQuantity.toString(),
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),

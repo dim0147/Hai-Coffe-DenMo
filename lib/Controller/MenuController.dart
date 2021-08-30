@@ -78,12 +78,6 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
     // Add item with properties
     CartModel.CartItem? newCartItem;
     if (knowledgeItem.properties != null) {
-      // Create itemInCartItem
-      CartModel.Item itemInCartItem = CartModel.Item(
-          id: knowledgeItem.item.id,
-          name: knowledgeItem.item.name,
-          price: knowledgeItem.item.price,
-          img: knowledgeItem.item.image);
       // Create propertiesInCartItem
       List<CartModel.CartItemProperty> propertiesInCartItem =
           knowledgeItem.properties != null
@@ -99,7 +93,12 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       CartModel.CartItem cartItem = CartModel.CartItem(
           quality: 1,
           totalPrice: knowledgeItem.item.price,
-          item: itemInCartItem,
+          item: CartModel.Item(
+            id: knowledgeItem.item.id,
+            name: knowledgeItem.item.name,
+            price: knowledgeItem.item.price,
+            img: knowledgeItem.item.image,
+          ),
           properties: propertiesInCartItem);
       // navigate to new screen
       newCartItem =
@@ -120,10 +119,11 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
           quality: 1,
           totalPrice: knowledgeItem.item.price,
           item: CartModel.Item(
-              id: knowledgeItem.item.id,
-              name: knowledgeItem.item.name,
-              price: knowledgeItem.item.price,
-              img: knowledgeItem.item.image),
+            id: knowledgeItem.item.id,
+            name: knowledgeItem.item.name,
+            price: knowledgeItem.item.price,
+            img: knowledgeItem.item.image,
+          ),
           properties: []);
 
       cart.value.addItemByCartItem(newCartItem);
@@ -160,8 +160,16 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
     itemsDataDisplay.value = newList;
   }
 
+  int showItemQuantity(int itemId) {
+    return cart.value.items
+        .where((e) => e.item.id == itemId)
+        .fold(0, (previousValue, e) => previousValue + e.quality);
+  }
+
   void onClickShowCart() async {
     // navigate to new screen
     var cartD = await Get.toNamed('/menu/cart', arguments: cart.value);
+    cart.refresh();
+    itemsDataDisplay.refresh();
   }
 }

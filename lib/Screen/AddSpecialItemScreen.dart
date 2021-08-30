@@ -4,7 +4,7 @@ import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/AddSpecialItemController.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
-class AddSpecialItemScreen extends GetWidget<AddSpecialItemController> {
+class AddSpecialItemScreen extends GetView<AddSpecialItemController> {
   const AddSpecialItemScreen({Key? key}) : super(key: key);
 
   @override
@@ -12,7 +12,7 @@ class AddSpecialItemScreen extends GetWidget<AddSpecialItemController> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Thêm Item \'${controller.cartItem.item.name}\''),
+          title: Text(controller.cartItem.item.name),
         ),
         bottomNavigationBar: Footer(),
         body: GestureDetector(
@@ -20,15 +20,16 @@ class AddSpecialItemScreen extends GetWidget<AddSpecialItemController> {
           child: SingleChildScrollView(
             child: Container(
               width: double.infinity,
-              child: Column(
-                children: [
-                  ListProperty(),
-                  AddCustomProperty(),
-                  Amount(),
-                  Divider(color: Get.theme.primaryColor, thickness: 2.0),
-                  TotalPrice(),
-                ],
-              ),
+              child: Obx(() => Column(
+                    children: [
+                      if (controller.listPropertyAdded.length > 0)
+                        ListProperty(),
+                      AddCustomProperty(),
+                      Amount(),
+                      Divider(color: Get.theme.primaryColor, thickness: 2.0),
+                      TotalPrice(),
+                    ],
+                  )),
             ),
           ),
         ),
