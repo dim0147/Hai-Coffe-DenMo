@@ -31,19 +31,20 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: AppConfig.BACKGROUND_COLOR,
         primaryColor: AppConfig.MAIN_COLOR,
 
-        // Chip
         chipTheme: ThemeData().chipTheme.copyWith(
               backgroundColor: AppConfig.MAIN_COLOR,
               deleteIconColor: AppConfig.CHIP_DELETE_ICON_COLOR,
             ),
 
-        // Checkbox
         checkboxTheme: CheckboxThemeData(
           fillColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
           overlayColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
         ),
 
-        // Text Button
+        radioTheme: RadioThemeData(
+          fillColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
+        ),
+
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             padding: MaterialStateProperty.all(

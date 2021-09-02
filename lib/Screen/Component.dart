@@ -199,3 +199,36 @@ class CheckboxPrimary extends StatelessWidget {
     );
   }
 }
+
+class RadioPrimary<T> extends StatelessWidget {
+  const RadioPrimary(
+      {Key? key,
+      required this.title,
+      required this.originValue,
+      required this.valueChanged,
+      required this.onChanged})
+      : super(key: key);
+
+  final String title;
+  final T originValue;
+  final T valueChanged;
+  final void Function(T?) onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      crossAxisAlignment: WrapCrossAlignment.center,
+      children: [
+        Radio(
+          value: originValue,
+          groupValue: valueChanged,
+          onChanged: onChanged,
+        ),
+        InkWell(
+          onTap: () => onChanged(originValue),
+          child: Text(title),
+        ),
+      ],
+    );
+  }
+}

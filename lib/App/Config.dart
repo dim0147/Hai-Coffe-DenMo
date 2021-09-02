@@ -4,9 +4,13 @@ import 'package:hai_noob/Controller/AddSpecialItemController.dart';
 import 'package:hai_noob/Controller/CartController.dart';
 import 'package:hai_noob/Controller/CreateItemController.dart';
 import 'package:hai_noob/Controller/MenuController.dart';
+import 'package:hai_noob/Controller/PlaceOrderController.dart';
+import 'package:hai_noob/Controller/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Screen/AddSpecialItemScreen.dart';
 import 'package:hai_noob/Screen/CartScreen.dart';
 import 'package:hai_noob/Screen/MenuScreen.dart';
+import 'package:hai_noob/Screen/PlaceOrderCouponScreen.dart';
+import 'package:hai_noob/Screen/PlaceOrderScreen.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../Screen/StartupScreen.dart';
@@ -108,6 +112,24 @@ class AppConfig {
       page: () => CartScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => CartController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
+      transitionDuration: new Duration(seconds: 1),
+      name: '/menu/place-order',
+      page: () => PlaceOrderScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => PlaceOrderController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
+      transitionDuration: new Duration(seconds: 1),
+      name: '/menu/place-order/add-coupon',
+      page: () => PlaceOrderCouponScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => PlaceOrderCouponController());
       }),
     ),
   ];

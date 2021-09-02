@@ -32,6 +32,10 @@ class CartController extends GetxController {
     cart.refresh();
   }
 
+  void onPayment() {
+    Get.toNamed('/menu/place-order', arguments: cart.value);
+  }
+
   void onCancelClick() {
     Get.back();
   }
