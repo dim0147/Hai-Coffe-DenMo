@@ -39,7 +39,8 @@ LazyDatabase _openConnection() {
   Tables,
   Bills,
   BillItems,
-  BillItemProperties
+  BillItemProperties,
+  BillCoupons
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

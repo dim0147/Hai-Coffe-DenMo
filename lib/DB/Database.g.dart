@@ -2378,6 +2378,333 @@ class $BillItemPropertiesTable extends BillItemProperties
   }
 }
 
+class BillCoupon extends DataClass implements Insertable<BillCoupon> {
+  final int id;
+  final int billId;
+  final String name;
+  final double price;
+  final int percent;
+  final CouponType couponType;
+  BillCoupon(
+      {required this.id,
+      required this.billId,
+      required this.name,
+      required this.price,
+      required this.percent,
+      required this.couponType});
+  factory BillCoupon.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return BillCoupon(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      billId: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}bill_id'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
+      price: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}price'])!,
+      percent: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}percent'])!,
+      couponType: $BillCouponsTable.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}coupon_type']))!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['bill_id'] = Variable<int>(billId);
+    map['name'] = Variable<String>(name);
+    map['price'] = Variable<double>(price);
+    map['percent'] = Variable<int>(percent);
+    {
+      final converter = $BillCouponsTable.$converter0;
+      map['coupon_type'] = Variable<int>(converter.mapToSql(couponType)!);
+    }
+    return map;
+  }
+
+  BillCouponsCompanion toCompanion(bool nullToAbsent) {
+    return BillCouponsCompanion(
+      id: Value(id),
+      billId: Value(billId),
+      name: Value(name),
+      price: Value(price),
+      percent: Value(percent),
+      couponType: Value(couponType),
+    );
+  }
+
+  factory BillCoupon.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return BillCoupon(
+      id: serializer.fromJson<int>(json['id']),
+      billId: serializer.fromJson<int>(json['billId']),
+      name: serializer.fromJson<String>(json['name']),
+      price: serializer.fromJson<double>(json['price']),
+      percent: serializer.fromJson<int>(json['percent']),
+      couponType: serializer.fromJson<CouponType>(json['couponType']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'billId': serializer.toJson<int>(billId),
+      'name': serializer.toJson<String>(name),
+      'price': serializer.toJson<double>(price),
+      'percent': serializer.toJson<int>(percent),
+      'couponType': serializer.toJson<CouponType>(couponType),
+    };
+  }
+
+  BillCoupon copyWith(
+          {int? id,
+          int? billId,
+          String? name,
+          double? price,
+          int? percent,
+          CouponType? couponType}) =>
+      BillCoupon(
+        id: id ?? this.id,
+        billId: billId ?? this.billId,
+        name: name ?? this.name,
+        price: price ?? this.price,
+        percent: percent ?? this.percent,
+        couponType: couponType ?? this.couponType,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('BillCoupon(')
+          ..write('id: $id, ')
+          ..write('billId: $billId, ')
+          ..write('name: $name, ')
+          ..write('price: $price, ')
+          ..write('percent: $percent, ')
+          ..write('couponType: $couponType')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          billId.hashCode,
+          $mrjc(
+              name.hashCode,
+              $mrjc(price.hashCode,
+                  $mrjc(percent.hashCode, couponType.hashCode))))));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is BillCoupon &&
+          other.id == this.id &&
+          other.billId == this.billId &&
+          other.name == this.name &&
+          other.price == this.price &&
+          other.percent == this.percent &&
+          other.couponType == this.couponType);
+}
+
+class BillCouponsCompanion extends UpdateCompanion<BillCoupon> {
+  final Value<int> id;
+  final Value<int> billId;
+  final Value<String> name;
+  final Value<double> price;
+  final Value<int> percent;
+  final Value<CouponType> couponType;
+  const BillCouponsCompanion({
+    this.id = const Value.absent(),
+    this.billId = const Value.absent(),
+    this.name = const Value.absent(),
+    this.price = const Value.absent(),
+    this.percent = const Value.absent(),
+    this.couponType = const Value.absent(),
+  });
+  BillCouponsCompanion.insert({
+    this.id = const Value.absent(),
+    required int billId,
+    required String name,
+    required double price,
+    required int percent,
+    required CouponType couponType,
+  })  : billId = Value(billId),
+        name = Value(name),
+        price = Value(price),
+        percent = Value(percent),
+        couponType = Value(couponType);
+  static Insertable<BillCoupon> custom({
+    Expression<int>? id,
+    Expression<int>? billId,
+    Expression<String>? name,
+    Expression<double>? price,
+    Expression<int>? percent,
+    Expression<CouponType>? couponType,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (billId != null) 'bill_id': billId,
+      if (name != null) 'name': name,
+      if (price != null) 'price': price,
+      if (percent != null) 'percent': percent,
+      if (couponType != null) 'coupon_type': couponType,
+    });
+  }
+
+  BillCouponsCompanion copyWith(
+      {Value<int>? id,
+      Value<int>? billId,
+      Value<String>? name,
+      Value<double>? price,
+      Value<int>? percent,
+      Value<CouponType>? couponType}) {
+    return BillCouponsCompanion(
+      id: id ?? this.id,
+      billId: billId ?? this.billId,
+      name: name ?? this.name,
+      price: price ?? this.price,
+      percent: percent ?? this.percent,
+      couponType: couponType ?? this.couponType,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (billId.present) {
+      map['bill_id'] = Variable<int>(billId.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String>(name.value);
+    }
+    if (price.present) {
+      map['price'] = Variable<double>(price.value);
+    }
+    if (percent.present) {
+      map['percent'] = Variable<int>(percent.value);
+    }
+    if (couponType.present) {
+      final converter = $BillCouponsTable.$converter0;
+      map['coupon_type'] = Variable<int>(converter.mapToSql(couponType.value)!);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('BillCouponsCompanion(')
+          ..write('id: $id, ')
+          ..write('billId: $billId, ')
+          ..write('name: $name, ')
+          ..write('price: $price, ')
+          ..write('percent: $percent, ')
+          ..write('couponType: $couponType')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $BillCouponsTable extends BillCoupons
+    with TableInfo<$BillCouponsTable, BillCoupon> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $BillCouponsTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _billIdMeta = const VerificationMeta('billId');
+  late final GeneratedColumn<int?> billId = GeneratedColumn<int?>(
+      'bill_id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: true,
+      $customConstraints: 'REFERENCES bills(id)');
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _priceMeta = const VerificationMeta('price');
+  late final GeneratedColumn<double?> price = GeneratedColumn<double?>(
+      'price', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
+  final VerificationMeta _percentMeta = const VerificationMeta('percent');
+  late final GeneratedColumn<int?> percent = GeneratedColumn<int?>(
+      'percent', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _couponTypeMeta = const VerificationMeta('couponType');
+  late final GeneratedColumnWithTypeConverter<CouponType, int?> couponType =
+      GeneratedColumn<int?>('coupon_type', aliasedName, false,
+              typeName: 'INTEGER', requiredDuringInsert: true)
+          .withConverter<CouponType>($BillCouponsTable.$converter0);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, billId, name, price, percent, couponType];
+  @override
+  String get aliasedName => _alias ?? 'bill_coupons';
+  @override
+  String get actualTableName => 'bill_coupons';
+  @override
+  VerificationContext validateIntegrity(Insertable<BillCoupon> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('bill_id')) {
+      context.handle(_billIdMeta,
+          billId.isAcceptableOrUnknown(data['bill_id']!, _billIdMeta));
+    } else if (isInserting) {
+      context.missing(_billIdMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    } else if (isInserting) {
+      context.missing(_nameMeta);
+    }
+    if (data.containsKey('price')) {
+      context.handle(
+          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
+    } else if (isInserting) {
+      context.missing(_priceMeta);
+    }
+    if (data.containsKey('percent')) {
+      context.handle(_percentMeta,
+          percent.isAcceptableOrUnknown(data['percent']!, _percentMeta));
+    } else if (isInserting) {
+      context.missing(_percentMeta);
+    }
+    context.handle(_couponTypeMeta, const VerificationResult.success());
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  BillCoupon map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return BillCoupon.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $BillCouponsTable createAlias(String alias) {
+    return $BillCouponsTable(_db, alias);
+  }
+
+  static TypeConverter<CouponType, int> $converter0 =
+      const EnumIndexConverter<CouponType>(CouponType.values);
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $UsersTable users = $UsersTable(this);
@@ -2390,6 +2717,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $BillItemsTable billItems = $BillItemsTable(this);
   late final $BillItemPropertiesTable billItemProperties =
       $BillItemPropertiesTable(this);
+  late final $BillCouponsTable billCoupons = $BillCouponsTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -2402,6 +2730,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         tables,
         bills,
         billItems,
-        billItemProperties
+        billItemProperties,
+        billCoupons
       ];
 }

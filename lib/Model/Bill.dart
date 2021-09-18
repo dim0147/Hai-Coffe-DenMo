@@ -2,6 +2,8 @@ import 'package:moor/moor.dart';
 
 enum BillPayment { Cash, Card }
 
+enum CouponType { increase, decrease }
+
 class Bills extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get totalQuantities => integer()();
@@ -29,4 +31,14 @@ class BillItemProperties extends Table {
       integer().customConstraint('REFERENCES bill_items(id)')();
   TextColumn get name => text()();
   RealColumn get amount => real()();
+}
+
+// Bill can have many coupon, eg: Khuyễn mãi cho e linh
+class BillCoupons extends Table {
+  IntColumn get id => integer().autoIncrement()();
+  IntColumn get billId => integer().customConstraint('REFERENCES bills(id)')();
+  TextColumn get name => text()();
+  RealColumn get price => real()();
+  IntColumn get percent => integer()();
+  IntColumn get couponType => intEnum<CouponType>()();
 }

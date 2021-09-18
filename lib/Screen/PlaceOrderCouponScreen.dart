@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
 class PlaceOrderCouponScreen extends GetWidget<PlaceOrderCouponController> {
@@ -21,10 +21,16 @@ class PlaceOrderCouponScreen extends GetWidget<PlaceOrderCouponController> {
             width: double.infinity,
             child: Column(
               children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Giá: ${controller.cart.showTotalPrice()}đ'),
+                ),
+
                 // Name
                 Container(
                   padding: EdgeInsets.all(8.0),
                   child: TextField(
+                    controller: controller.nameC,
                     decoration: InputDecoration(
                       labelText: 'Tên',
                       prefixIcon: Icon(Icons.library_add),
@@ -32,13 +38,12 @@ class PlaceOrderCouponScreen extends GetWidget<PlaceOrderCouponController> {
                   ),
                 ),
 
-                // Price
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Center(
-                    child: Container(
-                      width: Get.width * 0.5,
+                Row(
+                  children: [
+                    Expanded(
                       child: TextField(
+                        onChanged: controller.onChangePrice,
+                        controller: controller.priceC,
                         keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                           labelText: 'Giá',
@@ -48,9 +53,27 @@ class PlaceOrderCouponScreen extends GetWidget<PlaceOrderCouponController> {
                         ),
                       ),
                     ),
-                  ),
+                    Text(
+                      '=',
+                      style: TextStyle(fontSize: 25.0),
+                    ),
+                    // Percent
+                    Expanded(
+                      child: TextField(
+                        controller: controller.percentC,
+                        onChanged: controller.onChangePercent,
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(
+                          labelText: 'Phần trăm (%)',
+                          prefixIcon: Icon(
+                            Icons.local_offer,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-
+                // Price
                 Obx(
                   () => Column(
                     children: [
@@ -60,13 +83,6 @@ class PlaceOrderCouponScreen extends GetWidget<PlaceOrderCouponController> {
                         valueChanged: controller.couponType.value,
                         onChanged: controller.onChangeCouponType,
                       ),
-                      // Radio(
-                      //   value: CouponType.increase,
-                      //   groupValue: controller.couponType.value,
-                      //   onChanged: controller.onChangeCouponType,
-                      // ),
-                      // Text('Thêm'),
-
                       RadioPrimary<CouponType>(
                         title: 'Giảm',
                         originValue: CouponType.decrease,
@@ -82,8 +98,8 @@ class PlaceOrderCouponScreen extends GetWidget<PlaceOrderCouponController> {
                   children: [
                     // Add
                     ElevatedButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.payment),
+                      onPressed: controller.onAdd,
+                      icon: Icon(Icons.add),
                       label: Text('Thêm'),
                     ),
                   ],

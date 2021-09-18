@@ -178,7 +178,7 @@ class Footer extends GetView<CartController> {
             child: ElevatedButton.icon(
               onPressed: controller.onPayment,
               icon: Icon(Icons.payment),
-              label: Text('Payment'),
+              label: Text('Thanh Toán'),
             ),
           )
         ],

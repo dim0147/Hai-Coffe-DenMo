@@ -320,9 +320,9 @@ class Footer extends GetView<MenuController> {
                   Expanded(
                     flex: 3,
                     child: ElevatedButton.icon(
-                      onPressed: () {},
+                      onPressed: controller.onClickPayment,
                       icon: Icon(Icons.payment),
-                      label: Text('Payment'),
+                      label: Text('Thanh Toán'),
                     ),
                   )
                 ],

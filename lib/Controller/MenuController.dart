@@ -5,6 +5,7 @@ import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
+import 'package:hai_noob/Screen/PlaceOrderScreen.dart';
 
 class ItemDataDisplay extends ItemDataClass {
   int quality;
@@ -168,8 +169,12 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
   void onClickShowCart() async {
     // navigate to new screen
-    var cartD = await Get.toNamed('/menu/cart', arguments: cart.value);
+    await Get.toNamed('/menu/cart', arguments: cart.value);
     cart.refresh();
     itemsDataDisplay.refresh();
+  }
+
+  void onClickPayment() async {
+    Get.toNamed('/menu/place-order', arguments: cart.value);
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/PlaceOrderController.dart';
+import 'package:hai_noob/Controller/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Model/Bill.dart';
 
 class PlaceOrderScreen extends GetWidget<PlaceOrderController> {
   const PlaceOrderScreen({Key? key}) : super(key: key);
@@ -37,26 +39,40 @@ class PlaceOrderScreen extends GetWidget<PlaceOrderController> {
                   color: AppConfig.MAIN_COLOR,
                 ),
 
-                // Custom price list
-                Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text('- Discount'),
+                // Coupon list
+                Obx(
+                  () => Column(
+                    children: controller.listCouponScreenData
+                        .map(
+                          (e) => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8.0),
+                                  child: Text('* ${e.name}'),
+                                ),
+                                Expanded(child: SizedBox()),
+                                Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: e.type == CouponType.increase
+                                      ? Text('+ ${e.price}đ (${e.percent}%)')
+                                      : Text('- ${e.price}đ (${e.percent}%)'),
+                                ),
+                                IconButton(
+                                  color: AppConfig.MAIN_COLOR,
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.remove,
+                                    size: 20.0,
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
-                          Expanded(child: SizedBox()),
-                          Padding(
-                            padding: const EdgeInsets.only(right: 8.0),
-                            child: Text('+15.000đ'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                        )
+                        .toList(),
+                  ),
                 ),
 
                 // Add custom price
@@ -72,17 +88,22 @@ class PlaceOrderScreen extends GetWidget<PlaceOrderController> {
                   thickness: 3.0,
                   color: AppConfig.MAIN_COLOR,
                 ),
-                Row(
-                  children: [
-                    Spacer(),
-                    Text(
-                      'TỔNG CỘNG: 800.000Đ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0,
-                      ),
-                    )
-                  ],
+                Obx(
+                  () => Row(
+                    children: [
+                      Spacer(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'TỔNG CỘNG: ${controller.showTotalPriceWithCoupon()}Đ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
@@ -112,8 +133,8 @@ class Footer extends GetView<PlaceOrderController> {
           // Payment
           ElevatedButton.icon(
             onPressed: () {},
-            icon: Icon(Icons.payment),
-            label: Text('Thanh Toán'),
+            icon: Icon(Icons.check),
+            label: Text('Xác Nhận'),
             style: ElevatedButton.styleFrom(
               minimumSize: Size(double.infinity,
                   30), // double.infinity is the width and 30 is the height
