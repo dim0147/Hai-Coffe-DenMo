@@ -37,10 +37,10 @@ class StartupController extends GetxController with StateMixin<void> {
       statusText.value = 'Khởi tạo thành công';
       change(null, status: RxStatus.success());
 
-      print('Does We Run?');
-
       // Redirect
       Get.offNamed(AppConfig.initRoute);
+
+      // queryTestData();
     } catch (error) {
       change(null, status: RxStatus.error());
       statusText.value =
@@ -48,7 +48,11 @@ class StartupController extends GetxController with StateMixin<void> {
     }
   }
 
-  void queryTestData(AppDatabase db) async {
+  void queryTestData() async {
+    var db = Get.find<AppDatabase>();
+
+    // await deleteFist();
+
     var users = await db.select(db.users).get();
     var items = await db.select(db.items).get();
     var categories = await db.select(db.categories).get();
@@ -58,5 +62,15 @@ class StartupController extends GetxController with StateMixin<void> {
     var bills = await db.select(db.bills).get();
     var billItems = await db.select(db.billItems).get();
     var billItemProperties = await db.select(db.billItemProperties).get();
+    var billCoupons = await db.select(db.billCoupons).get();
+    var vc;
+  }
+
+  Future deleteFist() async {
+    var db = Get.find<AppDatabase>();
+    await db.delete(db.billCoupons).go();
+    await db.delete(db.billItemProperties).go();
+    await db.delete(db.billItems).go();
+    await db.delete(db.bills).go();
   }
 }

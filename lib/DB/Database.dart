@@ -69,7 +69,10 @@ class AppDatabase extends _$AppDatabase {
     into(tables).insert(TablesCompanion.insert(name: 'Bàn 1', order: 1));
 
     into(bills).insert(BillsCompanion.insert(
-        totalQuantities: 10, totalPrice: 1000, paymentType: BillPayment.Cash));
+        subTotal: 10.0,
+        totalQuantities: 10,
+        totalPrice: 1000,
+        paymentType: BillPayment.Cash));
     into(billItems).insert(BillItemsCompanion.insert(
         itemImg: '',
         billId: 1,

@@ -54,7 +54,7 @@ class CartItemAdapter extends TypeAdapter<CartItem> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return CartItem(
-      quality: fields[3] as int,
+      totalQuantity: fields[3] as int,
       totalPrice: fields[4] as double,
       item: fields[1] as Item,
       properties: (fields[2] as List).cast<CartItemProperty>(),
@@ -72,7 +72,7 @@ class CartItemAdapter extends TypeAdapter<CartItem> {
       ..writeByte(2)
       ..write(obj.properties)
       ..writeByte(3)
-      ..write(obj.quality)
+      ..write(obj.totalQuantity)
       ..writeByte(4)
       ..write(obj.totalPrice);
   }

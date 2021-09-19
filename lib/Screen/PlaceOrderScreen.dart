@@ -61,7 +61,8 @@ class PlaceOrderScreen extends GetWidget<PlaceOrderController> {
                                 ),
                                 IconButton(
                                   color: AppConfig.MAIN_COLOR,
-                                  onPressed: () {},
+                                  onPressed: () =>
+                                      controller.onRemoveCoupon(e.name),
                                   icon: Icon(
                                     Icons.remove,
                                     size: 20.0,
@@ -127,20 +128,33 @@ class Footer extends GetView<PlaceOrderController> {
           // color: Colors.orangeAccent[200],
           ),
       // height: Get.height * 0.15,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          // Payment
-          ElevatedButton.icon(
-            onPressed: () {},
-            icon: Icon(Icons.check),
-            label: Text('Xác Nhận'),
-            style: ElevatedButton.styleFrom(
-              minimumSize: Size(double.infinity,
-                  30), // double.infinity is the width and 30 is the height
+      child: Obx(
+        () => Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Payment
+            SizedBox(
+              child: controller.status.value != StatusPlaceOrder.LOADING
+                  ? ElevatedButton.icon(
+                      onPressed: controller.onConfirm,
+                      icon: Icon(Icons.check),
+                      label: Text('Xác Nhận'),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity,
+                            30), // double.infinity is the width and 30 is the height
+                      ),
+                    )
+                  : ElevatedButton(
+                      onPressed: null,
+                      child: CircularProgressIndicator(),
+                      style: ElevatedButton.styleFrom(
+                        minimumSize: Size(double.infinity,
+                            30), // double.infinity is the width and 30 is the height
+                      ),
+                    ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

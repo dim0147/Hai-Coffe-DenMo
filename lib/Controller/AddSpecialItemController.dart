@@ -51,9 +51,9 @@ class AddSpecialItemController extends GetxController {
     listPropertyAdded.value = defaultListPropertyAdded;
 
     // Default
-    itemAmount.value = cartItem.quality;
+    itemAmount.value = cartItem.totalQuantity;
     totalProperty.value = _getTotalProperty();
-    totalDonGia.value = cartItem.quality * cartItem.item.price;
+    totalDonGia.value = cartItem.totalQuantity * cartItem.item.price;
   }
 
   void increaseProperty(PropertyAdded property) {
@@ -125,7 +125,7 @@ class AddSpecialItemController extends GetxController {
     double totalPriceOfAll =
         allTotalPropertyMinusItemQuantity + totalDonGia.value;
 
-    cartItem.quality = itemAmount.value;
+    cartItem.totalQuantity = itemAmount.value;
     cartItem.totalPrice = totalPriceOfAll;
     cartItem.properties = listPropertyAdded
         .map((e) => CartItemProperty(

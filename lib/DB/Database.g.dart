@@ -1479,12 +1479,14 @@ class $TablesTable extends Tables with TableInfo<$TablesTable, Table> {
 class Bill extends DataClass implements Insertable<Bill> {
   final int id;
   final int totalQuantities;
+  final double subTotal;
   final double totalPrice;
   final BillPayment paymentType;
   final DateTime createdAt;
   Bill(
       {required this.id,
       required this.totalQuantities,
+      required this.subTotal,
       required this.totalPrice,
       required this.paymentType,
       required this.createdAt});
@@ -1496,6 +1498,8 @@ class Bill extends DataClass implements Insertable<Bill> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       totalQuantities: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}total_quantities'])!,
+      subTotal: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}sub_total'])!,
       totalPrice: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}total_price'])!,
       paymentType: $BillsTable.$converter0.mapToDart(const IntType()
@@ -1509,6 +1513,7 @@ class Bill extends DataClass implements Insertable<Bill> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['total_quantities'] = Variable<int>(totalQuantities);
+    map['sub_total'] = Variable<double>(subTotal);
     map['total_price'] = Variable<double>(totalPrice);
     {
       final converter = $BillsTable.$converter0;
@@ -1522,6 +1527,7 @@ class Bill extends DataClass implements Insertable<Bill> {
     return BillsCompanion(
       id: Value(id),
       totalQuantities: Value(totalQuantities),
+      subTotal: Value(subTotal),
       totalPrice: Value(totalPrice),
       paymentType: Value(paymentType),
       createdAt: Value(createdAt),
@@ -1534,6 +1540,7 @@ class Bill extends DataClass implements Insertable<Bill> {
     return Bill(
       id: serializer.fromJson<int>(json['id']),
       totalQuantities: serializer.fromJson<int>(json['totalQuantities']),
+      subTotal: serializer.fromJson<double>(json['subTotal']),
       totalPrice: serializer.fromJson<double>(json['totalPrice']),
       paymentType: serializer.fromJson<BillPayment>(json['paymentType']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -1545,6 +1552,7 @@ class Bill extends DataClass implements Insertable<Bill> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'totalQuantities': serializer.toJson<int>(totalQuantities),
+      'subTotal': serializer.toJson<double>(subTotal),
       'totalPrice': serializer.toJson<double>(totalPrice),
       'paymentType': serializer.toJson<BillPayment>(paymentType),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -1554,12 +1562,14 @@ class Bill extends DataClass implements Insertable<Bill> {
   Bill copyWith(
           {int? id,
           int? totalQuantities,
+          double? subTotal,
           double? totalPrice,
           BillPayment? paymentType,
           DateTime? createdAt}) =>
       Bill(
         id: id ?? this.id,
         totalQuantities: totalQuantities ?? this.totalQuantities,
+        subTotal: subTotal ?? this.subTotal,
         totalPrice: totalPrice ?? this.totalPrice,
         paymentType: paymentType ?? this.paymentType,
         createdAt: createdAt ?? this.createdAt,
@@ -1569,6 +1579,7 @@ class Bill extends DataClass implements Insertable<Bill> {
     return (StringBuffer('Bill(')
           ..write('id: $id, ')
           ..write('totalQuantities: $totalQuantities, ')
+          ..write('subTotal: $subTotal, ')
           ..write('totalPrice: $totalPrice, ')
           ..write('paymentType: $paymentType, ')
           ..write('createdAt: $createdAt')
@@ -1581,14 +1592,17 @@ class Bill extends DataClass implements Insertable<Bill> {
       id.hashCode,
       $mrjc(
           totalQuantities.hashCode,
-          $mrjc(totalPrice.hashCode,
-              $mrjc(paymentType.hashCode, createdAt.hashCode)))));
+          $mrjc(
+              subTotal.hashCode,
+              $mrjc(totalPrice.hashCode,
+                  $mrjc(paymentType.hashCode, createdAt.hashCode))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Bill &&
           other.id == this.id &&
           other.totalQuantities == this.totalQuantities &&
+          other.subTotal == this.subTotal &&
           other.totalPrice == this.totalPrice &&
           other.paymentType == this.paymentType &&
           other.createdAt == this.createdAt);
@@ -1597,12 +1611,14 @@ class Bill extends DataClass implements Insertable<Bill> {
 class BillsCompanion extends UpdateCompanion<Bill> {
   final Value<int> id;
   final Value<int> totalQuantities;
+  final Value<double> subTotal;
   final Value<double> totalPrice;
   final Value<BillPayment> paymentType;
   final Value<DateTime> createdAt;
   const BillsCompanion({
     this.id = const Value.absent(),
     this.totalQuantities = const Value.absent(),
+    this.subTotal = const Value.absent(),
     this.totalPrice = const Value.absent(),
     this.paymentType = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -1610,15 +1626,18 @@ class BillsCompanion extends UpdateCompanion<Bill> {
   BillsCompanion.insert({
     this.id = const Value.absent(),
     required int totalQuantities,
+    required double subTotal,
     required double totalPrice,
     required BillPayment paymentType,
     this.createdAt = const Value.absent(),
   })  : totalQuantities = Value(totalQuantities),
+        subTotal = Value(subTotal),
         totalPrice = Value(totalPrice),
         paymentType = Value(paymentType);
   static Insertable<Bill> custom({
     Expression<int>? id,
     Expression<int>? totalQuantities,
+    Expression<double>? subTotal,
     Expression<double>? totalPrice,
     Expression<BillPayment>? paymentType,
     Expression<DateTime>? createdAt,
@@ -1626,6 +1645,7 @@ class BillsCompanion extends UpdateCompanion<Bill> {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (totalQuantities != null) 'total_quantities': totalQuantities,
+      if (subTotal != null) 'sub_total': subTotal,
       if (totalPrice != null) 'total_price': totalPrice,
       if (paymentType != null) 'payment_type': paymentType,
       if (createdAt != null) 'created_at': createdAt,
@@ -1635,12 +1655,14 @@ class BillsCompanion extends UpdateCompanion<Bill> {
   BillsCompanion copyWith(
       {Value<int>? id,
       Value<int>? totalQuantities,
+      Value<double>? subTotal,
       Value<double>? totalPrice,
       Value<BillPayment>? paymentType,
       Value<DateTime>? createdAt}) {
     return BillsCompanion(
       id: id ?? this.id,
       totalQuantities: totalQuantities ?? this.totalQuantities,
+      subTotal: subTotal ?? this.subTotal,
       totalPrice: totalPrice ?? this.totalPrice,
       paymentType: paymentType ?? this.paymentType,
       createdAt: createdAt ?? this.createdAt,
@@ -1655,6 +1677,9 @@ class BillsCompanion extends UpdateCompanion<Bill> {
     }
     if (totalQuantities.present) {
       map['total_quantities'] = Variable<int>(totalQuantities.value);
+    }
+    if (subTotal.present) {
+      map['sub_total'] = Variable<double>(subTotal.value);
     }
     if (totalPrice.present) {
       map['total_price'] = Variable<double>(totalPrice.value);
@@ -1675,6 +1700,7 @@ class BillsCompanion extends UpdateCompanion<Bill> {
     return (StringBuffer('BillsCompanion(')
           ..write('id: $id, ')
           ..write('totalQuantities: $totalQuantities, ')
+          ..write('subTotal: $subTotal, ')
           ..write('totalPrice: $totalPrice, ')
           ..write('paymentType: $paymentType, ')
           ..write('createdAt: $createdAt')
@@ -1698,6 +1724,10 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
   late final GeneratedColumn<int?> totalQuantities = GeneratedColumn<int?>(
       'total_quantities', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _subTotalMeta = const VerificationMeta('subTotal');
+  late final GeneratedColumn<double?> subTotal = GeneratedColumn<double?>(
+      'sub_total', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
   final VerificationMeta _totalPriceMeta = const VerificationMeta('totalPrice');
   late final GeneratedColumn<double?> totalPrice = GeneratedColumn<double?>(
       'total_price', aliasedName, false,
@@ -1716,7 +1746,7 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
       defaultValue: Constant(DateTime.now()));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, totalQuantities, totalPrice, paymentType, createdAt];
+      [id, totalQuantities, subTotal, totalPrice, paymentType, createdAt];
   @override
   String get aliasedName => _alias ?? 'bills';
   @override
@@ -1736,6 +1766,12 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
               data['total_quantities']!, _totalQuantitiesMeta));
     } else if (isInserting) {
       context.missing(_totalQuantitiesMeta);
+    }
+    if (data.containsKey('sub_total')) {
+      context.handle(_subTotalMeta,
+          subTotal.isAcceptableOrUnknown(data['sub_total']!, _subTotalMeta));
+    } else if (isInserting) {
+      context.missing(_subTotalMeta);
     }
     if (data.containsKey('total_price')) {
       context.handle(

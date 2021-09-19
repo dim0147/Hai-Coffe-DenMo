@@ -92,7 +92,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
               : [];
       // Create new Cart Item
       CartModel.CartItem cartItem = CartModel.CartItem(
-          quality: 1,
+          totalQuantity: 1,
           totalPrice: knowledgeItem.item.price,
           item: CartModel.Item(
             id: knowledgeItem.item.id,
@@ -117,7 +117,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       // Add or increase item to cart with non-special item, we create data return payload with quantity equal 1
 
       newCartItem = CartModel.CartItem(
-          quality: 1,
+          totalQuantity: 1,
           totalPrice: knowledgeItem.item.price,
           item: CartModel.Item(
             id: knowledgeItem.item.id,
@@ -133,7 +133,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
     // Increase data display from current list
     List<ItemDataDisplay> newList = itemsDataDisplay.map((e) {
       if (e.item.id == item.item.id) {
-        int quantityAdded = newCartItem != null ? newCartItem.quality : 1;
+        int quantityAdded = newCartItem != null ? newCartItem.totalQuantity : 1;
 
         e.quality += quantityAdded;
       }
@@ -164,7 +164,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   int showItemQuantity(int itemId) {
     return cart.value.items
         .where((e) => e.item.id == itemId)
-        .fold(0, (previousValue, e) => previousValue + e.quality);
+        .fold(0, (previousValue, e) => previousValue + e.totalQuantity);
   }
 
   void onClickShowCart() async {

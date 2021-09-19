@@ -7,6 +7,7 @@ enum CouponType { increase, decrease }
 class Bills extends Table {
   IntColumn get id => integer().autoIncrement()();
   IntColumn get totalQuantities => integer()();
+  RealColumn get subTotal => real()();
   RealColumn get totalPrice => real()();
   IntColumn get paymentType => intEnum<BillPayment>()();
   DateTimeColumn get createdAt =>

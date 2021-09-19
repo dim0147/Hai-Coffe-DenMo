@@ -25,7 +25,9 @@ class Cart {
   }
 
   int showTotalQuantity() {
-    return this.items.fold(0, (previousValue, e) => previousValue + e.quality);
+    return this
+        .items
+        .fold(0, (previousValue, e) => previousValue + e.totalQuantity);
   }
 
   void addItemByCartItem(CartItem cartItem) {
@@ -42,7 +44,7 @@ class Cart {
     if (existInCart) {
       this.items.forEach((e) {
         if (e.item.id == cartItem.item.id) {
-          e.quality += cartItem.quality;
+          e.totalQuantity += cartItem.totalQuantity;
           e.totalPrice += cartItem.totalPrice;
         }
       });
@@ -78,13 +80,13 @@ class Cart {
     if (itemToDecrease == null) return;
 
     // Check if decrease quality equal zero, we remove, no decrease
-    if (itemToDecrease.quality - 1 <= 0) {
+    if (itemToDecrease.totalQuantity - 1 <= 0) {
       this.removeCartItem(itemToDecrease.uniqueKey);
       return;
     }
 
     // Decrease quantity of cart item
-    itemToDecrease.quality -= 1;
+    itemToDecrease.totalQuantity -= 1;
 
     // Decrease 1 item price and plus the total properties price if have
     double priceProperties = itemToDecrease.properties.fold(
@@ -132,18 +134,23 @@ class CartItem {
   List<CartItemProperty> properties;
 
   @HiveField(3)
-  int quality;
+  int totalQuantity;
 
   /// Equal total (quality * item price)  + total properties price
   @HiveField(4)
   double totalPrice;
 
+  /// Equal this.quantity * this.item.price
   double showPriceMinusPropertiesItem() {
-    return this.quality * this.item.price;
+    return this.totalQuantity * this.item.price;
+  }
+
+  List<CartItemProperty> showListPropertiesHaveQuantity() {
+    return this.properties.where((e) => e.quantity > 0).toList();
   }
 
   CartItem({
-    required this.quality,
+    required this.totalQuantity,
     required this.totalPrice,
     required this.item,
     required this.properties,

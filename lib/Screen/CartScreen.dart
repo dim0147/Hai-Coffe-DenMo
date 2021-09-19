@@ -96,7 +96,7 @@ class CartItem extends GetView<CartController> {
               Expanded(
                   flex: 1,
                   child: Text(
-                    'x${cartItem.quality}',
+                    'x${cartItem.totalQuantity}',
                     style: TextStyle(color: Colors.white),
                   )),
               Expanded(
@@ -125,12 +125,12 @@ class CartItem extends GetView<CartController> {
                                 )),
                             Expanded(
                                 child: Text(
-                              'x${cartItem.quality}',
+                              'x${cartItem.totalQuantity}',
                               style: TextStyle(color: Colors.white),
                             )),
                             Expanded(
                                 child: Text(
-                              '${e.showTotalPriceMinusItemQuantity(cartItem.quality)}đ',
+                              '${e.showTotalPriceMinusItemQuantity(cartItem.totalQuantity)}đ',
                               style: TextStyle(color: Colors.white),
                             ))
                           ],
