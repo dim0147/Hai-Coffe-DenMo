@@ -69,15 +69,21 @@ class AppDatabase extends _$AppDatabase {
     into(tables).insert(TablesCompanion.insert(name: 'Bàn 1', order: 1));
 
     into(bills).insert(BillsCompanion.insert(
-        totalQuantities: 10,
-        totalPrice: 1000,
-        issueId: 1,
-        payment: BillPayment.Cash));
+        totalQuantities: 10, totalPrice: 1000, paymentType: BillPayment.Cash));
     into(billItems).insert(BillItemsCompanion.insert(
-        billId: 1, itemName: 'Bia 333', quality: 10, price: 100));
+        itemImg: '',
+        billId: 1,
+        itemName: 'Bia 333',
+        itemPrice: 30.0,
+        totalQuantity: 10,
+        totalPrice: 100));
 
     into(billItemProperties).insert(BillItemPropertiesCompanion.insert(
-        billItemId: 1, name: 'Thêm muối', amount: 10));
+        billItemId: 1,
+        name: 'Thêm muối',
+        propertyPrice: 10,
+        totalQuantity: 1,
+        totalPrice: 300.00));
   }
 
   void _seedData() async {

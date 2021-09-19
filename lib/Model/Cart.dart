@@ -138,7 +138,7 @@ class CartItem {
   @HiveField(4)
   double totalPrice;
 
-  double showPriceWithQuality() {
+  double showPriceMinusPropertiesItem() {
     return this.quality * this.item.price;
   }
 

@@ -42,8 +42,11 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
   //   print('');
   // }
 
-  Future createItem(ItemsCompanion item, List<CategoryCheckbox> categories,
-      List<Property> properties) async {
+  Future createItem(
+    ItemsCompanion item,
+    List<CategoryCheckbox> categories,
+    List<Property> properties,
+  ) async {
     return transaction(() async {
       // Add item
       int itemId = await into(db.items).insert(item);

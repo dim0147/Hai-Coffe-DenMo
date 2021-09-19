@@ -1479,18 +1479,14 @@ class $TablesTable extends Tables with TableInfo<$TablesTable, Table> {
 class Bill extends DataClass implements Insertable<Bill> {
   final int id;
   final int totalQuantities;
-  final double? discount;
   final double totalPrice;
-  final int issueId;
-  final BillPayment payment;
+  final BillPayment paymentType;
   final DateTime createdAt;
   Bill(
       {required this.id,
       required this.totalQuantities,
-      this.discount,
       required this.totalPrice,
-      required this.issueId,
-      required this.payment,
+      required this.paymentType,
       required this.createdAt});
   factory Bill.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -1500,14 +1496,10 @@ class Bill extends DataClass implements Insertable<Bill> {
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       totalQuantities: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}total_quantities'])!,
-      discount: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}discount']),
       totalPrice: const RealType()
           .mapFromDatabaseResponse(data['${effectivePrefix}total_price'])!,
-      issueId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}issue_id'])!,
-      payment: $BillsTable.$converter0.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}payment']))!,
+      paymentType: $BillsTable.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}payment_type']))!,
       createdAt: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
     );
@@ -1517,14 +1509,10 @@ class Bill extends DataClass implements Insertable<Bill> {
     final map = <String, Expression>{};
     map['id'] = Variable<int>(id);
     map['total_quantities'] = Variable<int>(totalQuantities);
-    if (!nullToAbsent || discount != null) {
-      map['discount'] = Variable<double?>(discount);
-    }
     map['total_price'] = Variable<double>(totalPrice);
-    map['issue_id'] = Variable<int>(issueId);
     {
       final converter = $BillsTable.$converter0;
-      map['payment'] = Variable<int>(converter.mapToSql(payment)!);
+      map['payment_type'] = Variable<int>(converter.mapToSql(paymentType)!);
     }
     map['created_at'] = Variable<DateTime>(createdAt);
     return map;
@@ -1534,12 +1522,8 @@ class Bill extends DataClass implements Insertable<Bill> {
     return BillsCompanion(
       id: Value(id),
       totalQuantities: Value(totalQuantities),
-      discount: discount == null && nullToAbsent
-          ? const Value.absent()
-          : Value(discount),
       totalPrice: Value(totalPrice),
-      issueId: Value(issueId),
-      payment: Value(payment),
+      paymentType: Value(paymentType),
       createdAt: Value(createdAt),
     );
   }
@@ -1550,10 +1534,8 @@ class Bill extends DataClass implements Insertable<Bill> {
     return Bill(
       id: serializer.fromJson<int>(json['id']),
       totalQuantities: serializer.fromJson<int>(json['totalQuantities']),
-      discount: serializer.fromJson<double?>(json['discount']),
       totalPrice: serializer.fromJson<double>(json['totalPrice']),
-      issueId: serializer.fromJson<int>(json['issueId']),
-      payment: serializer.fromJson<BillPayment>(json['payment']),
+      paymentType: serializer.fromJson<BillPayment>(json['paymentType']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
     );
   }
@@ -1563,10 +1545,8 @@ class Bill extends DataClass implements Insertable<Bill> {
     return <String, dynamic>{
       'id': serializer.toJson<int>(id),
       'totalQuantities': serializer.toJson<int>(totalQuantities),
-      'discount': serializer.toJson<double?>(discount),
       'totalPrice': serializer.toJson<double>(totalPrice),
-      'issueId': serializer.toJson<int>(issueId),
-      'payment': serializer.toJson<BillPayment>(payment),
+      'paymentType': serializer.toJson<BillPayment>(paymentType),
       'createdAt': serializer.toJson<DateTime>(createdAt),
     };
   }
@@ -1574,18 +1554,14 @@ class Bill extends DataClass implements Insertable<Bill> {
   Bill copyWith(
           {int? id,
           int? totalQuantities,
-          double? discount,
           double? totalPrice,
-          int? issueId,
-          BillPayment? payment,
+          BillPayment? paymentType,
           DateTime? createdAt}) =>
       Bill(
         id: id ?? this.id,
         totalQuantities: totalQuantities ?? this.totalQuantities,
-        discount: discount ?? this.discount,
         totalPrice: totalPrice ?? this.totalPrice,
-        issueId: issueId ?? this.issueId,
-        payment: payment ?? this.payment,
+        paymentType: paymentType ?? this.paymentType,
         createdAt: createdAt ?? this.createdAt,
       );
   @override
@@ -1593,10 +1569,8 @@ class Bill extends DataClass implements Insertable<Bill> {
     return (StringBuffer('Bill(')
           ..write('id: $id, ')
           ..write('totalQuantities: $totalQuantities, ')
-          ..write('discount: $discount, ')
           ..write('totalPrice: $totalPrice, ')
-          ..write('issueId: $issueId, ')
-          ..write('payment: $payment, ')
+          ..write('paymentType: $paymentType, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -1607,70 +1581,53 @@ class Bill extends DataClass implements Insertable<Bill> {
       id.hashCode,
       $mrjc(
           totalQuantities.hashCode,
-          $mrjc(
-              discount.hashCode,
-              $mrjc(
-                  totalPrice.hashCode,
-                  $mrjc(issueId.hashCode,
-                      $mrjc(payment.hashCode, createdAt.hashCode)))))));
+          $mrjc(totalPrice.hashCode,
+              $mrjc(paymentType.hashCode, createdAt.hashCode)))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is Bill &&
           other.id == this.id &&
           other.totalQuantities == this.totalQuantities &&
-          other.discount == this.discount &&
           other.totalPrice == this.totalPrice &&
-          other.issueId == this.issueId &&
-          other.payment == this.payment &&
+          other.paymentType == this.paymentType &&
           other.createdAt == this.createdAt);
 }
 
 class BillsCompanion extends UpdateCompanion<Bill> {
   final Value<int> id;
   final Value<int> totalQuantities;
-  final Value<double?> discount;
   final Value<double> totalPrice;
-  final Value<int> issueId;
-  final Value<BillPayment> payment;
+  final Value<BillPayment> paymentType;
   final Value<DateTime> createdAt;
   const BillsCompanion({
     this.id = const Value.absent(),
     this.totalQuantities = const Value.absent(),
-    this.discount = const Value.absent(),
     this.totalPrice = const Value.absent(),
-    this.issueId = const Value.absent(),
-    this.payment = const Value.absent(),
+    this.paymentType = const Value.absent(),
     this.createdAt = const Value.absent(),
   });
   BillsCompanion.insert({
     this.id = const Value.absent(),
     required int totalQuantities,
-    this.discount = const Value.absent(),
     required double totalPrice,
-    required int issueId,
-    required BillPayment payment,
+    required BillPayment paymentType,
     this.createdAt = const Value.absent(),
   })  : totalQuantities = Value(totalQuantities),
         totalPrice = Value(totalPrice),
-        issueId = Value(issueId),
-        payment = Value(payment);
+        paymentType = Value(paymentType);
   static Insertable<Bill> custom({
     Expression<int>? id,
     Expression<int>? totalQuantities,
-    Expression<double?>? discount,
     Expression<double>? totalPrice,
-    Expression<int>? issueId,
-    Expression<BillPayment>? payment,
+    Expression<BillPayment>? paymentType,
     Expression<DateTime>? createdAt,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (totalQuantities != null) 'total_quantities': totalQuantities,
-      if (discount != null) 'discount': discount,
       if (totalPrice != null) 'total_price': totalPrice,
-      if (issueId != null) 'issue_id': issueId,
-      if (payment != null) 'payment': payment,
+      if (paymentType != null) 'payment_type': paymentType,
       if (createdAt != null) 'created_at': createdAt,
     });
   }
@@ -1678,18 +1635,14 @@ class BillsCompanion extends UpdateCompanion<Bill> {
   BillsCompanion copyWith(
       {Value<int>? id,
       Value<int>? totalQuantities,
-      Value<double?>? discount,
       Value<double>? totalPrice,
-      Value<int>? issueId,
-      Value<BillPayment>? payment,
+      Value<BillPayment>? paymentType,
       Value<DateTime>? createdAt}) {
     return BillsCompanion(
       id: id ?? this.id,
       totalQuantities: totalQuantities ?? this.totalQuantities,
-      discount: discount ?? this.discount,
       totalPrice: totalPrice ?? this.totalPrice,
-      issueId: issueId ?? this.issueId,
-      payment: payment ?? this.payment,
+      paymentType: paymentType ?? this.paymentType,
       createdAt: createdAt ?? this.createdAt,
     );
   }
@@ -1703,18 +1656,13 @@ class BillsCompanion extends UpdateCompanion<Bill> {
     if (totalQuantities.present) {
       map['total_quantities'] = Variable<int>(totalQuantities.value);
     }
-    if (discount.present) {
-      map['discount'] = Variable<double?>(discount.value);
-    }
     if (totalPrice.present) {
       map['total_price'] = Variable<double>(totalPrice.value);
     }
-    if (issueId.present) {
-      map['issue_id'] = Variable<int>(issueId.value);
-    }
-    if (payment.present) {
+    if (paymentType.present) {
       final converter = $BillsTable.$converter0;
-      map['payment'] = Variable<int>(converter.mapToSql(payment.value)!);
+      map['payment_type'] =
+          Variable<int>(converter.mapToSql(paymentType.value)!);
     }
     if (createdAt.present) {
       map['created_at'] = Variable<DateTime>(createdAt.value);
@@ -1727,10 +1675,8 @@ class BillsCompanion extends UpdateCompanion<Bill> {
     return (StringBuffer('BillsCompanion(')
           ..write('id: $id, ')
           ..write('totalQuantities: $totalQuantities, ')
-          ..write('discount: $discount, ')
           ..write('totalPrice: $totalPrice, ')
-          ..write('issueId: $issueId, ')
-          ..write('payment: $payment, ')
+          ..write('paymentType: $paymentType, ')
           ..write('createdAt: $createdAt')
           ..write(')'))
         .toString();
@@ -1752,23 +1698,14 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
   late final GeneratedColumn<int?> totalQuantities = GeneratedColumn<int?>(
       'total_quantities', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
-  final VerificationMeta _discountMeta = const VerificationMeta('discount');
-  late final GeneratedColumn<double?> discount = GeneratedColumn<double?>(
-      'discount', aliasedName, true,
-      typeName: 'REAL', requiredDuringInsert: false);
   final VerificationMeta _totalPriceMeta = const VerificationMeta('totalPrice');
   late final GeneratedColumn<double?> totalPrice = GeneratedColumn<double?>(
       'total_price', aliasedName, false,
       typeName: 'REAL', requiredDuringInsert: true);
-  final VerificationMeta _issueIdMeta = const VerificationMeta('issueId');
-  late final GeneratedColumn<int?> issueId = GeneratedColumn<int?>(
-      'issue_id', aliasedName, false,
-      typeName: 'INTEGER',
-      requiredDuringInsert: true,
-      $customConstraints: 'REFERENCES users(id)');
-  final VerificationMeta _paymentMeta = const VerificationMeta('payment');
-  late final GeneratedColumnWithTypeConverter<BillPayment, int?> payment =
-      GeneratedColumn<int?>('payment', aliasedName, false,
+  final VerificationMeta _paymentTypeMeta =
+      const VerificationMeta('paymentType');
+  late final GeneratedColumnWithTypeConverter<BillPayment, int?> paymentType =
+      GeneratedColumn<int?>('payment_type', aliasedName, false,
               typeName: 'INTEGER', requiredDuringInsert: true)
           .withConverter<BillPayment>($BillsTable.$converter0);
   final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
@@ -1779,7 +1716,7 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
       defaultValue: Constant(DateTime.now()));
   @override
   List<GeneratedColumn> get $columns =>
-      [id, totalQuantities, discount, totalPrice, issueId, payment, createdAt];
+      [id, totalQuantities, totalPrice, paymentType, createdAt];
   @override
   String get aliasedName => _alias ?? 'bills';
   @override
@@ -1800,10 +1737,6 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
     } else if (isInserting) {
       context.missing(_totalQuantitiesMeta);
     }
-    if (data.containsKey('discount')) {
-      context.handle(_discountMeta,
-          discount.isAcceptableOrUnknown(data['discount']!, _discountMeta));
-    }
     if (data.containsKey('total_price')) {
       context.handle(
           _totalPriceMeta,
@@ -1812,13 +1745,7 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
     } else if (isInserting) {
       context.missing(_totalPriceMeta);
     }
-    if (data.containsKey('issue_id')) {
-      context.handle(_issueIdMeta,
-          issueId.isAcceptableOrUnknown(data['issue_id']!, _issueIdMeta));
-    } else if (isInserting) {
-      context.missing(_issueIdMeta);
-    }
-    context.handle(_paymentMeta, const VerificationResult.success());
+    context.handle(_paymentTypeMeta, const VerificationResult.success());
     if (data.containsKey('created_at')) {
       context.handle(_createdAtMeta,
           createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
@@ -1847,14 +1774,18 @@ class BillItem extends DataClass implements Insertable<BillItem> {
   final int id;
   final int billId;
   final String itemName;
-  final int quality;
-  final double price;
+  final String itemImg;
+  final double itemPrice;
+  final int totalQuantity;
+  final double totalPrice;
   BillItem(
       {required this.id,
       required this.billId,
       required this.itemName,
-      required this.quality,
-      required this.price});
+      required this.itemImg,
+      required this.itemPrice,
+      required this.totalQuantity,
+      required this.totalPrice});
   factory BillItem.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -1865,10 +1796,14 @@ class BillItem extends DataClass implements Insertable<BillItem> {
           .mapFromDatabaseResponse(data['${effectivePrefix}bill_id'])!,
       itemName: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}item_name'])!,
-      quality: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}quality'])!,
-      price: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}price'])!,
+      itemImg: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}item_img'])!,
+      itemPrice: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}item_price'])!,
+      totalQuantity: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}total_quantity'])!,
+      totalPrice: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}total_price'])!,
     );
   }
   @override
@@ -1877,8 +1812,10 @@ class BillItem extends DataClass implements Insertable<BillItem> {
     map['id'] = Variable<int>(id);
     map['bill_id'] = Variable<int>(billId);
     map['item_name'] = Variable<String>(itemName);
-    map['quality'] = Variable<int>(quality);
-    map['price'] = Variable<double>(price);
+    map['item_img'] = Variable<String>(itemImg);
+    map['item_price'] = Variable<double>(itemPrice);
+    map['total_quantity'] = Variable<int>(totalQuantity);
+    map['total_price'] = Variable<double>(totalPrice);
     return map;
   }
 
@@ -1887,8 +1824,10 @@ class BillItem extends DataClass implements Insertable<BillItem> {
       id: Value(id),
       billId: Value(billId),
       itemName: Value(itemName),
-      quality: Value(quality),
-      price: Value(price),
+      itemImg: Value(itemImg),
+      itemPrice: Value(itemPrice),
+      totalQuantity: Value(totalQuantity),
+      totalPrice: Value(totalPrice),
     );
   }
 
@@ -1899,8 +1838,10 @@ class BillItem extends DataClass implements Insertable<BillItem> {
       id: serializer.fromJson<int>(json['id']),
       billId: serializer.fromJson<int>(json['billId']),
       itemName: serializer.fromJson<String>(json['itemName']),
-      quality: serializer.fromJson<int>(json['quality']),
-      price: serializer.fromJson<double>(json['price']),
+      itemImg: serializer.fromJson<String>(json['itemImg']),
+      itemPrice: serializer.fromJson<double>(json['itemPrice']),
+      totalQuantity: serializer.fromJson<int>(json['totalQuantity']),
+      totalPrice: serializer.fromJson<double>(json['totalPrice']),
     );
   }
   @override
@@ -1910,8 +1851,10 @@ class BillItem extends DataClass implements Insertable<BillItem> {
       'id': serializer.toJson<int>(id),
       'billId': serializer.toJson<int>(billId),
       'itemName': serializer.toJson<String>(itemName),
-      'quality': serializer.toJson<int>(quality),
-      'price': serializer.toJson<double>(price),
+      'itemImg': serializer.toJson<String>(itemImg),
+      'itemPrice': serializer.toJson<double>(itemPrice),
+      'totalQuantity': serializer.toJson<int>(totalQuantity),
+      'totalPrice': serializer.toJson<double>(totalPrice),
     };
   }
 
@@ -1919,14 +1862,18 @@ class BillItem extends DataClass implements Insertable<BillItem> {
           {int? id,
           int? billId,
           String? itemName,
-          int? quality,
-          double? price}) =>
+          String? itemImg,
+          double? itemPrice,
+          int? totalQuantity,
+          double? totalPrice}) =>
       BillItem(
         id: id ?? this.id,
         billId: billId ?? this.billId,
         itemName: itemName ?? this.itemName,
-        quality: quality ?? this.quality,
-        price: price ?? this.price,
+        itemImg: itemImg ?? this.itemImg,
+        itemPrice: itemPrice ?? this.itemPrice,
+        totalQuantity: totalQuantity ?? this.totalQuantity,
+        totalPrice: totalPrice ?? this.totalPrice,
       );
   @override
   String toString() {
@@ -1934,8 +1881,10 @@ class BillItem extends DataClass implements Insertable<BillItem> {
           ..write('id: $id, ')
           ..write('billId: $billId, ')
           ..write('itemName: $itemName, ')
-          ..write('quality: $quality, ')
-          ..write('price: $price')
+          ..write('itemImg: $itemImg, ')
+          ..write('itemPrice: $itemPrice, ')
+          ..write('totalQuantity: $totalQuantity, ')
+          ..write('totalPrice: $totalPrice')
           ..write(')'))
         .toString();
   }
@@ -1943,8 +1892,14 @@ class BillItem extends DataClass implements Insertable<BillItem> {
   @override
   int get hashCode => $mrjf($mrjc(
       id.hashCode,
-      $mrjc(billId.hashCode,
-          $mrjc(itemName.hashCode, $mrjc(quality.hashCode, price.hashCode)))));
+      $mrjc(
+          billId.hashCode,
+          $mrjc(
+              itemName.hashCode,
+              $mrjc(
+                  itemImg.hashCode,
+                  $mrjc(itemPrice.hashCode,
+                      $mrjc(totalQuantity.hashCode, totalPrice.hashCode)))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -1952,46 +1907,60 @@ class BillItem extends DataClass implements Insertable<BillItem> {
           other.id == this.id &&
           other.billId == this.billId &&
           other.itemName == this.itemName &&
-          other.quality == this.quality &&
-          other.price == this.price);
+          other.itemImg == this.itemImg &&
+          other.itemPrice == this.itemPrice &&
+          other.totalQuantity == this.totalQuantity &&
+          other.totalPrice == this.totalPrice);
 }
 
 class BillItemsCompanion extends UpdateCompanion<BillItem> {
   final Value<int> id;
   final Value<int> billId;
   final Value<String> itemName;
-  final Value<int> quality;
-  final Value<double> price;
+  final Value<String> itemImg;
+  final Value<double> itemPrice;
+  final Value<int> totalQuantity;
+  final Value<double> totalPrice;
   const BillItemsCompanion({
     this.id = const Value.absent(),
     this.billId = const Value.absent(),
     this.itemName = const Value.absent(),
-    this.quality = const Value.absent(),
-    this.price = const Value.absent(),
+    this.itemImg = const Value.absent(),
+    this.itemPrice = const Value.absent(),
+    this.totalQuantity = const Value.absent(),
+    this.totalPrice = const Value.absent(),
   });
   BillItemsCompanion.insert({
     this.id = const Value.absent(),
     required int billId,
     required String itemName,
-    required int quality,
-    required double price,
+    required String itemImg,
+    required double itemPrice,
+    required int totalQuantity,
+    required double totalPrice,
   })  : billId = Value(billId),
         itemName = Value(itemName),
-        quality = Value(quality),
-        price = Value(price);
+        itemImg = Value(itemImg),
+        itemPrice = Value(itemPrice),
+        totalQuantity = Value(totalQuantity),
+        totalPrice = Value(totalPrice);
   static Insertable<BillItem> custom({
     Expression<int>? id,
     Expression<int>? billId,
     Expression<String>? itemName,
-    Expression<int>? quality,
-    Expression<double>? price,
+    Expression<String>? itemImg,
+    Expression<double>? itemPrice,
+    Expression<int>? totalQuantity,
+    Expression<double>? totalPrice,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (billId != null) 'bill_id': billId,
       if (itemName != null) 'item_name': itemName,
-      if (quality != null) 'quality': quality,
-      if (price != null) 'price': price,
+      if (itemImg != null) 'item_img': itemImg,
+      if (itemPrice != null) 'item_price': itemPrice,
+      if (totalQuantity != null) 'total_quantity': totalQuantity,
+      if (totalPrice != null) 'total_price': totalPrice,
     });
   }
 
@@ -1999,14 +1968,18 @@ class BillItemsCompanion extends UpdateCompanion<BillItem> {
       {Value<int>? id,
       Value<int>? billId,
       Value<String>? itemName,
-      Value<int>? quality,
-      Value<double>? price}) {
+      Value<String>? itemImg,
+      Value<double>? itemPrice,
+      Value<int>? totalQuantity,
+      Value<double>? totalPrice}) {
     return BillItemsCompanion(
       id: id ?? this.id,
       billId: billId ?? this.billId,
       itemName: itemName ?? this.itemName,
-      quality: quality ?? this.quality,
-      price: price ?? this.price,
+      itemImg: itemImg ?? this.itemImg,
+      itemPrice: itemPrice ?? this.itemPrice,
+      totalQuantity: totalQuantity ?? this.totalQuantity,
+      totalPrice: totalPrice ?? this.totalPrice,
     );
   }
 
@@ -2022,11 +1995,17 @@ class BillItemsCompanion extends UpdateCompanion<BillItem> {
     if (itemName.present) {
       map['item_name'] = Variable<String>(itemName.value);
     }
-    if (quality.present) {
-      map['quality'] = Variable<int>(quality.value);
+    if (itemImg.present) {
+      map['item_img'] = Variable<String>(itemImg.value);
     }
-    if (price.present) {
-      map['price'] = Variable<double>(price.value);
+    if (itemPrice.present) {
+      map['item_price'] = Variable<double>(itemPrice.value);
+    }
+    if (totalQuantity.present) {
+      map['total_quantity'] = Variable<int>(totalQuantity.value);
+    }
+    if (totalPrice.present) {
+      map['total_price'] = Variable<double>(totalPrice.value);
     }
     return map;
   }
@@ -2037,8 +2016,10 @@ class BillItemsCompanion extends UpdateCompanion<BillItem> {
           ..write('id: $id, ')
           ..write('billId: $billId, ')
           ..write('itemName: $itemName, ')
-          ..write('quality: $quality, ')
-          ..write('price: $price')
+          ..write('itemImg: $itemImg, ')
+          ..write('itemPrice: $itemPrice, ')
+          ..write('totalQuantity: $totalQuantity, ')
+          ..write('totalPrice: $totalPrice')
           ..write(')'))
         .toString();
   }
@@ -2065,16 +2046,26 @@ class $BillItemsTable extends BillItems
   late final GeneratedColumn<String?> itemName = GeneratedColumn<String?>(
       'item_name', aliasedName, false,
       typeName: 'TEXT', requiredDuringInsert: true);
-  final VerificationMeta _qualityMeta = const VerificationMeta('quality');
-  late final GeneratedColumn<int?> quality = GeneratedColumn<int?>(
-      'quality', aliasedName, false,
+  final VerificationMeta _itemImgMeta = const VerificationMeta('itemImg');
+  late final GeneratedColumn<String?> itemImg = GeneratedColumn<String?>(
+      'item_img', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _itemPriceMeta = const VerificationMeta('itemPrice');
+  late final GeneratedColumn<double?> itemPrice = GeneratedColumn<double?>(
+      'item_price', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
+  final VerificationMeta _totalQuantityMeta =
+      const VerificationMeta('totalQuantity');
+  late final GeneratedColumn<int?> totalQuantity = GeneratedColumn<int?>(
+      'total_quantity', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
-  final VerificationMeta _priceMeta = const VerificationMeta('price');
-  late final GeneratedColumn<double?> price = GeneratedColumn<double?>(
-      'price', aliasedName, false,
+  final VerificationMeta _totalPriceMeta = const VerificationMeta('totalPrice');
+  late final GeneratedColumn<double?> totalPrice = GeneratedColumn<double?>(
+      'total_price', aliasedName, false,
       typeName: 'REAL', requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, billId, itemName, quality, price];
+  List<GeneratedColumn> get $columns =>
+      [id, billId, itemName, itemImg, itemPrice, totalQuantity, totalPrice];
   @override
   String get aliasedName => _alias ?? 'bill_items';
   @override
@@ -2099,17 +2090,33 @@ class $BillItemsTable extends BillItems
     } else if (isInserting) {
       context.missing(_itemNameMeta);
     }
-    if (data.containsKey('quality')) {
-      context.handle(_qualityMeta,
-          quality.isAcceptableOrUnknown(data['quality']!, _qualityMeta));
+    if (data.containsKey('item_img')) {
+      context.handle(_itemImgMeta,
+          itemImg.isAcceptableOrUnknown(data['item_img']!, _itemImgMeta));
     } else if (isInserting) {
-      context.missing(_qualityMeta);
+      context.missing(_itemImgMeta);
     }
-    if (data.containsKey('price')) {
-      context.handle(
-          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
+    if (data.containsKey('item_price')) {
+      context.handle(_itemPriceMeta,
+          itemPrice.isAcceptableOrUnknown(data['item_price']!, _itemPriceMeta));
     } else if (isInserting) {
-      context.missing(_priceMeta);
+      context.missing(_itemPriceMeta);
+    }
+    if (data.containsKey('total_quantity')) {
+      context.handle(
+          _totalQuantityMeta,
+          totalQuantity.isAcceptableOrUnknown(
+              data['total_quantity']!, _totalQuantityMeta));
+    } else if (isInserting) {
+      context.missing(_totalQuantityMeta);
+    }
+    if (data.containsKey('total_price')) {
+      context.handle(
+          _totalPriceMeta,
+          totalPrice.isAcceptableOrUnknown(
+              data['total_price']!, _totalPriceMeta));
+    } else if (isInserting) {
+      context.missing(_totalPriceMeta);
     }
     return context;
   }
@@ -2133,12 +2140,16 @@ class BillItemPropertie extends DataClass
   final int id;
   final int billItemId;
   final String name;
-  final double amount;
+  final double propertyPrice;
+  final int totalQuantity;
+  final double totalPrice;
   BillItemPropertie(
       {required this.id,
       required this.billItemId,
       required this.name,
-      required this.amount});
+      required this.propertyPrice,
+      required this.totalQuantity,
+      required this.totalPrice});
   factory BillItemPropertie.fromData(
       Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
@@ -2150,8 +2161,12 @@ class BillItemPropertie extends DataClass
           .mapFromDatabaseResponse(data['${effectivePrefix}bill_item_id'])!,
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
-      amount: const RealType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
+      propertyPrice: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}property_price'])!,
+      totalQuantity: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}total_quantity'])!,
+      totalPrice: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}total_price'])!,
     );
   }
   @override
@@ -2160,7 +2175,9 @@ class BillItemPropertie extends DataClass
     map['id'] = Variable<int>(id);
     map['bill_item_id'] = Variable<int>(billItemId);
     map['name'] = Variable<String>(name);
-    map['amount'] = Variable<double>(amount);
+    map['property_price'] = Variable<double>(propertyPrice);
+    map['total_quantity'] = Variable<int>(totalQuantity);
+    map['total_price'] = Variable<double>(totalPrice);
     return map;
   }
 
@@ -2169,7 +2186,9 @@ class BillItemPropertie extends DataClass
       id: Value(id),
       billItemId: Value(billItemId),
       name: Value(name),
-      amount: Value(amount),
+      propertyPrice: Value(propertyPrice),
+      totalQuantity: Value(totalQuantity),
+      totalPrice: Value(totalPrice),
     );
   }
 
@@ -2180,7 +2199,9 @@ class BillItemPropertie extends DataClass
       id: serializer.fromJson<int>(json['id']),
       billItemId: serializer.fromJson<int>(json['billItemId']),
       name: serializer.fromJson<String>(json['name']),
-      amount: serializer.fromJson<double>(json['amount']),
+      propertyPrice: serializer.fromJson<double>(json['propertyPrice']),
+      totalQuantity: serializer.fromJson<int>(json['totalQuantity']),
+      totalPrice: serializer.fromJson<double>(json['totalPrice']),
     );
   }
   @override
@@ -2190,17 +2211,26 @@ class BillItemPropertie extends DataClass
       'id': serializer.toJson<int>(id),
       'billItemId': serializer.toJson<int>(billItemId),
       'name': serializer.toJson<String>(name),
-      'amount': serializer.toJson<double>(amount),
+      'propertyPrice': serializer.toJson<double>(propertyPrice),
+      'totalQuantity': serializer.toJson<int>(totalQuantity),
+      'totalPrice': serializer.toJson<double>(totalPrice),
     };
   }
 
   BillItemPropertie copyWith(
-          {int? id, int? billItemId, String? name, double? amount}) =>
+          {int? id,
+          int? billItemId,
+          String? name,
+          double? propertyPrice,
+          int? totalQuantity,
+          double? totalPrice}) =>
       BillItemPropertie(
         id: id ?? this.id,
         billItemId: billItemId ?? this.billItemId,
         name: name ?? this.name,
-        amount: amount ?? this.amount,
+        propertyPrice: propertyPrice ?? this.propertyPrice,
+        totalQuantity: totalQuantity ?? this.totalQuantity,
+        totalPrice: totalPrice ?? this.totalPrice,
       );
   @override
   String toString() {
@@ -2208,14 +2238,22 @@ class BillItemPropertie extends DataClass
           ..write('id: $id, ')
           ..write('billItemId: $billItemId, ')
           ..write('name: $name, ')
-          ..write('amount: $amount')
+          ..write('propertyPrice: $propertyPrice, ')
+          ..write('totalQuantity: $totalQuantity, ')
+          ..write('totalPrice: $totalPrice')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(billItemId.hashCode, $mrjc(name.hashCode, amount.hashCode))));
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(
+          billItemId.hashCode,
+          $mrjc(
+              name.hashCode,
+              $mrjc(propertyPrice.hashCode,
+                  $mrjc(totalQuantity.hashCode, totalPrice.hashCode))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2223,39 +2261,53 @@ class BillItemPropertie extends DataClass
           other.id == this.id &&
           other.billItemId == this.billItemId &&
           other.name == this.name &&
-          other.amount == this.amount);
+          other.propertyPrice == this.propertyPrice &&
+          other.totalQuantity == this.totalQuantity &&
+          other.totalPrice == this.totalPrice);
 }
 
 class BillItemPropertiesCompanion extends UpdateCompanion<BillItemPropertie> {
   final Value<int> id;
   final Value<int> billItemId;
   final Value<String> name;
-  final Value<double> amount;
+  final Value<double> propertyPrice;
+  final Value<int> totalQuantity;
+  final Value<double> totalPrice;
   const BillItemPropertiesCompanion({
     this.id = const Value.absent(),
     this.billItemId = const Value.absent(),
     this.name = const Value.absent(),
-    this.amount = const Value.absent(),
+    this.propertyPrice = const Value.absent(),
+    this.totalQuantity = const Value.absent(),
+    this.totalPrice = const Value.absent(),
   });
   BillItemPropertiesCompanion.insert({
     this.id = const Value.absent(),
     required int billItemId,
     required String name,
-    required double amount,
+    required double propertyPrice,
+    required int totalQuantity,
+    required double totalPrice,
   })  : billItemId = Value(billItemId),
         name = Value(name),
-        amount = Value(amount);
+        propertyPrice = Value(propertyPrice),
+        totalQuantity = Value(totalQuantity),
+        totalPrice = Value(totalPrice);
   static Insertable<BillItemPropertie> custom({
     Expression<int>? id,
     Expression<int>? billItemId,
     Expression<String>? name,
-    Expression<double>? amount,
+    Expression<double>? propertyPrice,
+    Expression<int>? totalQuantity,
+    Expression<double>? totalPrice,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (billItemId != null) 'bill_item_id': billItemId,
       if (name != null) 'name': name,
-      if (amount != null) 'amount': amount,
+      if (propertyPrice != null) 'property_price': propertyPrice,
+      if (totalQuantity != null) 'total_quantity': totalQuantity,
+      if (totalPrice != null) 'total_price': totalPrice,
     });
   }
 
@@ -2263,12 +2315,16 @@ class BillItemPropertiesCompanion extends UpdateCompanion<BillItemPropertie> {
       {Value<int>? id,
       Value<int>? billItemId,
       Value<String>? name,
-      Value<double>? amount}) {
+      Value<double>? propertyPrice,
+      Value<int>? totalQuantity,
+      Value<double>? totalPrice}) {
     return BillItemPropertiesCompanion(
       id: id ?? this.id,
       billItemId: billItemId ?? this.billItemId,
       name: name ?? this.name,
-      amount: amount ?? this.amount,
+      propertyPrice: propertyPrice ?? this.propertyPrice,
+      totalQuantity: totalQuantity ?? this.totalQuantity,
+      totalPrice: totalPrice ?? this.totalPrice,
     );
   }
 
@@ -2284,8 +2340,14 @@ class BillItemPropertiesCompanion extends UpdateCompanion<BillItemPropertie> {
     if (name.present) {
       map['name'] = Variable<String>(name.value);
     }
-    if (amount.present) {
-      map['amount'] = Variable<double>(amount.value);
+    if (propertyPrice.present) {
+      map['property_price'] = Variable<double>(propertyPrice.value);
+    }
+    if (totalQuantity.present) {
+      map['total_quantity'] = Variable<int>(totalQuantity.value);
+    }
+    if (totalPrice.present) {
+      map['total_price'] = Variable<double>(totalPrice.value);
     }
     return map;
   }
@@ -2296,7 +2358,9 @@ class BillItemPropertiesCompanion extends UpdateCompanion<BillItemPropertie> {
           ..write('id: $id, ')
           ..write('billItemId: $billItemId, ')
           ..write('name: $name, ')
-          ..write('amount: $amount')
+          ..write('propertyPrice: $propertyPrice, ')
+          ..write('totalQuantity: $totalQuantity, ')
+          ..write('totalPrice: $totalPrice')
           ..write(')'))
         .toString();
   }
@@ -2323,12 +2387,23 @@ class $BillItemPropertiesTable extends BillItemProperties
   late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
       'name', aliasedName, false,
       typeName: 'TEXT', requiredDuringInsert: true);
-  final VerificationMeta _amountMeta = const VerificationMeta('amount');
-  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
-      'amount', aliasedName, false,
+  final VerificationMeta _propertyPriceMeta =
+      const VerificationMeta('propertyPrice');
+  late final GeneratedColumn<double?> propertyPrice = GeneratedColumn<double?>(
+      'property_price', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
+  final VerificationMeta _totalQuantityMeta =
+      const VerificationMeta('totalQuantity');
+  late final GeneratedColumn<int?> totalQuantity = GeneratedColumn<int?>(
+      'total_quantity', aliasedName, false,
+      typeName: 'INTEGER', requiredDuringInsert: true);
+  final VerificationMeta _totalPriceMeta = const VerificationMeta('totalPrice');
+  late final GeneratedColumn<double?> totalPrice = GeneratedColumn<double?>(
+      'total_price', aliasedName, false,
       typeName: 'REAL', requiredDuringInsert: true);
   @override
-  List<GeneratedColumn> get $columns => [id, billItemId, name, amount];
+  List<GeneratedColumn> get $columns =>
+      [id, billItemId, name, propertyPrice, totalQuantity, totalPrice];
   @override
   String get aliasedName => _alias ?? 'bill_item_properties';
   @override
@@ -2355,11 +2430,29 @@ class $BillItemPropertiesTable extends BillItemProperties
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('amount')) {
-      context.handle(_amountMeta,
-          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    if (data.containsKey('property_price')) {
+      context.handle(
+          _propertyPriceMeta,
+          propertyPrice.isAcceptableOrUnknown(
+              data['property_price']!, _propertyPriceMeta));
     } else if (isInserting) {
-      context.missing(_amountMeta);
+      context.missing(_propertyPriceMeta);
+    }
+    if (data.containsKey('total_quantity')) {
+      context.handle(
+          _totalQuantityMeta,
+          totalQuantity.isAcceptableOrUnknown(
+              data['total_quantity']!, _totalQuantityMeta));
+    } else if (isInserting) {
+      context.missing(_totalQuantityMeta);
+    }
+    if (data.containsKey('total_price')) {
+      context.handle(
+          _totalPriceMeta,
+          totalPrice.isAcceptableOrUnknown(
+              data['total_price']!, _totalPriceMeta));
+    } else if (isInserting) {
+      context.missing(_totalPriceMeta);
     }
     return context;
   }

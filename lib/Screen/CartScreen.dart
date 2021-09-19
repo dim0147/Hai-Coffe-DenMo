@@ -102,7 +102,7 @@ class CartItem extends GetView<CartController> {
               Expanded(
                   flex: 1,
                   child: Text(
-                    cartItem.showPriceWithQuality().toString() + 'đ',
+                    cartItem.showPriceMinusPropertiesItem().toString() + 'đ',
                     style: TextStyle(color: Colors.white),
                   )),
             ],
