@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/DAO/TableDAO.dart';
+import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:hai_noob/Model/TableLocal.dart';
 
 class AddTableController extends GetxController {
   late final TableOrderDAO tableOrderDAO;
+  final tableLocalDAO = Get.find<TableLocalDAO>();
   final nameC = TextEditingController();
   final orderC = TextEditingController();
 
@@ -37,7 +40,15 @@ class AddTableController extends GetxController {
       if (tableOrderKnowledge != null)
         return Get.snackbar('Lỗi', 'Bàn \' $name\' đã tồn tại');
 
-      await tableOrderDAO.createTable(name, order);
+      int tableID = await tableOrderDAO.createTable(name, order);
+
+      // Add to table locaL
+      await tableLocalDAO.addNew(TableLocal(
+        id: tableID,
+        name: name,
+        order: order,
+      ));
+
       Get.offAllNamed('/menu');
       Get.snackbar('Thành công', 'Tạo bàn \' $name\' thành công!');
     } catch (err) {

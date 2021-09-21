@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/DAO/TableDAO.dart';
+import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/Model/ConfigGlobal.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hive/hive.dart';
@@ -27,28 +29,11 @@ class DbService extends GetxService {
   }
 }
 
-class HivService extends GetxService {
-  Future<Box> init() async {
-    // Connect hiv and register adapter
-    await Hive.initFlutter();
-    Hive.registerAdapter(CartAdapter());
-    Hive.registerAdapter(ItemAdapter());
-    Hive.registerAdapter(CartItemAdapter());
-    Hive.registerAdapter(CartItemPropertyAdapter());
-    Hive.registerAdapter(TableLocalAdapter());
-
+class TableLocalService extends GetxService {
+  Future<TableLocalDAO> init() async {
     // Wait for open box
-    Box box = await Hive.openBox(AppConfig.BOX_NAME);
-
-    // Get cafe's tables
-    var tables = box.get(AppConfig.BOX_TABLE_KEY_NAME);
-
-    // If null then put empty list into box
-    if (tables == null) {
-      await box.put(AppConfig.BOX_TABLE_KEY_NAME, List.empty());
-    }
-
-    return box;
+    final box = await Hive.openBox<TableLocal>(AppConfig.BOX_NAME);
+    return TableLocalDAO(box: box);
   }
 }
 
@@ -60,5 +45,57 @@ class ConfigService extends GetxService {
     ConfigGlobal config = ConfigGlobal(imgPath: imgPath);
 
     return config;
+  }
+}
+
+class StartUpService {
+  Future<void> registerAdapterHivService() async {
+    // Connect hiv and register adapter
+    await Hive.initFlutter();
+    Hive.registerAdapter(CartAdapter());
+    Hive.registerAdapter(ItemAdapter());
+    Hive.registerAdapter(CartItemAdapter());
+    Hive.registerAdapter(CartItemPropertyAdapter());
+    Hive.registerAdapter(TableStatusAdapter());
+    Hive.registerAdapter(TableLocalAdapter());
+  }
+
+  Future<void> onStartup() async {
+    await checkingTableOrder();
+  }
+
+  Future<void> checkingTableOrder() async {
+    // Get db
+    final db = Get.find<AppDatabase>();
+
+    // Get box
+    final tableLocalDAO = Get.find<TableLocalDAO>();
+
+    // Get all table locals
+    final tableLocals = tableLocalDAO.getAllWithMap();
+
+    // Get all tables DB
+    final tableOrders = await TableOrderDAO(db).getAllTableOrders();
+
+    // TODO: Test this shit
+    // Remove table where id don't exist in database
+    Map<dynamic, TableLocal> tableLocalsExistIDs = Map.from(tableLocals)
+      ..removeWhere((key, value) => tableOrders.every((e) => e.id != key));
+    await tableLocalDAO.updateAllByMap(tableLocalsExistIDs);
+
+    // Loop all table orders to checking
+    tableOrders.forEach((e) {
+      // Check box have the table order's ID already
+      if (tableLocalDAO.getTable(e.id) != null) return;
+
+      // Box don't have this table id, we added new one
+      tableLocalDAO.addNew(
+        TableLocal(
+          id: e.id,
+          name: e.name,
+          order: e.order,
+        ),
+      );
+    });
   }
 }

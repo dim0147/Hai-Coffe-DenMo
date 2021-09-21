@@ -25,16 +25,21 @@ class TableLocal {
   final int order;
 
   @HiveField(3)
-  final TableStatus status;
+  TableStatus status;
 
   @HiveField(4)
   Cart? cart;
+
+  @HiveField(5)
+  int? lastOrderId;
+
+  @HiveField(6)
+  DateTime? lastUpdate;
 
   TableLocal({
     required this.id,
     required this.name,
     required this.order,
-    required this.status,
-    Cart? cart,
+    this.status = TableStatus.Empty,
   });
 }

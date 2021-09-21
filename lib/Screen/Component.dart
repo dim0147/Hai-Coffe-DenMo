@@ -200,6 +200,30 @@ Drawer NavigateMenu() {
                     children: [
                       WidgetSpan(
                         child: Icon(
+                          Icons.airplay,
+                          color: Get.theme.primaryColor,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Bảng Điều Khiển',
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Get.offAllNamed('/table/');
+                },
+              ),
+              ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: Get.theme.primaryColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
                           Icons.add,
                           color: Get.theme.primaryColor,
                         ),

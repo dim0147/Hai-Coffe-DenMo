@@ -60,14 +60,16 @@ class TableLocalAdapter extends TypeAdapter<TableLocal> {
       name: fields[1] as String,
       order: fields[2] as int,
       status: fields[3] as TableStatus,
-      cart: fields[4] as Cart?,
-    );
+    )
+      ..cart = fields[4] as Cart?
+      ..lastOrderId = fields[5] as int?
+      ..lastUpdate = fields[6] as DateTime?;
   }
 
   @override
   void write(BinaryWriter writer, TableLocal obj) {
     writer
-      ..writeByte(5)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -77,7 +79,11 @@ class TableLocalAdapter extends TypeAdapter<TableLocal> {
       ..writeByte(3)
       ..write(obj.status)
       ..writeByte(4)
-      ..write(obj.cart);
+      ..write(obj.cart)
+      ..writeByte(5)
+      ..write(obj.lastOrderId)
+      ..writeByte(6)
+      ..write(obj.lastUpdate);
   }
 
   @override

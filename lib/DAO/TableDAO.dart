@@ -9,6 +9,11 @@ class TableOrderDAO extends DatabaseAccessor<AppDatabase>
     with _$TableOrderDAOMixin {
   TableOrderDAO(AppDatabase db) : super(db);
 
+  Future<List<TableOrder>> getAllTableOrders() {
+    final query = select(tableOrders).get();
+    return query;
+  }
+
   Future<int> createTable(String name, int order) {
     final table = TableOrdersCompanion.insert(name: name, order: order);
     return into(tableOrders).insert(table);

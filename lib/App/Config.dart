@@ -7,12 +7,14 @@ import 'package:hai_noob/Controller/Item/CreateItemController.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Controller/Table/TablePanelController.dart';
 import 'package:hai_noob/Screen/Menu/AddSpecialItemScreen.dart';
 import 'package:hai_noob/Screen/Table/AddTableScreen.dart';
 import 'package:hai_noob/Screen/Menu/CartScreen.dart';
 import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderCouponScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
+import 'package:hai_noob/Screen/Table/TablePanelScreen.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../Screen/StartupScreen.dart';
@@ -30,7 +32,6 @@ class AppConfig {
 
   // Box name and key names
   static final String BOX_NAME = 'cafe';
-  static final String BOX_TABLE_KEY_NAME = 'table';
 
   // Color For App
   static final Color BACKGROUND_COLOR =
@@ -54,7 +55,7 @@ class AppConfig {
 
   // Route
   // static final String initRoute = '/menu';
-  static final String initRoute = '/table/add';
+  static final String initRoute = '/table/';
 
   // Pages
   static final List<GetPage> GetPages = [
@@ -144,6 +145,15 @@ class AppConfig {
       page: () => AddTableScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => AddTableController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
+      transitionDuration: new Duration(seconds: 1),
+      name: '/table/',
+      page: () => TablePanelScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => TablePanelController());
       }),
     ),
   ];
