@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Model/ConfigGlobal.dart';
+import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -14,7 +15,7 @@ class DbService extends GetxService {
     // Generate DB
     AppDatabase db = AppDatabase();
 
-    // Checkng have Admin
+    // Checking have Admin
     UserDAO userDAO = new UserDAO(db);
     User? adminIsKnowledge = await userDAO.findUserByUsername('admin');
 
@@ -34,6 +35,7 @@ class HivService extends GetxService {
     Hive.registerAdapter(ItemAdapter());
     Hive.registerAdapter(CartItemAdapter());
     Hive.registerAdapter(CartItemPropertyAdapter());
+    Hive.registerAdapter(TableLocalAdapter());
 
     // Wait for open box
     Box box = await Hive.openBox(AppConfig.BOX_NAME);

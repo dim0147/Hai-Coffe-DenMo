@@ -58,7 +58,7 @@ class StartupController extends GetxController with StateMixin<void> {
     var categories = await db.select(db.categories).get();
     var itemCategories = await db.select(db.itemCategories).get();
     var itemProperties = await db.select(db.itemProperties).get();
-    var tables = await db.select(db.tables).get();
+    var tables = await db.select(db.tableOrders).get();
     var bills = await db.select(db.bills).get();
     var billItems = await db.select(db.billItems).get();
     var billItemProperties = await db.select(db.billItemProperties).get();

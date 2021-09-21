@@ -11,7 +11,7 @@ import '../DAO/UserDAO.dart';
 import '../Model/User.dart';
 import '../Model/Category.dart';
 import '../Model/Item.dart';
-import '../Model/Table.dart';
+import '../Model/TableOrders.dart';
 import '../Model/Bill.dart';
 
 part 'Database.g.dart';
@@ -36,7 +36,7 @@ LazyDatabase _openConnection() {
   Items,
   ItemCategories,
   ItemProperties,
-  Tables,
+  TableOrders,
   Bills,
   BillItems,
   BillItemProperties,
@@ -66,7 +66,8 @@ class AppDatabase extends _$AppDatabase {
     into(itemProperties).insert(ItemPropertiesCompanion.insert(
         itemId: 1, name: 'Thêm đường', amount: 3000.50));
 
-    into(tables).insert(TablesCompanion.insert(name: 'Bàn 1', order: 1));
+    into(tableOrders)
+        .insert(TableOrdersCompanion.insert(name: 'Bàn 1', order: 1));
 
     into(bills).insert(BillsCompanion.insert(
         subTotal: 10.0,

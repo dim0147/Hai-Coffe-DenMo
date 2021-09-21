@@ -49,7 +49,6 @@ Drawer NavigateMenu() {
               ),
             ),
             onTap: () {
-              Get.back();
               Get.offAllNamed('/menu');
             },
           ),
@@ -102,7 +101,6 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.back();
                   Get.offAllNamed('/category/add');
                 },
               ),
@@ -158,8 +156,62 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.back();
                   Get.offAllNamed('/item/add');
+                },
+              ),
+            ],
+          ),
+
+          Divider(
+            color: Get.theme.primaryColor,
+          ),
+
+          // ITEM
+          Column(
+            children: [
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: Get.theme.primaryColor,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.chair_alt,
+                          color: Get.theme.primaryColor,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Bàn',
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: Get.theme.primaryColor,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.add,
+                          color: Get.theme.primaryColor,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Tạo bàn',
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Get.offAllNamed('/table/add');
                 },
               ),
             ],

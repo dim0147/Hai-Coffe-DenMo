@@ -5,7 +5,7 @@ import 'package:hai_noob/Model/Cart.dart';
 import 'package:moor/moor.dart';
 part 'BillDAO.g.dart';
 
-@UseDao(tables: [Bills])
+@UseDao(tables: [Bills, BillItems, BillItemProperties, BillCoupons])
 class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
   BillDAO(AppDatabase db) : super(db);
 
@@ -23,7 +23,7 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
         totalPrice: totalPriceOfBill,
         paymentType: paymentType,
       );
-      int billId = await into(db.bills).insert(bill);
+      int billId = await into(bills).insert(bill);
 
       // List Future create item
       Iterable<Future<int>> createBillItemTasks = cart.items.map((e) async {
@@ -36,7 +36,7 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
           totalQuantity: e.totalQuantity,
           totalPrice: e.showPriceMinusPropertiesItem(),
         );
-        int billItemId = await into(db.billItems).insert(item);
+        int billItemId = await into(billItems).insert(item);
 
         // Check if have properties
         if (e.showListPropertiesHaveQuantity().length == 0) return billItemId;
@@ -52,8 +52,7 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
                   totalPrice: p.showTotalPrice(),
                 ))
             .toList();
-        await batch(
-            (batch) => batch.insertAll(db.billItemProperties, properties));
+        await batch((batch) => batch.insertAll(billItemProperties, properties));
         return billItemId;
       });
       // Wait for create all bill items done
@@ -70,7 +69,7 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
                 couponType: e.type,
               ))
           .toList();
-      await batch((batch) => batch.insertAll(db.billCoupons, listCoupon));
+      await batch((batch) => batch.insertAll(billCoupons, listCoupon));
     });
   }
 }

@@ -1227,28 +1227,21 @@ class $ItemPropertiesTable extends ItemProperties
   }
 }
 
-class Table extends DataClass implements Insertable<Table> {
+class TableOrder extends DataClass implements Insertable<TableOrder> {
   final int id;
   final String name;
   final int order;
-  final TableStatus status;
-  Table(
-      {required this.id,
-      required this.name,
-      required this.order,
-      required this.status});
-  factory Table.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+  TableOrder({required this.id, required this.name, required this.order});
+  factory TableOrder.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
-    return Table(
+    return TableOrder(
       id: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
       name: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}name'])!,
       order: const IntType()
           .mapFromDatabaseResponse(data['${effectivePrefix}order'])!,
-      status: $TablesTable.$converter0.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}status']))!,
     );
   }
   @override
@@ -1257,30 +1250,24 @@ class Table extends DataClass implements Insertable<Table> {
     map['id'] = Variable<int>(id);
     map['name'] = Variable<String>(name);
     map['order'] = Variable<int>(order);
-    {
-      final converter = $TablesTable.$converter0;
-      map['status'] = Variable<int>(converter.mapToSql(status)!);
-    }
     return map;
   }
 
-  TablesCompanion toCompanion(bool nullToAbsent) {
-    return TablesCompanion(
+  TableOrdersCompanion toCompanion(bool nullToAbsent) {
+    return TableOrdersCompanion(
       id: Value(id),
       name: Value(name),
       order: Value(order),
-      status: Value(status),
     );
   }
 
-  factory Table.fromJson(Map<String, dynamic> json,
+  factory TableOrder.fromJson(Map<String, dynamic> json,
       {ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
-    return Table(
+    return TableOrder(
       id: serializer.fromJson<int>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       order: serializer.fromJson<int>(json['order']),
-      status: serializer.fromJson<TableStatus>(json['status']),
     );
   }
   @override
@@ -1290,83 +1277,69 @@ class Table extends DataClass implements Insertable<Table> {
       'id': serializer.toJson<int>(id),
       'name': serializer.toJson<String>(name),
       'order': serializer.toJson<int>(order),
-      'status': serializer.toJson<TableStatus>(status),
     };
   }
 
-  Table copyWith({int? id, String? name, int? order, TableStatus? status}) =>
-      Table(
+  TableOrder copyWith({int? id, String? name, int? order}) => TableOrder(
         id: id ?? this.id,
         name: name ?? this.name,
         order: order ?? this.order,
-        status: status ?? this.status,
       );
   @override
   String toString() {
-    return (StringBuffer('Table(')
+    return (StringBuffer('TableOrder(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('order: $order, ')
-          ..write('status: $status')
+          ..write('order: $order')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => $mrjf($mrjc(id.hashCode,
-      $mrjc(name.hashCode, $mrjc(order.hashCode, status.hashCode))));
+  int get hashCode =>
+      $mrjf($mrjc(id.hashCode, $mrjc(name.hashCode, order.hashCode)));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Table &&
+      (other is TableOrder &&
           other.id == this.id &&
           other.name == this.name &&
-          other.order == this.order &&
-          other.status == this.status);
+          other.order == this.order);
 }
 
-class TablesCompanion extends UpdateCompanion<Table> {
+class TableOrdersCompanion extends UpdateCompanion<TableOrder> {
   final Value<int> id;
   final Value<String> name;
   final Value<int> order;
-  final Value<TableStatus> status;
-  const TablesCompanion({
+  const TableOrdersCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.order = const Value.absent(),
-    this.status = const Value.absent(),
   });
-  TablesCompanion.insert({
+  TableOrdersCompanion.insert({
     this.id = const Value.absent(),
     required String name,
     required int order,
-    this.status = const Value.absent(),
   })  : name = Value(name),
         order = Value(order);
-  static Insertable<Table> custom({
+  static Insertable<TableOrder> custom({
     Expression<int>? id,
     Expression<String>? name,
     Expression<int>? order,
-    Expression<TableStatus>? status,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (order != null) 'order': order,
-      if (status != null) 'status': status,
     });
   }
 
-  TablesCompanion copyWith(
-      {Value<int>? id,
-      Value<String>? name,
-      Value<int>? order,
-      Value<TableStatus>? status}) {
-    return TablesCompanion(
+  TableOrdersCompanion copyWith(
+      {Value<int>? id, Value<String>? name, Value<int>? order}) {
+    return TableOrdersCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
       order: order ?? this.order,
-      status: status ?? this.status,
     );
   }
 
@@ -1382,29 +1355,25 @@ class TablesCompanion extends UpdateCompanion<Table> {
     if (order.present) {
       map['order'] = Variable<int>(order.value);
     }
-    if (status.present) {
-      final converter = $TablesTable.$converter0;
-      map['status'] = Variable<int>(converter.mapToSql(status.value)!);
-    }
     return map;
   }
 
   @override
   String toString() {
-    return (StringBuffer('TablesCompanion(')
+    return (StringBuffer('TableOrdersCompanion(')
           ..write('id: $id, ')
           ..write('name: $name, ')
-          ..write('order: $order, ')
-          ..write('status: $status')
+          ..write('order: $order')
           ..write(')'))
         .toString();
   }
 }
 
-class $TablesTable extends Tables with TableInfo<$TablesTable, Table> {
+class $TableOrdersTable extends TableOrders
+    with TableInfo<$TableOrdersTable, TableOrder> {
   final GeneratedDatabase _db;
   final String? _alias;
-  $TablesTable(this._db, [this._alias]);
+  $TableOrdersTable(this._db, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
       'id', aliasedName, false,
@@ -1422,21 +1391,14 @@ class $TablesTable extends Tables with TableInfo<$TablesTable, Table> {
   late final GeneratedColumn<int?> order = GeneratedColumn<int?>(
       'order', aliasedName, false,
       typeName: 'INTEGER', requiredDuringInsert: true);
-  final VerificationMeta _statusMeta = const VerificationMeta('status');
-  late final GeneratedColumnWithTypeConverter<TableStatus, int?> status =
-      GeneratedColumn<int?>('status', aliasedName, false,
-              typeName: 'INTEGER',
-              requiredDuringInsert: false,
-              defaultValue: Constant(TableStatus.Avaiable.index))
-          .withConverter<TableStatus>($TablesTable.$converter0);
   @override
-  List<GeneratedColumn> get $columns => [id, name, order, status];
+  List<GeneratedColumn> get $columns => [id, name, order];
   @override
-  String get aliasedName => _alias ?? 'tables';
+  String get aliasedName => _alias ?? 'table_orders';
   @override
-  String get actualTableName => 'tables';
+  String get actualTableName => 'table_orders';
   @override
-  VerificationContext validateIntegrity(Insertable<Table> instance,
+  VerificationContext validateIntegrity(Insertable<TableOrder> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
@@ -1455,25 +1417,21 @@ class $TablesTable extends Tables with TableInfo<$TablesTable, Table> {
     } else if (isInserting) {
       context.missing(_orderMeta);
     }
-    context.handle(_statusMeta, const VerificationResult.success());
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  Table map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return Table.fromData(data, _db,
+  TableOrder map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return TableOrder.fromData(data, _db,
         prefix: tablePrefix != null ? '$tablePrefix.' : null);
   }
 
   @override
-  $TablesTable createAlias(String alias) {
-    return $TablesTable(_db, alias);
+  $TableOrdersTable createAlias(String alias) {
+    return $TableOrdersTable(_db, alias);
   }
-
-  static TypeConverter<TableStatus, int> $converter0 =
-      const EnumIndexConverter<TableStatus>(TableStatus.values);
 }
 
 class Bill extends DataClass implements Insertable<Bill> {
@@ -2841,7 +2799,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $ItemsTable items = $ItemsTable(this);
   late final $ItemCategoriesTable itemCategories = $ItemCategoriesTable(this);
   late final $ItemPropertiesTable itemProperties = $ItemPropertiesTable(this);
-  late final $TablesTable tables = $TablesTable(this);
+  late final $TableOrdersTable tableOrders = $TableOrdersTable(this);
   late final $BillsTable bills = $BillsTable(this);
   late final $BillItemsTable billItems = $BillItemsTable(this);
   late final $BillItemPropertiesTable billItemProperties =
@@ -2856,7 +2814,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         items,
         itemCategories,
         itemProperties,
-        tables,
+        tableOrders,
         bills,
         billItems,
         billItemProperties,

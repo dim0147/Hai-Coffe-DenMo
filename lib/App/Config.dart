@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/Controller/AddSpecialItemController.dart';
+import 'package:hai_noob/Controller/AddTableController.dart';
 import 'package:hai_noob/Controller/CartController.dart';
 import 'package:hai_noob/Controller/CreateItemController.dart';
 import 'package:hai_noob/Controller/MenuController.dart';
 import 'package:hai_noob/Controller/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Screen/AddSpecialItemScreen.dart';
+import 'package:hai_noob/Screen/AddTableScreen.dart';
 import 'package:hai_noob/Screen/CartScreen.dart';
 import 'package:hai_noob/Screen/MenuScreen.dart';
 import 'package:hai_noob/Screen/PlaceOrderCouponScreen.dart';
@@ -51,7 +53,10 @@ class AppConfig {
   static final String DEFAULT_IMG_ITEM = 'assets/img/background.png';
 
   // Route
-  static final String initRoute = '/menu';
+  // static final String initRoute = '/menu';
+  static final String initRoute = '/table/add';
+
+  // Pages
   static final List<GetPage> GetPages = [
     GetPage(
       name: '/startup',
@@ -130,6 +135,15 @@ class AppConfig {
       page: () => PlaceOrderCouponScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => PlaceOrderCouponController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
+      transitionDuration: new Duration(seconds: 1),
+      name: '/table/add',
+      page: () => AddTableScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => AddTableController());
       }),
     ),
   ];

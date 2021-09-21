@@ -8,4 +8,8 @@ part of 'BillDAO.dart';
 
 mixin _$BillDAOMixin on DatabaseAccessor<AppDatabase> {
   $BillsTable get bills => attachedDatabase.bills;
+  $BillItemsTable get billItems => attachedDatabase.billItems;
+  $BillItemPropertiesTable get billItemProperties =>
+      attachedDatabase.billItemProperties;
+  $BillCouponsTable get billCoupons => attachedDatabase.billCoupons;
 }
