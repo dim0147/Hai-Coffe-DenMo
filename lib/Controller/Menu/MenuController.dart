@@ -5,7 +5,7 @@ import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
-import 'package:hai_noob/Screen/PlaceOrderScreen.dart';
+import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
 
 class ItemDataDisplay extends ItemDataClass {
   int quality;

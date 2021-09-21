@@ -7,7 +7,7 @@ import 'package:path/path.dart' as p;
 
 import 'package:hai_noob/App/Config.dart';
 
-import 'package:hai_noob/Controller/MenuController.dart';
+import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
 class MenuScreen extends GetWidget<MenuController> {

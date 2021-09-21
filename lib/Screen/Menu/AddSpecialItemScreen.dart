@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
-import 'package:hai_noob/Controller/AddSpecialItemController.dart';
+import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
 class AddSpecialItemScreen extends GetView<AddSpecialItemController> {

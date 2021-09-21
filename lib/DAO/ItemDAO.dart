@@ -1,4 +1,4 @@
-import 'package:hai_noob/Controller/CreateItemController.dart';
+import 'package:hai_noob/Controller/Item/CreateItemController.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:collection/collection.dart';
 import 'package:moor/moor.dart';

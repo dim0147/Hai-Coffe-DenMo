@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/Controller/AddSpecialItemController.dart';
-import 'package:hai_noob/Controller/AddTableController.dart';
-import 'package:hai_noob/Controller/CartController.dart';
-import 'package:hai_noob/Controller/CreateItemController.dart';
-import 'package:hai_noob/Controller/MenuController.dart';
-import 'package:hai_noob/Controller/PlaceOrderController.dart';
-import 'package:hai_noob/Controller/PlaceOrderCouponController.dart';
-import 'package:hai_noob/Screen/AddSpecialItemScreen.dart';
-import 'package:hai_noob/Screen/AddTableScreen.dart';
-import 'package:hai_noob/Screen/CartScreen.dart';
-import 'package:hai_noob/Screen/MenuScreen.dart';
-import 'package:hai_noob/Screen/PlaceOrderCouponScreen.dart';
-import 'package:hai_noob/Screen/PlaceOrderScreen.dart';
+import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
+import 'package:hai_noob/Controller/Table/AddTableController.dart';
+import 'package:hai_noob/Controller/Menu/CartController.dart';
+import 'package:hai_noob/Controller/Item/CreateItemController.dart';
+import 'package:hai_noob/Controller/Menu/MenuController.dart';
+import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
+import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Screen/Menu/AddSpecialItemScreen.dart';
+import 'package:hai_noob/Screen/Table/AddTableScreen.dart';
+import 'package:hai_noob/Screen/Menu/CartScreen.dart';
+import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
+import 'package:hai_noob/Screen/Order/PlaceOrderCouponScreen.dart';
+import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../Screen/StartupScreen.dart';
 import '../Screen/LoginScreen.dart';
-import '../Screen/CreateCategoryScreen.dart';
-import '../Screen/CreateItemScreen.dart';
+import '../Screen/Category/CreateCategoryScreen.dart';
+import '../Screen/Item/CreateItemScreen.dart';
 
 import '../Controller/LoginController.dart';
 import '../Controller/StartupController.dart';
-import '../Controller/CreateCategoryController.dart';
+import '../Controller/Category/CreateCategoryController.dart';
 
 class AppConfig {
   // Admin password

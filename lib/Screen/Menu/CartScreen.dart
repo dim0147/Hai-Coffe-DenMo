@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/CartController.dart';
+import 'package:hai_noob/Controller/Menu/CartController.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
 
 class CartScreen extends GetWidget<CartController> {

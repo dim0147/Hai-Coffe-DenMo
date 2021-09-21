@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/Controller/AddTableController.dart';
+import 'package:hai_noob/Controller/Table/AddTableController.dart';
 
-import 'Component.dart';
+import '../Component.dart';
 
 class AddTableScreen extends GetWidget<AddTableController> {
   const AddTableScreen({Key? key}) : super(key: key);

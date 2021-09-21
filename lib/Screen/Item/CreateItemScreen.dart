@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
-import 'package:hai_noob/Controller/CreateItemController.dart';
+import 'package:hai_noob/Controller/Item/CreateItemController.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:hai_noob/App/Config.dart';

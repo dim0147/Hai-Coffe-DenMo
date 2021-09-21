@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../App/Config.dart';
+import '../../App/Config.dart';
 
-import 'Component.dart';
+import '../Component.dart';
 
-import '../Controller/CreateCategoryController.dart';
+import '../../Controller/Category/CreateCategoryController.dart';
 
 class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
   @override
