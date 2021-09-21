@@ -79,9 +79,9 @@ class StartUpService {
 
     // TODO: Test this shit
     // Remove table where id don't exist in database
-    Map<dynamic, TableLocal> tableLocalsExistIDs = Map.from(tableLocals)
-      ..removeWhere((key, value) => tableOrders.every((e) => e.id != key));
-    await tableLocalDAO.updateAllByMap(tableLocalsExistIDs);
+    // Map<dynamic, TableLocal> tableLocalsExistIDs = Map.from(tableLocals)
+    //   ..removeWhere((key, value) => tableOrders.every((e) => e.id != key));
+    // await tableLocalDAO.updateAllByMap(tableLocalsExistIDs);
 
     // Loop all table orders to checking
     tableOrders.forEach((e) {

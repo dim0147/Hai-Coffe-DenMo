@@ -51,10 +51,10 @@ class StartupController extends GetxController with StateMixin<void> {
       Get.offNamed(AppConfig.initRoute);
 
       // queryTestData();
-    } catch (error) {
+    } catch (error, stack) {
       change(null, status: RxStatus.error());
       statusText.value =
-          'Có lỗi khi khởi tạo, liên hệ anh đức đẹp trai, lỗi: ${error.toString()}';
+          'Có lỗi khi khởi tạo, liên hệ anh đức đẹp trai, lỗi: \n${error.toString()} \nStack Trace: ${stack.toString()}';
     }
   }
 
