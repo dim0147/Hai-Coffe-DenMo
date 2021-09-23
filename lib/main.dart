@@ -82,6 +82,11 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme().copyWith(
           bodyText2: TextStyle(color: AppConfig.FONT_COLOR),
         ),
+
+        iconTheme: IconThemeData(color: AppConfig.MAIN_COLOR),
+
+        // Divider
+        dividerColor: AppConfig.MAIN_COLOR,
       ),
       title: 'Hải Bên Lề',
       initialRoute: '/startup',

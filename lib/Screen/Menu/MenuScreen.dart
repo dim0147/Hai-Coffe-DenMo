@@ -39,7 +39,7 @@ class MenuScreen extends GetWidget<MenuController> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CategoryBtns(),
+                      LeftPanel(),
                       RightPanel(),
                     ],
                   ),
@@ -84,8 +84,8 @@ class RightPanel extends GetView<MenuController> {
   }
 }
 
-class CategoryBtns extends GetView<MenuController> {
-  const CategoryBtns({
+class LeftPanel extends GetView<MenuController> {
+  const LeftPanel({
     Key? key,
   }) : super(key: key);
 
@@ -102,8 +102,7 @@ class CategoryBtns extends GetView<MenuController> {
                       child: Text(e.name),
                       style: controller.choosenCategoryId.value == e.id
                           ? OutlinedButton.styleFrom(
-                              backgroundColor:
-                                  AppConfig.MAIN_COLOR.withOpacity(0.5),
+                              backgroundColor: AppConfig.MAIN_COLOR,
                             )
                           : null,
                     ))
