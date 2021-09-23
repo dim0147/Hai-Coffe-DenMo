@@ -164,7 +164,7 @@ class Footer extends GetView<CartController> {
               icon: Icon(Icons.arrow_back),
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
-                    width: 2.0, color: Get.theme.primaryColor.withOpacity(0.5)),
+                    width: 2.0, color: AppConfig.MAIN_COLOR.withOpacity(0.5)),
               ),
               label: Text('Quay Lại'),
             ),

@@ -37,12 +37,16 @@ class AppConfig {
   static final Color BACKGROUND_COLOR =
       Color.fromRGBO(218, 172, 88, 1.0) as Color;
   static final Color MAIN_COLOR = Colors.amber[300] as Color;
+  static final Color FONT_COLOR = Colors.white;
 
   // Header
-  static final Color HEADER_COLOR = Colors.amber as Color;
+  static final Color HEADER_COLOR = Colors.amberAccent;
 
   // Button
-  static final Color TEXT_BTN_COLOR = (Colors.yellowAccent[100] as Color);
+  static final Color TEXT_BTN_COLOR = Colors.yellowAccent[400] as Color;
+  static final Color ELEVATED_TEXT_BTN_COLOR =
+      (Colors.yellowAccent[100] as Color);
+  static final Color OUTLINE_TEXT_BTN_COLOR = Colors.white;
 
   // Chip
   static final Color? CHIP_DELETE_ICON_COLOR = Colors.amber[800];

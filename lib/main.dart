@@ -22,37 +22,44 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         fontFamily: 'QuickSand',
       ).copyWith(
-        // Color Scheme
         colorScheme: ThemeData().colorScheme.copyWith(
               primary: AppConfig.MAIN_COLOR,
             ),
 
-        // Color
+        // Layout
         scaffoldBackgroundColor: AppConfig.BACKGROUND_COLOR,
-        primaryColor: AppConfig.MAIN_COLOR,
+        appBarTheme: AppBarTheme(color: AppConfig.MAIN_COLOR),
 
+        // Button
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            primary: AppConfig.TEXT_BTN_COLOR,
+          ),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            primary: AppConfig.MAIN_COLOR,
+            onPrimary: AppConfig.ELEVATED_TEXT_BTN_COLOR,
+          ),
+        ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            side: BorderSide(color: AppConfig.MAIN_COLOR),
+            primary: AppConfig.OUTLINE_TEXT_BTN_COLOR,
+          ),
+        ),
+
+        // Component
         chipTheme: ThemeData().chipTheme.copyWith(
               backgroundColor: AppConfig.MAIN_COLOR,
               deleteIconColor: AppConfig.CHIP_DELETE_ICON_COLOR,
             ),
-
         checkboxTheme: CheckboxThemeData(
           fillColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
           overlayColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
         ),
-
         radioTheme: RadioThemeData(
           fillColor: MaterialStateProperty.all(AppConfig.MAIN_COLOR),
-        ),
-
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(
-              EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            ),
-            foregroundColor:
-                MaterialStateProperty.all<Color>(AppConfig.TEXT_BTN_COLOR),
-          ),
         ),
 
         // Text Field
@@ -73,8 +80,7 @@ class MyApp extends StatelessWidget {
 
         // Text Theme
         textTheme: TextTheme().copyWith(
-          bodyText1: TextStyle(fontSize: 14.0, color: AppConfig.MAIN_COLOR),
-          bodyText2: TextStyle(fontSize: 14.0, color: AppConfig.MAIN_COLOR),
+          bodyText2: TextStyle(color: AppConfig.FONT_COLOR),
         ),
       ),
       title: 'Hải Bên Lề',

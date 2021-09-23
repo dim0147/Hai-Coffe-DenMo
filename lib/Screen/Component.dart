@@ -32,14 +32,14 @@ Drawer NavigateMenu() {
             title: RichText(
               text: TextSpan(
                 style: TextStyle(
-                    color: Get.theme.primaryColor,
+                    color: AppConfig.HEADER_COLOR,
                     fontSize: 20,
                     fontWeight: FontWeight.bold),
                 children: [
                   WidgetSpan(
                     child: Icon(
                       Icons.restaurant_menu,
-                      color: Get.theme.primaryColor,
+                      color: AppConfig.HEADER_COLOR,
                     ),
                   ),
                   TextSpan(
@@ -53,7 +53,7 @@ Drawer NavigateMenu() {
             },
           ),
           Divider(
-            color: Get.theme.primaryColor,
+            color: AppConfig.HEADER_COLOR,
           ),
 
           // CATEGORY
@@ -63,14 +63,15 @@ Drawer NavigateMenu() {
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                        color: Get.theme.primaryColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
+                      color: AppConfig.HEADER_COLOR,
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.category,
-                          color: Get.theme.primaryColor,
+                          color: AppConfig.HEADER_COLOR,
                         ),
                       ),
                       TextSpan(
@@ -84,14 +85,14 @@ Drawer NavigateMenu() {
                 title: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                        color: Get.theme.primaryColor,
+                        color: AppConfig.HEADER_COLOR,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.add,
-                          color: Get.theme.primaryColor,
+                          color: AppConfig.HEADER_COLOR,
                         ),
                       ),
                       TextSpan(
@@ -108,7 +109,7 @@ Drawer NavigateMenu() {
           ),
 
           Divider(
-            color: Get.theme.primaryColor,
+            color: AppConfig.HEADER_COLOR,
           ),
 
           // ITEM
@@ -118,14 +119,14 @@ Drawer NavigateMenu() {
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                        color: Get.theme.primaryColor,
+                        color: AppConfig.HEADER_COLOR,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.fastfood,
-                          color: Get.theme.primaryColor,
+                          color: AppConfig.HEADER_COLOR,
                         ),
                       ),
                       TextSpan(
@@ -139,14 +140,14 @@ Drawer NavigateMenu() {
                 title: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                        color: Get.theme.primaryColor,
+                        color: AppConfig.HEADER_COLOR,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.add,
-                          color: Get.theme.primaryColor,
+                          color: AppConfig.HEADER_COLOR,
                         ),
                       ),
                       TextSpan(
@@ -163,7 +164,7 @@ Drawer NavigateMenu() {
           ),
 
           Divider(
-            color: Get.theme.primaryColor,
+            color: AppConfig.HEADER_COLOR,
           ),
 
           // ITEM
@@ -173,14 +174,14 @@ Drawer NavigateMenu() {
                 child: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                        color: Get.theme.primaryColor,
+                        color: AppConfig.HEADER_COLOR,
                         fontSize: 25,
                         fontWeight: FontWeight.bold),
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.chair_alt,
-                          color: Get.theme.primaryColor,
+                          color: AppConfig.HEADER_COLOR,
                         ),
                       ),
                       TextSpan(
@@ -194,14 +195,14 @@ Drawer NavigateMenu() {
                 title: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                        color: Get.theme.primaryColor,
+                        color: AppConfig.HEADER_COLOR,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.airplay,
-                          color: Get.theme.primaryColor,
+                          color: AppConfig.HEADER_COLOR,
                         ),
                       ),
                       TextSpan(
@@ -218,14 +219,14 @@ Drawer NavigateMenu() {
                 title: RichText(
                   text: TextSpan(
                     style: TextStyle(
-                        color: Get.theme.primaryColor,
+                        color: AppConfig.HEADER_COLOR,
                         fontSize: 15,
                         fontWeight: FontWeight.bold),
                     children: [
                       WidgetSpan(
                         child: Icon(
                           Icons.add,
-                          color: Get.theme.primaryColor,
+                          color: AppConfig.HEADER_COLOR,
                         ),
                       ),
                       TextSpan(

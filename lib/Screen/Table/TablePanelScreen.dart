@@ -16,16 +16,34 @@ class TablePanelScreen extends GetWidget<TablePanelController> {
         ),
         drawer: NavigateMenu(),
         body: Container(
-          child: Obx(
-            () => Column(
-              children: [
-                ...controller.tableLocals
-                    .map((e) => Text(
-                        'ID: ${e.id} | NAME: ${e.name} | STATUS: ${e.status}'))
-                    .toList(),
-                TextButton(onPressed: controller.onClick, child: Text('Click')),
-              ],
-            ),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: OutlinedButton(
+                            onPressed: () {}, child: Text('Tất cả')),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: OutlinedButton(
+                            onPressed: () {}, child: Text('Đang trống')),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: OutlinedButton(
+                            onPressed: () {}, child: Text('Đang ngồi')),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
       ),

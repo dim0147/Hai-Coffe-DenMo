@@ -103,7 +103,7 @@ class CategoryBtns extends GetView<MenuController> {
                       style: controller.choosenCategoryId.value == e.id
                           ? OutlinedButton.styleFrom(
                               backgroundColor:
-                                  Get.theme.primaryColor.withOpacity(0.5),
+                                  AppConfig.MAIN_COLOR.withOpacity(0.5),
                             )
                           : null,
                     ))
@@ -114,7 +114,7 @@ class CategoryBtns extends GetView<MenuController> {
               child: Text('Tất cả'),
               style: controller.choosenCategoryId.value == null
                   ? OutlinedButton.styleFrom(
-                      backgroundColor: Get.theme.primaryColor.withOpacity(0.5),
+                      backgroundColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
                     )
                   : null,
             )
@@ -145,7 +145,7 @@ class MenuItem extends GetView<MenuController> {
               borderRadius: BorderRadius.circular(10),
               // Quantity badge
               border: itemQuantity > 0
-                  ? Border.all(color: Get.theme.primaryColor, width: 2.0)
+                  ? Border.all(color: AppConfig.MAIN_COLOR, width: 2.0)
                   : null,
             ),
             child: Column(
@@ -305,11 +305,6 @@ class Footer extends GetView<MenuController> {
                     child: OutlinedButton.icon(
                       onPressed: () {},
                       icon: Icon(Icons.table_chart),
-                      style: OutlinedButton.styleFrom(
-                        side: BorderSide(
-                            width: 2.0,
-                            color: Get.theme.primaryColor.withOpacity(0.5)),
-                      ),
                       label: Text('Chọn Bàn'),
                     ),
                   ),

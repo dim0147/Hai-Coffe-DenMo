@@ -26,7 +26,7 @@ class AddSpecialItemScreen extends GetView<AddSpecialItemController> {
                         ListProperty(),
                       AddCustomProperty(),
                       Amount(),
-                      Divider(color: Get.theme.primaryColor, thickness: 2.0),
+                      Divider(color: AppConfig.MAIN_COLOR, thickness: 2.0),
                       TotalPrice(),
                     ],
                   )),
@@ -95,7 +95,7 @@ class PropertyContainer extends GetView<AddSpecialItemController> {
       child: Container(
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Get.theme.primaryColor,
+          color: AppConfig.MAIN_COLOR,
           border: Border(bottom: BorderSide(width: 1.0, color: Colors.white)),
         ),
         child: Column(
@@ -255,8 +255,7 @@ class Amount extends GetView<AddSpecialItemController> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Container(
-                        decoration:
-                            BoxDecoration(color: Get.theme.primaryColor),
+                        decoration: BoxDecoration(color: AppConfig.MAIN_COLOR),
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
@@ -341,7 +340,7 @@ class TotalPrice extends GetView<AddSpecialItemController> {
             SizedBox(
               width: Get.width / 2,
               child: Divider(
-                color: Get.theme.primaryColor,
+                color: AppConfig.MAIN_COLOR,
                 thickness: 2.0,
               ),
             ),
@@ -368,7 +367,7 @@ class Footer extends GetView<AddSpecialItemController> {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: Get.theme.primaryColor.withOpacity(0.5),
+      color: AppConfig.MAIN_COLOR.withOpacity(0.5),
       child: Row(
         children: [
           Expanded(
@@ -379,7 +378,7 @@ class Footer extends GetView<AddSpecialItemController> {
               child: Text('Huỷ'),
               style: OutlinedButton.styleFrom(
                 side: BorderSide(
-                    width: 2.0, color: Get.theme.primaryColor.withOpacity(0.5)),
+                    width: 2.0, color: AppConfig.MAIN_COLOR.withOpacity(0.5)),
               ),
             ),
           )),
