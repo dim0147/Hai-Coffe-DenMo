@@ -62,7 +62,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
       isLoading.value = false;
     } catch (err) {
-      Get.snackbar('Lỗi', err.toString());
+      Utils.showSnackBar('Lỗi', err.toString());
     }
   }
 

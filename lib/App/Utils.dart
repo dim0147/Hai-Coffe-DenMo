@@ -25,14 +25,14 @@ class Utils {
     /// Get storage directory
     var pathStorage = await getExternalStorageDirectory();
     if (pathStorage == null) {
-      Get.snackbar('Lỗi', 'Không thể lấy thư mục storage');
+      Utils.showSnackBar('Lỗi', 'Không thể lấy thư mục storage');
       return null;
     }
 
     /// Get file extension
     String fileExtension = p.extension(image.path);
     if (fileExtension == '') {
-      Get.snackbar('Lỗi', 'Không thể lấy type ảnh');
+      Utils.showSnackBar('Lỗi', 'Không thể lấy type ảnh');
       return null;
     }
 
@@ -44,7 +44,7 @@ class Utils {
     try {
       return image.copy(newPathToSave);
     } catch (err) {
-      Get.snackbar('Lỗi', 'Không thể lưu ảnh: \n ${err.toString()}');
+      Utils.showSnackBar('Lỗi', 'Không thể lưu ảnh: \n ${err.toString()}');
       return null;
     }
   }
@@ -64,5 +64,18 @@ class Utils {
       return AssetImage(AppConfig.DEFAULT_IMG_ITEM);
 
     return FileImage(File('${p.join(imgPath, imgName)}'));
+  }
+
+  static showSnackBar(String title, String text) {
+    Get.snackbar(
+      title,
+      '',
+      colorText: AppConfig.FONT_COLOR,
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: Colors.black,
+      margin: const EdgeInsets.all(8.0),
+      snackStyle: SnackStyle.GROUNDED,
+      messageText: Text(text),
+    );
   }
 }

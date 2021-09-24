@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/TableDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -33,12 +34,13 @@ class AddTableController extends GetxController {
       int? order = int.tryParse(orderC.text);
 
       if (name.length == 0)
-        return Get.snackbar('Lỗi', 'Tên không được để trống');
-      if (order == null) return Get.snackbar('Lỗi', 'Thứ tự không hợp lệ');
+        return Utils.showSnackBar('Lỗi', 'Tên không được để trống');
+      if (order == null)
+        return Utils.showSnackBar('Lỗi', 'Thứ tự không hợp lệ');
 
       var tableOrderKnowledge = await tableOrderDAO.findTableByName(name);
       if (tableOrderKnowledge != null)
-        return Get.snackbar('Lỗi', 'Bàn \' $name\' đã tồn tại');
+        return Utils.showSnackBar('Lỗi', 'Bàn \' $name\' đã tồn tại');
 
       int tableID = await tableOrderDAO.createTable(name, order);
 
@@ -50,9 +52,9 @@ class AddTableController extends GetxController {
       ));
 
       Get.offAllNamed('/menu');
-      Get.snackbar('Thành công', 'Tạo bàn \' $name\' thành công!');
+      Utils.showSnackBar('Thành công', 'Tạo bàn \' $name\' thành công!');
     } catch (err) {
-      Get.snackbar('Lỗi', 'Có lỗi xảy ra:\n ${err.toString()}');
+      Utils.showSnackBar('Lỗi', 'Có lỗi xảy ra:\n ${err.toString()}');
     }
   }
 }

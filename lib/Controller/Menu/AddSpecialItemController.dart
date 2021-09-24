@@ -1,6 +1,7 @@
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Model/Cart.dart';
 
 class PropertyAdded {
@@ -92,7 +93,8 @@ class AddSpecialItemController extends GetxController {
       customNameC.clear();
       customAmountC.clear();
     } catch (err) {
-      Get.snackbar('Lỗi', 'Lỗi khi thêm nhanh thuộc tính\n: ${err.toString()}');
+      Utils.showSnackBar(
+          'Lỗi', 'Lỗi khi thêm nhanh thuộc tính\n: ${err.toString()}');
     }
   }
 

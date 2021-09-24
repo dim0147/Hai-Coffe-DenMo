@@ -82,7 +82,7 @@ class CreateItemController extends GetxController {
     String name = propertyNameC.text;
     double? amount = Utils.convertStringToDouble(propertyAmountC.text);
     if (amount == null) {
-      Get.snackbar('Lỗi', 'Giá thuộc tính không hợp lệ!');
+      Utils.showSnackBar('Lỗi', 'Giá thuộc tính không hợp lệ!');
       return;
     }
 
@@ -133,12 +133,12 @@ class CreateItemController extends GetxController {
     // Validate
     if (title.length == 0) {
       isCreateItem.value = false;
-      return Get.snackbar('Lỗi', 'Tên trống');
+      return Utils.showSnackBar('Lỗi', 'Tên trống');
     }
 
     if (price == null) {
       isCreateItem.value = false;
-      return Get.snackbar('Lỗi', 'Giá không hợp lệ');
+      return Utils.showSnackBar('Lỗi', 'Giá không hợp lệ');
     }
 
     // Save image if have
@@ -163,9 +163,10 @@ class CreateItemController extends GetxController {
     // Create item
     try {
       await itemDAO.createItem(itemToInsert, categories, properties);
-      Get.snackbar('Thành công', 'Tạo item \'$title\' thành công');
+      Utils.showSnackBar('Thành công', 'Tạo item \'$title\' thành công');
     } catch (err) {
-      Get.snackbar('Lỗi', 'Có lỗi xảy ra khi tạo item: \n ${err.toString()}');
+      Utils.showSnackBar(
+          'Lỗi', 'Có lỗi xảy ra khi tạo item: \n ${err.toString()}');
     }
     isCreateItem.value = false;
   }

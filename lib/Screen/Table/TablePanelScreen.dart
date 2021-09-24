@@ -33,6 +33,67 @@ class TablePanelScreen extends GetWidget<TablePanelController> {
   }
 }
 
+class TableFilterStatus extends GetView<TablePanelController> {
+  const TableFilterStatus({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Obx(
+          () => Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: OutlinedButton(
+                  style: controller.viewOption.value == ViewTableOption.ALL
+                      ? OutlinedButton.styleFrom(
+                          backgroundColor: AppConfig.MAIN_COLOR,
+                        )
+                      : null,
+                  onPressed: () =>
+                      controller.onChangeViewTableOption(ViewTableOption.ALL),
+                  child: Text('Tất cả'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: OutlinedButton(
+                  style: controller.viewOption.value == ViewTableOption.EMPTY
+                      ? OutlinedButton.styleFrom(
+                          backgroundColor: AppConfig.MAIN_COLOR,
+                        )
+                      : null,
+                  onPressed: () =>
+                      controller.onChangeViewTableOption(ViewTableOption.EMPTY),
+                  child: Text('Đang Trống'),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: OutlinedButton(
+                  style: controller.viewOption.value == ViewTableOption.HOLDING
+                      ? OutlinedButton.styleFrom(
+                          backgroundColor: AppConfig.MAIN_COLOR,
+                        )
+                      : null,
+                  onPressed: () => controller
+                      .onChangeViewTableOption(ViewTableOption.HOLDING),
+                  child: Text('Đang Ngồi'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class ListTable extends GetView<TablePanelController> {
   const ListTable({Key? key}) : super(key: key);
 
@@ -44,8 +105,20 @@ class ListTable extends GetView<TablePanelController> {
         child: Wrap(
           spacing: 20.0,
           runSpacing: 20.0,
-          children:
-              controller.tableLocals.map((e) => TableItem(table: e)).toList(),
+          children: controller.tableLocals
+              // Filter depend on view option
+              .where((e) {
+                if (controller.viewOption.value == ViewTableOption.ALL)
+                  return true;
+                if (controller.viewOption.value == ViewTableOption.EMPTY)
+                  return e.status == TableStatus.Empty;
+                if (controller.viewOption.value == ViewTableOption.HOLDING)
+                  return e.status == TableStatus.Holding;
+
+                return true;
+              })
+              .map((e) => TableItem(table: e))
+              .toList(),
         ),
       ),
     );
@@ -173,50 +246,6 @@ class TableItem extends GetView<TablePanelController> {
           ],
         )
       ],
-    );
-  }
-}
-
-class TableFilterStatus extends GetView<TablePanelController> {
-  const TableFilterStatus({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: OutlinedButton(
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: AppConfig.MAIN_COLOR,
-                ),
-                onPressed: () {},
-                child: Text('Tất cả'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: OutlinedButton(
-                onPressed: () {},
-                child: Text('Đang Trống'),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(left: 8.0),
-              child: OutlinedButton(
-                onPressed: () {},
-                child: Text('Đang Ngồi'),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

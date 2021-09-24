@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -45,10 +46,10 @@ class PlaceOrderController extends GetxController {
         showTotalPriceWithCoupon(),
       );
       status.value = StatusPlaceOrder.DONE;
-      Get.snackbar('Thành công', 'Tạo order thành công');
+      Utils.showSnackBar('Thành công', 'Tạo order thành công');
     } catch (err) {
       status.value = StatusPlaceOrder.ERROR;
-      Get.snackbar(
+      Utils.showSnackBar(
         'Lỗi',
         'Không thể tạo order:\n- ${err.toString()}',
       );

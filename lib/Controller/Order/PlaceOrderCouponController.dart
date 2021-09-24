@@ -1,6 +1,7 @@
 import 'package:extended_masked_text/extended_masked_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Model/Cart.dart';
 
@@ -75,12 +76,12 @@ class PlaceOrderCouponController extends GetxController {
     int? percent = int.tryParse(percentC.text);
 
     if (name.length == 0) {
-      Get.snackbar('Lỗi', 'Tên không hợp lệ');
+      Utils.showSnackBar('Lỗi', 'Tên không hợp lệ');
       return;
     }
 
     if (price == 0.0 || percent == null) {
-      Get.snackbar('Lỗi', 'Giá hoặc phần trăm không hợp lệ');
+      Utils.showSnackBar('Lỗi', 'Giá hoặc phần trăm không hợp lệ');
       return;
     }
 
