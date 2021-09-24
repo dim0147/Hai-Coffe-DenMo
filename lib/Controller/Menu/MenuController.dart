@@ -1,11 +1,20 @@
 import 'package:collection/collection.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Contants.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
 import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
+
+class MenuScreenArgs extends DefaultScreentArgs {
+  final CartModel.Cart? cart;
+  final int? tableID;
+
+  MenuScreenArgs({this.cart, this.tableID, ShowSnackBarArgs? showSnackBarArgs})
+      : super(showSnackBarArgs);
+}
 
 class ItemDataDisplay extends ItemDataClass {
   int quality;
@@ -26,6 +35,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
   // Data
   final cart = CartModel.Cart(items: []).obs;
+  int? tableId;
   final itemsDataDisplay = <ItemDataDisplay>[].obs;
   final categories = <Category>[].obs;
   final choosenCategoryId = Rxn<int>();
@@ -33,11 +43,25 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   // Loading value
   final isLoading = true.obs;
 
+  void setArgs() {
+    final args = Utils.tryCast<MenuScreenArgs>(Get.arguments);
+    if (args == null) return;
+
+    args.runOnInit();
+    final cartArg = args.cart;
+    final tableIdArg = args.tableID;
+
+    if (cartArg != null) cart.value = cartArg;
+    tableId = tableIdArg;
+  }
+
   @override
   void onInit() async {
     super.onInit();
 
     try {
+      setArgs();
+
       // Init required
       itemsDAO = ItemsDAO(db);
       categoryDAO = CategoryDAO(db);

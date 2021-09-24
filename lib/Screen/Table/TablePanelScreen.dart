@@ -17,15 +17,17 @@ class TablePanelScreen extends GetWidget<TablePanelController> {
           title: Text('Bàn'),
         ),
         drawer: NavigateMenu(),
-        body: Container(
-          child: Column(
-            children: [
-              TableFilterStatus(),
-              Divider(
-                thickness: 2.0,
-              ),
-              ListTable()
-            ],
+        body: SingleChildScrollView(
+          child: Container(
+            child: Column(
+              children: [
+                TableFilterStatus(),
+                Divider(
+                  thickness: 2.0,
+                ),
+                ListTable()
+              ],
+            ),
           ),
         ),
       ),
@@ -165,7 +167,7 @@ class TableItem extends GetView<TablePanelController> {
         PopupMenuButton(
           color: AppConfig.BACKGROUND_COLOR,
           icon: Icon(
-            Icons.expand_more,
+            Icons.add,
             color: AppConfig.MAIN_COLOR,
           ),
           onSelected: (TableAction? value) =>

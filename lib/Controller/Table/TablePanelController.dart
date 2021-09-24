@@ -35,6 +35,6 @@ class TablePanelController extends GetxController {
   void onTableAction(int tableID, TableAction? action) {}
 
   void onTapTable(int tableID) {
-    _tableLocalDAO.markTableHolding(1);
+    _tableLocalDAO.updateTable(5);
   }
 }

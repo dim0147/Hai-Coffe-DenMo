@@ -19,10 +19,10 @@ class TableLocal {
   final int id;
 
   @HiveField(1)
-  final String name;
+  String name;
 
   @HiveField(2)
-  final int order;
+  int order;
 
   @HiveField(3)
   TableStatus status;

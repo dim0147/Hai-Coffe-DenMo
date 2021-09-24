@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/Controller/Menu/MenuController.dart';
 
 Drawer NavigateMenu() {
   return Drawer(
@@ -49,7 +50,8 @@ Drawer NavigateMenu() {
               ),
             ),
             onTap: () {
-              Get.offAllNamed('/menu');
+              final menuScreenArgs = MenuScreenArgs();
+              Get.offAllNamed('/menu', arguments: menuScreenArgs);
             },
           ),
           Divider(

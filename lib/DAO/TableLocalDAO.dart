@@ -1,3 +1,4 @@
+import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hive/hive.dart';
 
@@ -25,7 +26,7 @@ class TableLocalDAO {
   }
 
   // Update
-  Future<void> updateTable(TableLocal tableLocal) {
+  Future<void> _updateTable(TableLocal tableLocal) {
     return _box.put(tableLocal.id, tableLocal);
   }
 
@@ -33,12 +34,44 @@ class TableLocalDAO {
     return _box.putAll(entries);
   }
 
-  Future<void> markTableHolding(int tableID) async {
-    final table = _box.get(tableID);
+  Future<void> updateTable(
+    int tableID, {
+    String? name,
+    int? order,
+    TableStatus? status,
+    Cart? cart,
+    int? lastOrderID,
+    DateTime? lastUpdate,
+  }) async {
+    final table = getTable(tableID);
     if (table == null) return Future.error('Not found table');
 
-    table.status = TableStatus.Holding;
-    updateTable(table);
+    // Update default
+    if (name != null) table.name = name;
+    if (order != null) table.order = order;
+    if (status != null) table.status = status;
+    if (cart != null) table.cart = cart;
+    if (lastOrderID != null) table.lastOrderId = lastOrderID;
+    if (lastUpdate != null) table.lastUpdate = lastUpdate;
+
+    return _updateTable(table);
+  }
+
+  Future<void> updateNullableField(
+    int tableID, {
+    bool? cart,
+    bool? lastOrderID,
+    bool? lastUpdate,
+  }) async {
+    final table = getTable(tableID);
+    if (table == null) return Future.error('Not found table');
+
+    // Update nullable field
+    if (cart != null && cart) table.cart = null;
+    if (lastOrderID != null && lastOrderID) table.lastOrderId = null;
+    if (lastUpdate != null && lastUpdate) table.lastUpdate = null;
+
+    return _updateTable(table);
   }
 
   // https://stackoverflow.com/questions/68609519/flutter-how-to-bind-hive-watching-into-rxlist-object-in-getx

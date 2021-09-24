@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Contants.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/DAO/TableDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
+import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
 
 class AddTableController extends GetxController {
   late final TableOrderDAO tableOrderDAO;
@@ -45,14 +48,20 @@ class AddTableController extends GetxController {
       int tableID = await tableOrderDAO.createTable(name, order);
 
       // Add to table locaL
-      await tableLocalDAO.addNew(TableLocal(
+      final newTableLocal = TableLocal(
         id: tableID,
         name: name,
         order: order,
-      ));
+      );
+      await tableLocalDAO.addNew(newTableLocal);
 
-      Get.offAllNamed('/menu');
-      Utils.showSnackBar('Thành công', 'Tạo bàn \' $name\' thành công!');
+      // Navigate to menu
+      final showSnackBarArgs = ShowSnackBarArgs(
+        title: 'Thành công',
+        text: 'Tạo bàn \'$name\' thành công',
+      );
+      final menuScreenArgs = MenuScreenArgs(showSnackBarArgs: showSnackBarArgs);
+      Get.offAllNamed('/menu', arguments: menuScreenArgs);
     } catch (err) {
       Utils.showSnackBar('Lỗi', 'Có lỗi xảy ra:\n ${err.toString()}');
     }

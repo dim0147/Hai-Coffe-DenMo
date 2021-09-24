@@ -66,7 +66,7 @@ class Utils {
     return FileImage(File('${p.join(imgPath, imgName)}'));
   }
 
-  static showSnackBar(String title, String text) {
+  static showSnackBar(String title, String text, [Duration? duration]) {
     Get.snackbar(
       title,
       '',
@@ -76,6 +76,15 @@ class Utils {
       margin: const EdgeInsets.all(8.0),
       snackStyle: SnackStyle.GROUNDED,
       messageText: Text(text),
+      duration: duration,
     );
+  }
+
+  static T? tryCast<T>(dynamic value) {
+    try {
+      return (value as T);
+    } on TypeError catch (_) {
+      return null;
+    }
   }
 }
