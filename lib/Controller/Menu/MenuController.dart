@@ -38,6 +38,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   // Data
   final cart = CartModel.Cart(items: []).obs;
   int? tableId;
+  final tableName = ''.obs;
   final itemsDataDisplay = <ItemDataDisplay>[].obs;
   final categories = <Category>[].obs;
   final choosenCategoryId = Rxn<int>();
@@ -61,12 +62,8 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       return Future.error(
           'Table not exist in TableLocal, tableID:' + tableId.toString());
 
-    final tableCart = table.cart;
-    if (tableCart == null)
-      return Future.error(
-          'Table don\'t have cart, tableID:' + tableId.toString());
-
-    cart.value = tableCart;
+    tableName.value = table.name;
+    cart.value = table.cart;
   }
 
   @override

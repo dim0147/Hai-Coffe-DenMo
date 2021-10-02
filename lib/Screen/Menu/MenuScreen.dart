@@ -231,30 +231,24 @@ class Footer extends GetView<MenuController> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 5),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    // mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Column(
-                        children: [
-                          Text(
-                            'Tổng cộng: ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.amber[100],
-                            ),
-                          ),
-                        ],
+                      if (controller.tableId != null)
+                        Text('Bàn ${controller.tableName}'),
+                      Spacer(),
+                      Text(
+                        'Tổng cộng: ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amber[100],
+                        ),
                       ),
-                      Column(
-                        children: [
-                          Text(
-                            controller.cart.value.showTotalPrice().toString() +
-                                'đ',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.amber[100],
-                            ),
-                          ),
-                        ],
+                      Text(
+                        controller.cart.value.showTotalPrice().toString() + 'đ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.amber[100],
+                        ),
                       )
                     ],
                   ),
@@ -315,7 +309,9 @@ class Footer extends GetView<MenuController> {
                   Expanded(
                     flex: 3,
                     child: ElevatedButton.icon(
-                      onPressed: controller.onClickPayment,
+                      onPressed: controller.cart.value.showTotalQuantity() > 0
+                          ? controller.onClickPayment
+                          : null,
                       icon: Icon(Icons.payment),
                       label: Text('Thanh Toán'),
                     ),

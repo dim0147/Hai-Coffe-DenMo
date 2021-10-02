@@ -162,7 +162,9 @@ class Footer extends GetView<CartController> {
           Expanded(
             flex: 3,
             child: ElevatedButton.icon(
-              onPressed: controller.onPayment,
+              onPressed: controller.cart.value.showTotalQuantity() > 0
+                  ? controller.onPayment
+                  : null,
               icon: Icon(Icons.payment),
               label: Text('Thanh Toán'),
             ),
