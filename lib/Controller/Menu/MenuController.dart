@@ -1,13 +1,17 @@
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Contants.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Menu/SelectTableDialogController.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
 import 'package:hai_noob/Model/TableLocal.dart';
+import 'package:hai_noob/Screen/Menu/SelectTableDialogScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
 
 class MenuScreenArgs extends DefaultScreentArgs {
@@ -29,6 +33,7 @@ class ItemDataDisplay extends ItemDataClass {
 }
 
 class MenuController extends GetxController with SingleGetTickerProviderMixin {
+  final args = Utils.tryCast<MenuScreenArgs>(Get.arguments);
   final db = Get.find<AppDatabase>();
   final tableLocalDAO = Get.find<TableLocalDAO>();
   late ItemsDAO itemsDAO;
@@ -37,7 +42,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
   // Data
   final cart = CartModel.Cart(items: []).obs;
-  int? tableId;
+  final tableIDLocal = Rxn<int>();
   final tableName = ''.obs;
   final itemsDataDisplay = <ItemDataDisplay>[].obs;
   final categories = <Category>[].obs;
@@ -47,20 +52,20 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   final isLoading = true.obs;
 
   Future<void> setArgs() async {
-    final args = Utils.tryCast<MenuScreenArgs>(Get.arguments);
-    if (args == null) return;
+    final menuScreenArgument = args;
+    if (menuScreenArgument == null) return;
 
     // For show snackbar
-    args.runOnInit();
+    menuScreenArgument.runOnInit();
 
-    tableId = args.tableID;
-    if (tableId == null) return;
+    tableIDLocal.value = menuScreenArgument.tableID;
+    if (tableIDLocal.value == null) return;
 
     // Get table cart
-    final table = tableLocalDAO.getTable(tableId as int);
+    final table = tableLocalDAO.getTable(tableIDLocal.value as int);
     if (table == null)
       return Future.error(
-          'Table not exist in TableLocal, tableID:' + tableId.toString());
+          'Table not exist in TableLocal, tableID:' + tableIDLocal.toString());
 
     tableName.value = table.name;
     cart.value = table.cart;
@@ -211,5 +216,33 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
   void onClickPayment() async {
     Get.toNamed('/menu/place-order', arguments: cart.value);
+  }
+
+  void onClickSelectTable() async {
+    try {
+      final table = await Get.defaultDialog<TableLocal?>(
+        title: 'Chọn Bàn',
+        backgroundColor: AppConfig.BACKGROUND_COLOR,
+        content: SelectTableDialogScreen(),
+      );
+
+      // If dont select
+      if (table == null) return;
+
+      // Set cart table local
+      cart.value.tableId = table.id;
+      await tableLocalDAO.updateTable(
+        table.id,
+        cart: cart.value,
+        status: TableStatus.Holding,
+      );
+
+      // Set display field
+      tableIDLocal.value = table.id;
+      tableName.value = table.name;
+      Utils.showSnackBar('Thành công', 'Chọn bàn ${table.name} thành công');
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+    }
   }
 }

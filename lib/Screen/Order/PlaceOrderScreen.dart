@@ -140,8 +140,10 @@ class Footer extends GetView<PlaceOrderController> {
                       icon: Icon(Icons.check),
                       label: Text('Xác Nhận'),
                       style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity,
-                            30), // double.infinity is the width and 30 is the height
+                        minimumSize: Size(
+                          double.infinity,
+                          45,
+                        ), // double.infinity is the width and 30 is the height
                       ),
                     )
                   : ElevatedButton(

@@ -15,12 +15,16 @@ class MenuScreen extends GetView<MenuController> {
 
   @override
   Widget build(BuildContext context) {
+    final menuScreenArgument = controller.args;
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
           title: Text('Menu'),
         ),
-        drawer: controller.tableId != null ? null : NavigateMenu(),
+        // If don't have table ID argument we draw menu
+        drawer: menuScreenArgument != null && menuScreenArgument.tableID == null
+            ? NavigateMenu()
+            : null,
         bottomNavigationBar: Footer(),
         body: Container(
           child: Obx(() => controller.isLoading.value
@@ -221,38 +225,43 @@ class Footer extends GetView<MenuController> {
   Widget build(BuildContext context) {
     return Obx(() => Container(
           padding: EdgeInsets.all(10),
-          height: controller.cart.value.showTotalQuantity() > 0 ? 90 : 70,
+          height: 90,
           decoration: BoxDecoration(
             color: Colors.orangeAccent[200],
           ),
           child: Column(
             children: [
-              if (controller.cart.value.showTotalQuantity() > 0)
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 5),
-                  child: Row(
-                    // mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      if (controller.tableId != null)
-                        Text('Bàn ${controller.tableName}'),
-                      Spacer(),
-                      Text(
-                        'Tổng cộng: ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.amber[100],
-                        ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 5),
+                child: Row(
+                  // mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (controller.tableIDLocal.value != null)
+                      Text('Bàn: ${controller.tableName}'),
+                    Spacer(),
+                    if (controller.cart.value.showTotalQuantity() > 0)
+                      Row(
+                        children: [
+                          Text(
+                            'Tổng cộng: ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber[100],
+                            ),
+                          ),
+                          Text(
+                            controller.cart.value.showTotalPrice().toString() +
+                                'đ',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.amber[100],
+                            ),
+                          )
+                        ],
                       ),
-                      Text(
-                        controller.cart.value.showTotalPrice().toString() + 'đ',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.amber[100],
-                        ),
-                      )
-                    ],
-                  ),
+                  ],
                 ),
+              ),
               Row(
                 children: [
                   // Cart quality badge
@@ -292,12 +301,12 @@ class Footer extends GetView<MenuController> {
                     ],
                   ),
 
-                  if (controller.tableId == null)
+                  if (controller.tableIDLocal.value == null)
                     // Select table
                     Expanded(
                       flex: 3,
                       child: OutlinedButton.icon(
-                        onPressed: () {},
+                        onPressed: controller.onClickSelectTable,
                         icon: Icon(Icons.table_chart),
                         label: Text('Chọn Bàn'),
                       ),

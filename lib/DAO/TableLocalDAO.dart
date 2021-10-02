@@ -16,6 +16,10 @@ class TableLocalDAO {
     return _box.values.toList();
   }
 
+  List<TableLocal> getTableWithStatus(TableStatus status) {
+    return _box.values.where((e) => e.status == status).toList();
+  }
+
   TableLocal? getTable(int tableID) {
     return _box.get(tableID);
   }

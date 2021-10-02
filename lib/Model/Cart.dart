@@ -10,7 +10,7 @@ part 'Cart.g.dart';
 @HiveType(typeId: 0)
 class Cart {
   @HiveField(0)
-  final int? tableId;
+  int? tableId;
 
   @HiveField(1)
   List<CartItem> items;
