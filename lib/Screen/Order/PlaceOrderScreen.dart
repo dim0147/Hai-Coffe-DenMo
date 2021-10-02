@@ -5,7 +5,7 @@ import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Model/Bill.dart';
 
-class PlaceOrderScreen extends GetWidget<PlaceOrderController> {
+class PlaceOrderScreen extends GetView<PlaceOrderController> {
   const PlaceOrderScreen({Key? key}) : super(key: key);
 
   @override

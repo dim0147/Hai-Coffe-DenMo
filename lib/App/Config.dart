@@ -72,7 +72,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/login',
       page: () => LoginScreen(),
       binding: BindingsBuilder(() {
@@ -81,7 +80,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/category/add',
       page: () => CreateCategoryScreen(),
       binding: BindingsBuilder(() {
@@ -90,7 +88,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/item/add',
       page: () => CreateItemScreen(),
       binding: BindingsBuilder(() {
@@ -99,7 +96,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/menu',
       page: () => MenuScreen(),
       binding: BindingsBuilder(() {
@@ -108,7 +104,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/menu/add-special-item',
       page: () => AddSpecialItemScreen(),
       binding: BindingsBuilder(() {
@@ -117,7 +112,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/menu/cart',
       page: () => CartScreen(),
       binding: BindingsBuilder(() {
@@ -126,7 +120,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/menu/place-order',
       page: () => PlaceOrderScreen(),
       binding: BindingsBuilder(() {
@@ -135,7 +128,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/menu/place-order/add-coupon',
       page: () => PlaceOrderCouponScreen(),
       binding: BindingsBuilder(() {
@@ -144,7 +136,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/table/add',
       page: () => AddTableScreen(),
       binding: BindingsBuilder(() {
@@ -153,7 +144,6 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      transitionDuration: new Duration(seconds: 1),
       name: '/table/',
       page: () => TablePanelScreen(),
       binding: BindingsBuilder(() {

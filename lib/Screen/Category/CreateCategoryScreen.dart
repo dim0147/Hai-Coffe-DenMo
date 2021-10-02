@@ -7,7 +7,7 @@ import '../Component.dart';
 
 import '../../Controller/Category/CreateCategoryController.dart';
 
-class CreateCategoryScreen extends GetWidget<CreateCategoryController> {
+class CreateCategoryScreen extends GetView<CreateCategoryController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(

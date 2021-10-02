@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
+import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 
 enum TableAction {
@@ -32,9 +34,52 @@ class TablePanelController extends GetxController {
     viewOption.value = option;
   }
 
-  void onTableAction(int tableID, TableAction? action) {}
+  void onTableAction(int tableID, TableAction? action) {
+    if (action == null) return;
 
-  void onTapTable(int tableID) {
-    _tableLocalDAO.updateTable(5);
+    switch (action) {
+      case TableAction.MARK_EMPTY:
+        _tableLocalDAO.updateTable(
+          tableID,
+          status: TableStatus.Empty,
+          cart: Cart(items: []),
+        );
+        break;
+      case TableAction.MARK_HOLDING:
+        _tableLocalDAO.updateTable(
+          tableID,
+          status: TableStatus.Holding,
+        );
+        break;
+      case TableAction.CLEAR_CART:
+        _tableLocalDAO.updateTable(
+          tableID,
+          cart: Cart(items: []),
+        );
+        break;
+      case TableAction.GO_PAYMENT:
+        break;
+      default:
+    }
+  }
+
+  void onTapTable(int tableID) async {
+    try {
+      // Get table
+      final table = _tableLocalDAO.getTable(tableID);
+      if (table == null)
+        return Utils.showSnackBar(
+            'Lỗi', 'Không tìm thấy bàn ID: ' + tableID.toString());
+
+      // Change HOLDING status
+      if (table.status == TableStatus.Empty)
+        await _tableLocalDAO.updateTable(tableID, status: TableStatus.Holding);
+
+      // Go to menu
+      final menuScreenArgs = MenuScreenArgs(tableID: tableID);
+      Get.toNamed('/menu', arguments: menuScreenArgs);
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+    }
   }
 }

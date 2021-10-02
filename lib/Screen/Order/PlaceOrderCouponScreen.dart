@@ -6,7 +6,7 @@ import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
-class PlaceOrderCouponScreen extends GetWidget<PlaceOrderCouponController> {
+class PlaceOrderCouponScreen extends GetView<PlaceOrderCouponController> {
   const PlaceOrderCouponScreen({Key? key}) : super(key: key);
 
   @override

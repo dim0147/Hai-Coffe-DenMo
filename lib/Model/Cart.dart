@@ -1,5 +1,7 @@
 import 'package:collection/collection.dart';
+import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -31,32 +33,45 @@ class Cart {
   }
 
   void addItemByCartItem(CartItem cartItem) {
+    _addItemByCartItem(cartItem);
+    _cartBoxUpdate();
+  }
+
+  void _addItemByCartItem(CartItem cartItem) {
     // Check if have properties
     bool haveProperties = cartItem.properties.length > 0;
 
     // Add new cart item if have any properties
     if (haveProperties) return this.items.add(cartItem);
 
-    // Mean no properties, we will add if don't exist in cart or increase if exist in cart
-    bool existInCart = this.items.any((e) => e.item.id == cartItem.item.id);
+    //  Check item is exist in cart
+    bool itemIsExistInCart =
+        this.items.any((e) => e.item.id == cartItem.item.id);
 
-    // We increase
-    if (existInCart) {
-      this.items.forEach((e) {
+    // Increase if exist in cart
+    if (itemIsExistInCart) {
+      final newListItems = this.items.map((e) {
         if (e.item.id == cartItem.item.id) {
           e.totalQuantity += cartItem.totalQuantity;
           e.totalPrice += cartItem.totalPrice;
         }
-      });
+        return e;
+      }).toList();
+      this.items = newListItems;
+      return;
     }
-    // No exist in cart
-    else {
-      // Add new item
-      this.items.add(cartItem);
-    }
+
+    // Add new item
+    this.items.add(cartItem);
   }
 
+  /// In menu screen, we create ItemDataDisplay which don't have cartItemKey so that why we need itemId
   void decreaseItem({String? cartItemKey, int? itemId}) {
+    _decreaseItem(cartItemKey: cartItemKey, itemId: itemId);
+    _cartBoxUpdate();
+  }
+
+  void _decreaseItem({String? cartItemKey, int? itemId}) {
     if (cartItemKey == null && itemId == null) return;
 
     CartItem? itemToDecrease;
@@ -95,6 +110,11 @@ class Cart {
   }
 
   void removeCartItem(String cartItemKey) {
+    _removeCartItem(cartItemKey);
+    _cartBoxUpdate();
+  }
+
+  void _removeCartItem(String cartItemKey) {
     CartItem? cartItemKnowledge =
         this.items.firstWhereOrNull((e) => e.uniqueKey == cartItemKey);
 
@@ -107,6 +127,11 @@ class Cart {
   }
 
   void updateCart(CartItem updatedCart) {
+    _updateCart(updatedCart);
+    _cartBoxUpdate();
+  }
+
+  void _updateCart(CartItem updatedCart) {
     bool isExistInCart =
         this.items.any((e) => e.uniqueKey == updatedCart.uniqueKey);
     if (!isExistInCart) return;
@@ -119,6 +144,16 @@ class Cart {
     }).toList();
 
     this.items = newList;
+  }
+
+  Future<void> _cartBoxUpdate() async {
+    // Check if this cart have table
+    int? tableID = this.tableId;
+    if (tableID == null) return;
+
+    // Update into box
+    final tableLocalDAO = Get.find<TableLocalDAO>();
+    return tableLocalDAO.updateTable(tableID, cart: this);
   }
 }
 

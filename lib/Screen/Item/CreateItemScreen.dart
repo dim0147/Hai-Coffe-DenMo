@@ -11,7 +11,7 @@ import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Model/Item.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
-class CreateItemScreen extends GetWidget<CreateItemController> {
+class CreateItemScreen extends GetView<CreateItemController> {
   const CreateItemScreen({Key? key}) : super(key: key);
 
   @override

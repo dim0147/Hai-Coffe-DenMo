@@ -6,7 +6,7 @@ import 'package:hai_noob/Model/TableLocal.dart';
 
 import '../Component.dart';
 
-class TablePanelScreen extends GetWidget<TablePanelController> {
+class TablePanelScreen extends GetView<TablePanelController> {
   const TablePanelScreen({Key? key}) : super(key: key);
 
   @override
@@ -171,9 +171,9 @@ class TableItem extends GetView<TablePanelController> {
             color: AppConfig.MAIN_COLOR,
           ),
           onSelected: (TableAction? value) =>
-              controller.onTableAction(3, value),
+              controller.onTableAction(table.id, value),
           itemBuilder: (BuildContext context) => <PopupMenuEntry<TableAction>>[
-            if (table.cart != null)
+            if (table.cart.showTotalQuantity() > 0)
               PopupMenuItem<TableAction>(
                 value: TableAction.GO_PAYMENT,
                 child: RichText(
@@ -227,7 +227,7 @@ class TableItem extends GetView<TablePanelController> {
                   ),
                 ),
               ),
-            if (table.cart != null)
+            if (table.cart.showTotalQuantity() > 0)
               PopupMenuItem<TableAction>(
                 value: TableAction.CLEAR_CART,
                 child: RichText(

@@ -14,8 +14,6 @@ class CartController extends GetxController {
   }
 
   void onClickCartItem(CartItem cartItem) async {
-    bool haveProperties = cartItem.properties.length > 0;
-
     CartItem? newCartItem =
         await Get.toNamed('/menu/add-special-item', arguments: cartItem)
             as CartItem?;
@@ -27,16 +25,11 @@ class CartController extends GetxController {
   }
 
   void onRemoveCartItem(CartItem cartItem) {
-    print('Hello');
     cart.value.removeCartItem(cartItem.uniqueKey);
     cart.refresh();
   }
 
   void onPayment() {
     Get.toNamed('/menu/place-order', arguments: cart.value);
-  }
-
-  void onCancelClick() {
-    Get.back();
   }
 }

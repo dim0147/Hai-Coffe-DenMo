@@ -5,7 +5,7 @@ import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Menu/CartController.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
 
-class CartScreen extends GetWidget<CartController> {
+class CartScreen extends GetView<CartController> {
   const CartScreen({Key? key}) : super(key: key);
 
   @override
@@ -156,20 +156,6 @@ class Footer extends GetView<CartController> {
       ),
       child: Row(
         children: [
-          // Cancel
-          Expanded(
-            flex: 3,
-            child: OutlinedButton.icon(
-              onPressed: controller.onCancelClick,
-              icon: Icon(Icons.arrow_back),
-              style: OutlinedButton.styleFrom(
-                side: BorderSide(
-                    width: 2.0, color: AppConfig.MAIN_COLOR.withOpacity(0.5)),
-              ),
-              label: Text('Quay Lại'),
-            ),
-          ),
-
           SizedBox(width: 5),
 
           // Payment

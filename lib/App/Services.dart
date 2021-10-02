@@ -89,13 +89,13 @@ class StartUpService {
       if (tableLocalDAO.getTable(e.id) != null) return;
 
       // Box don't have this table id, we added new one
-      tableLocalDAO.addNew(
-        TableLocal(
-          id: e.id,
-          name: e.name,
-          order: e.order,
-        ),
+      final newTableLocal = TableLocal(
+        id: e.id,
+        name: e.name,
+        cart: Cart(tableId: e.id, items: []),
+        order: e.order,
       );
+      tableLocalDAO.addNew(newTableLocal);
     });
   }
 }

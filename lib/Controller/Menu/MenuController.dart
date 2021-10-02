@@ -4,15 +4,16 @@ import 'package:hai_noob/App/Contants.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
+import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
+import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
 
 class MenuScreenArgs extends DefaultScreentArgs {
-  final CartModel.Cart? cart;
   final int? tableID;
 
-  MenuScreenArgs({this.cart, this.tableID, ShowSnackBarArgs? showSnackBarArgs})
+  MenuScreenArgs({this.tableID, ShowSnackBarArgs? showSnackBarArgs})
       : super(showSnackBarArgs);
 }
 
@@ -28,7 +29,8 @@ class ItemDataDisplay extends ItemDataClass {
 }
 
 class MenuController extends GetxController with SingleGetTickerProviderMixin {
-  AppDatabase db = Get.find<AppDatabase>();
+  final db = Get.find<AppDatabase>();
+  final tableLocalDAO = Get.find<TableLocalDAO>();
   late ItemsDAO itemsDAO;
   late CategoryDAO categoryDAO;
   late final imgPath = Rxn<String>();
@@ -43,16 +45,28 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   // Loading value
   final isLoading = true.obs;
 
-  void setArgs() {
+  Future<void> setArgs() async {
     final args = Utils.tryCast<MenuScreenArgs>(Get.arguments);
     if (args == null) return;
 
+    // For show snackbar
     args.runOnInit();
-    final cartArg = args.cart;
-    final tableIdArg = args.tableID;
 
-    if (cartArg != null) cart.value = cartArg;
-    tableId = tableIdArg;
+    tableId = args.tableID;
+    if (tableId == null) return;
+
+    // Get table cart
+    final table = tableLocalDAO.getTable(tableId as int);
+    if (table == null)
+      return Future.error(
+          'Table not exist in TableLocal, tableID:' + tableId.toString());
+
+    final tableCart = table.cart;
+    if (tableCart == null)
+      return Future.error(
+          'Table don\'t have cart, tableID:' + tableId.toString());
+
+    cart.value = tableCart;
   }
 
   @override
@@ -60,7 +74,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
     super.onInit();
 
     try {
-      setArgs();
+      await setArgs();
 
       // Init required
       itemsDAO = ItemsDAO(db);

@@ -28,7 +28,7 @@ class TableLocal {
   TableStatus status;
 
   @HiveField(4)
-  Cart? cart;
+  Cart cart;
 
   @HiveField(5)
   int? lastOrderId;
@@ -39,6 +39,7 @@ class TableLocal {
   TableLocal({
     required this.id,
     required this.name,
+    required this.cart,
     required this.order,
     this.status = TableStatus.Empty,
   });

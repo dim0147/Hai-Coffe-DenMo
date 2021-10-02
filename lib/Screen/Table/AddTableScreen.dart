@@ -4,7 +4,7 @@ import 'package:hai_noob/Controller/Table/AddTableController.dart';
 
 import '../Component.dart';
 
-class AddTableScreen extends GetWidget<AddTableController> {
+class AddTableScreen extends GetView<AddTableController> {
   const AddTableScreen({Key? key}) : super(key: key);
 
   @override

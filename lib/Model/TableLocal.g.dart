@@ -58,10 +58,10 @@ class TableLocalAdapter extends TypeAdapter<TableLocal> {
     return TableLocal(
       id: fields[0] as int,
       name: fields[1] as String,
+      cart: fields[4] as Cart,
       order: fields[2] as int,
       status: fields[3] as TableStatus,
     )
-      ..cart = fields[4] as Cart?
       ..lastOrderId = fields[5] as int?
       ..lastUpdate = fields[6] as DateTime?;
   }

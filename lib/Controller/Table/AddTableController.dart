@@ -6,6 +6,7 @@ import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/DAO/TableDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
 
@@ -51,17 +52,13 @@ class AddTableController extends GetxController {
       final newTableLocal = TableLocal(
         id: tableID,
         name: name,
+        cart: Cart(tableId: tableID, items: []),
         order: order,
       );
       await tableLocalDAO.addNew(newTableLocal);
 
-      // Navigate to menu
-      final showSnackBarArgs = ShowSnackBarArgs(
-        title: 'Thành công',
-        text: 'Tạo bàn \'$name\' thành công',
-      );
-      final menuScreenArgs = MenuScreenArgs(showSnackBarArgs: showSnackBarArgs);
-      Get.offAllNamed('/menu', arguments: menuScreenArgs);
+      Utils.showSnackBar('Thành công', 'Tạo bàn \'$name\' thành công');
+      orderC.text = (int.parse(orderC.text) + 1).toString();
     } catch (err) {
       Utils.showSnackBar('Lỗi', 'Có lỗi xảy ra:\n ${err.toString()}');
     }

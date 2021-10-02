@@ -10,7 +10,7 @@ import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
-class MenuScreen extends GetWidget<MenuController> {
+class MenuScreen extends GetView<MenuController> {
   const MenuScreen({Key? key}) : super(key: key);
 
   @override
@@ -20,7 +20,7 @@ class MenuScreen extends GetWidget<MenuController> {
         appBar: AppBar(
           title: Text('Menu'),
         ),
-        drawer: NavigateMenu(),
+        drawer: controller.tableId != null ? null : NavigateMenu(),
         bottomNavigationBar: Footer(),
         body: Container(
           child: Obx(() => controller.isLoading.value
@@ -298,15 +298,16 @@ class Footer extends GetView<MenuController> {
                     ],
                   ),
 
-                  // Select table
-                  Expanded(
-                    flex: 3,
-                    child: OutlinedButton.icon(
-                      onPressed: () {},
-                      icon: Icon(Icons.table_chart),
-                      label: Text('Chọn Bàn'),
+                  if (controller.tableId == null)
+                    // Select table
+                    Expanded(
+                      flex: 3,
+                      child: OutlinedButton.icon(
+                        onPressed: () {},
+                        icon: Icon(Icons.table_chart),
+                        label: Text('Chọn Bàn'),
+                      ),
                     ),
-                  ),
 
                   SizedBox(width: 5),
 

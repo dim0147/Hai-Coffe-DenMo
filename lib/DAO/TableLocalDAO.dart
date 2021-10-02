@@ -57,9 +57,8 @@ class TableLocalDAO {
     return _updateTable(table);
   }
 
-  Future<void> updateNullableField(
+  Future<void> setNullProperty(
     int tableID, {
-    bool? cart,
     bool? lastOrderID,
     bool? lastUpdate,
   }) async {
@@ -67,7 +66,6 @@ class TableLocalDAO {
     if (table == null) return Future.error('Not found table');
 
     // Update nullable field
-    if (cart != null && cart) table.cart = null;
     if (lastOrderID != null && lastOrderID) table.lastOrderId = null;
     if (lastUpdate != null && lastUpdate) table.lastUpdate = null;
 
