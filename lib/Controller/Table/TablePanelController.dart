@@ -42,7 +42,7 @@ class TablePanelController extends GetxController {
         _tableLocalDAO.updateTable(
           tableID,
           status: TableStatus.Empty,
-          cart: Cart(items: []),
+          cart: Cart(tableId: tableID, items: []),
         );
         break;
       case TableAction.MARK_HOLDING:
@@ -54,7 +54,7 @@ class TablePanelController extends GetxController {
       case TableAction.CLEAR_CART:
         _tableLocalDAO.updateTable(
           tableID,
-          cart: Cart(items: []),
+          cart: Cart(tableId: tableID, items: []),
         );
         break;
       case TableAction.GO_PAYMENT:
