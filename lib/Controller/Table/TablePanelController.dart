@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
+import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
+import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
@@ -10,6 +12,7 @@ enum TableAction {
   MARK_EMPTY,
   MARK_HOLDING,
   CLEAR_CART,
+  SEE_INFO,
 }
 
 enum ViewTableOption {
@@ -37,6 +40,12 @@ class TablePanelController extends GetxController {
   void onTableAction(int tableID, TableAction? action) {
     if (action == null) return;
 
+    // Get tabble
+    final table = _tableLocalDAO.getTable(tableID);
+    if (table == null)
+      return Utils.showSnackBar(
+          'Lỗi', 'Table không tìm thấy, ID: ${tableID.toString()}');
+
     switch (action) {
       case TableAction.MARK_EMPTY:
         _tableLocalDAO.updateTable(
@@ -58,6 +67,15 @@ class TablePanelController extends GetxController {
         );
         break;
       case TableAction.GO_PAYMENT:
+        final placeOrderScreenArgs = PlaceOrderScreenArgs(
+          cart: table.cart,
+          tableID: tableID,
+        );
+        Get.toNamed('/place-order', arguments: placeOrderScreenArgs);
+        break;
+      case TableAction.SEE_INFO:
+        final tableLocalInfoArgs = TableLocalInfoArgs(tableID);
+        Get.toNamed('/table/local-info', arguments: tableLocalInfoArgs);
         break;
       default:
     }

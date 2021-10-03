@@ -8,6 +8,7 @@ import 'package:hai_noob/Controller/Item/CreateItemController.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
 import 'package:hai_noob/Controller/Table/TablePanelController.dart';
 import 'package:hai_noob/Screen/Menu/AddSpecialItemScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderSuccessScreen.dart';
@@ -16,6 +17,7 @@ import 'package:hai_noob/Screen/Menu/CartScreen.dart';
 import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderCouponScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
+import 'package:hai_noob/Screen/Table/TableLocalInfoScreen.dart';
 import 'package:hai_noob/Screen/Table/TablePanelScreen.dart';
 import 'package:path_provider/path_provider.dart';
 
@@ -146,6 +148,14 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
+      name: '/table',
+      page: () => TablePanelScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => TablePanelController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
       name: '/table/add',
       page: () => AddTableScreen(),
       binding: BindingsBuilder(() {
@@ -154,10 +164,10 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      name: '/table',
-      page: () => TablePanelScreen(),
+      name: '/table/local-info',
+      page: () => TableLocalInfoScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut(() => TablePanelController());
+        Get.lazyPut(() => TableLocalInfoController());
       }),
     ),
   ];

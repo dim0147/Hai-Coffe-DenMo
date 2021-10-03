@@ -54,6 +54,86 @@ Drawer NavigateMenu() {
               Get.offAllNamed('/menu', arguments: menuScreenArgs);
             },
           ),
+
+          Divider(
+            color: AppConfig.HEADER_COLOR,
+          ),
+
+          // TABLE
+          Column(
+            children: [
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.chair_alt,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Bàn',
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.airplay,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Bảng Điều Khiển',
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Get.offAllNamed('/table/');
+                },
+              ),
+              ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.add,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Tạo bàn',
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Get.offAllNamed('/table/add');
+                },
+              ),
+            ],
+          ),
+
           Divider(
             color: AppConfig.HEADER_COLOR,
           ),
@@ -167,81 +247,6 @@ Drawer NavigateMenu() {
 
           Divider(
             color: AppConfig.HEADER_COLOR,
-          ),
-
-          // ITEM
-          Column(
-            children: [
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.chair_alt,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Bàn',
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.airplay,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Bảng Điều Khiển',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offAllNamed('/table/');
-                },
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.add,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Tạo bàn',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offAllNamed('/table/add');
-                },
-              ),
-            ],
           ),
         ],
       ),

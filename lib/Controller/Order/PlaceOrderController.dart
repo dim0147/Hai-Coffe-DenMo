@@ -79,7 +79,7 @@ class PlaceOrderController extends GetxController {
         showTotalPriceWithCoupon(),
       );
       // Update table Cart
-      await updateTableAfterPaymentDone();
+      await updateTableAfterPaymentDone(billID);
 
       await _printReceipt();
 
@@ -103,7 +103,7 @@ class PlaceOrderController extends GetxController {
     }
   }
 
-  Future<void> updateTableAfterPaymentDone() async {
+  Future<void> updateTableAfterPaymentDone(int billID) async {
     final tableID = args!.tableID;
     if (tableID == null) return;
 
@@ -118,6 +118,8 @@ class PlaceOrderController extends GetxController {
         tableId: tableID,
         items: [],
       ),
+      lastOrderID: billID,
+      lastUpdate: DateTime.now(),
       status: markTableEmptyWhenPaymentDone.value ? TableStatus.Empty : null,
     );
   }

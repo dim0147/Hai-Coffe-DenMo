@@ -245,6 +245,23 @@ class TableItem extends GetView<TablePanelController> {
                   ),
                 ),
               ),
+            PopupMenuItem<TableAction>(
+              value: TableAction.SEE_INFO,
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.info,
+                        size: 20.0,
+                        color: AppConfig.FONT_COLOR,
+                      ),
+                    ),
+                    TextSpan(text: '  Xem thông tin'),
+                  ],
+                ),
+              ),
+            ),
           ],
         )
       ],
