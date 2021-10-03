@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
+import 'package:hai_noob/Controller/Order/PlaceOrderSuccessController.dart';
 import 'package:hai_noob/Controller/Table/AddTableController.dart';
 import 'package:hai_noob/Controller/Menu/CartController.dart';
 import 'package:hai_noob/Controller/Item/CreateItemController.dart';
@@ -9,6 +10,7 @@ import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Controller/Table/TablePanelController.dart';
 import 'package:hai_noob/Screen/Menu/AddSpecialItemScreen.dart';
+import 'package:hai_noob/Screen/Order/PlaceOrderSuccessScreen.dart';
 import 'package:hai_noob/Screen/Table/AddTableScreen.dart';
 import 'package:hai_noob/Screen/Menu/CartScreen.dart';
 import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
@@ -120,7 +122,7 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      name: '/menu/place-order',
+      name: '/place-order',
       page: () => PlaceOrderScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => PlaceOrderController());
@@ -128,10 +130,18 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      name: '/menu/place-order/add-coupon',
+      name: '/place-order/add-coupon',
       page: () => PlaceOrderCouponScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => PlaceOrderCouponController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
+      name: '/place-order/success',
+      page: () => PlaceOrderSuccessScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => PlaceOrderSuccessController());
       }),
     ),
     GetPage(
@@ -144,7 +154,7 @@ class AppConfig {
     ),
     GetPage(
       transition: Transition.cupertinoDialog,
-      name: '/table/',
+      name: '/table',
       page: () => TablePanelScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => TablePanelController());

@@ -4,6 +4,7 @@ import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Model/Bill.dart';
+import 'package:hai_noob/Screen/Component.dart';
 
 class PlaceOrderScreen extends GetView<PlaceOrderController> {
   const PlaceOrderScreen({Key? key}) : super(key: key);
@@ -115,6 +116,16 @@ class PlaceOrderScreen extends GetView<PlaceOrderController> {
                     ],
                   ),
                 ),
+
+                // Checkbox mark table empty when payment done
+                if (controller.args?.tableID != null)
+                  Obx(
+                    () => CheckboxPrimary(
+                      title: 'Đánh dấu bàn trống sau khi thanh toán',
+                      value: controller.markTableEmptyWhenPaymentDone.value,
+                      onChanged: controller.onMarkTableEmptyWhenPaymentDone,
+                    ),
+                  ),
 
                 // Total Price
                 Obx(

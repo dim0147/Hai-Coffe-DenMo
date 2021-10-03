@@ -221,7 +221,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   void onClickPayment() async {
     final placeOrderScreenArgs =
         PlaceOrderScreenArgs(cart: cart.value, tableID: tableIDLocal.value);
-    Get.toNamed('/menu/place-order', arguments: placeOrderScreenArgs);
+    Get.toNamed('/place-order', arguments: placeOrderScreenArgs);
   }
 
   void onClickSelectTable() async {

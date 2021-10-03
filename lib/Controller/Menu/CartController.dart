@@ -44,6 +44,6 @@ class CartController extends GetxController {
   void onPayment() {
     final placeOrderScreenArgs =
         PlaceOrderScreenArgs(cart: cart.value, tableID: args!.tableID);
-    Get.toNamed('/menu/place-order', arguments: placeOrderScreenArgs);
+    Get.toNamed('/place-order', arguments: placeOrderScreenArgs);
   }
 }

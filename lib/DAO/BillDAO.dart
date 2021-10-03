@@ -9,13 +9,13 @@ part 'BillDAO.g.dart';
 class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
   BillDAO(AppDatabase db) : super(db);
 
-  Future createBill(
+  Future<int> createBill(
     Cart cart,
     BillPayment paymentType,
     List<CouponScreenData> coupons,
     double totalPriceOfBill,
   ) {
-    return transaction(() async {
+    return transaction<int>(() async {
       // Create bill
       BillsCompanion bill = BillsCompanion.insert(
         totalQuantities: cart.showTotalQuantity(),
@@ -25,8 +25,8 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
       );
       int billId = await into(bills).insert(bill);
 
-      // List Future create item
-      Iterable<Future<int>> createBillItemTasks = cart.items.map((e) async {
+      // List Future create items
+      final createBillItemTasks = cart.items.map((e) async {
         // Insert bill item
         BillItemsCompanion item = BillItemsCompanion.insert(
           billId: billId,
@@ -38,11 +38,11 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
         );
         int billItemId = await into(billItems).insert(item);
 
-        // Check if have properties
+        // Check if don't have properties
         if (e.showListPropertiesHaveQuantity().length == 0) return billItemId;
 
         // Insert properties
-        List<BillItemPropertiesCompanion> properties = e
+        final properties = e
             .showListPropertiesHaveQuantity()
             .map((p) => BillItemPropertiesCompanion.insert(
                   billItemId: billItemId,
@@ -56,11 +56,11 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
         return billItemId;
       });
       // Wait for create all bill items done
-      var resultBillItems = await Future.wait(createBillItemTasks);
+      await Future.wait(createBillItemTasks);
 
       // Coupon
-      if (coupons.length == 0) return;
-      var listCoupon = coupons
+      if (coupons.length == 0) return billId;
+      final listCoupon = coupons
           .map((e) => BillCouponsCompanion.insert(
                 billId: billId,
                 name: e.name,
@@ -70,6 +70,8 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
               ))
           .toList();
       await batch((batch) => batch.insertAll(billCoupons, listCoupon));
+
+      return billId;
     });
   }
 }
