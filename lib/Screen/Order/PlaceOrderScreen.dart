@@ -25,7 +25,7 @@ class PlaceOrderScreen extends GetView<PlaceOrderController> {
                 Container(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Tổng Giá: ${controller.cart.showTotalPrice()}đ',
+                    'Tổng Giá: ${controller.cart.value.showTotalPrice()}đ',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15.0,
@@ -84,11 +84,39 @@ class PlaceOrderScreen extends GetView<PlaceOrderController> {
                       icon: Icon(Icons.add),
                       label: Text('Thêm Coupon/Discout')),
                 ),
+
                 // Divider
                 Divider(
                   thickness: 3.0,
                   color: AppConfig.MAIN_COLOR,
                 ),
+
+                // Payment Type
+                Obx(
+                  () => Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('Hình thức:  '),
+                      DropdownButton<BillPayment>(
+                        dropdownColor: AppConfig.MAIN_COLOR,
+                        value: controller.paymentType.value,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text('Tiền mặt'),
+                            value: BillPayment.Cash,
+                          ),
+                          DropdownMenuItem(
+                            child: Text('Thẻ'),
+                            value: BillPayment.Card,
+                          ),
+                        ],
+                        onChanged: controller.paymentType,
+                      ),
+                    ],
+                  ),
+                ),
+
+                // Total Price
                 Obx(
                   () => Row(
                     children: [

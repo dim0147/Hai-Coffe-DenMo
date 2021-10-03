@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Contants.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Menu/CartController.dart';
 import 'package:hai_noob/Controller/Menu/SelectTableDialogController.dart';
+import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
@@ -209,13 +211,17 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
   void onClickShowCart() async {
     // navigate to new screen
-    await Get.toNamed('/menu/cart', arguments: cart.value);
+    final cartScreenArgs =
+        CartScreenArgs(tableID: tableIDLocal.value, cart: cart.value);
+    await Get.toNamed('/menu/cart', arguments: cartScreenArgs);
     cart.refresh();
     itemsDataDisplay.refresh();
   }
 
   void onClickPayment() async {
-    Get.toNamed('/menu/place-order', arguments: cart.value);
+    final placeOrderScreenArgs =
+        PlaceOrderScreenArgs(cart: cart.value, tableID: tableIDLocal.value);
+    Get.toNamed('/menu/place-order', arguments: placeOrderScreenArgs);
   }
 
   void onClickSelectTable() async {

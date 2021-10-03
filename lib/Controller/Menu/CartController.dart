@@ -1,16 +1,28 @@
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Model/Cart.dart';
 
+class CartScreenArgs {
+  final int? tableID;
+  final Cart cart;
+
+  CartScreenArgs({
+    required this.cart,
+    this.tableID,
+  });
+}
+
 class CartController extends GetxController {
+  final args = Utils.tryCast<CartScreenArgs>(Get.arguments);
   final cart = Cart(items: []).obs;
 
   @override
   void onInit() {
     super.onInit();
-    Cart cartArguments = Get.arguments;
-    cart.value = cartArguments;
 
-    var d;
+    if (args == null) return;
+    cart.value = args!.cart;
   }
 
   void onClickCartItem(CartItem cartItem) async {
@@ -30,6 +42,8 @@ class CartController extends GetxController {
   }
 
   void onPayment() {
-    Get.toNamed('/menu/place-order', arguments: cart.value);
+    final placeOrderScreenArgs =
+        PlaceOrderScreenArgs(cart: cart.value, tableID: args!.tableID);
+    Get.toNamed('/menu/place-order', arguments: placeOrderScreenArgs);
   }
 }

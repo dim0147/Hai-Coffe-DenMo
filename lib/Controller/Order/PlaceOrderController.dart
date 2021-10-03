@@ -8,23 +8,38 @@ import 'package:hai_noob/Model/Cart.dart';
 
 enum StatusPlaceOrder { LOADING, DONE, ERROR }
 
+class PlaceOrderScreenArgs {
+  final int? tableID;
+  final Cart cart;
+
+  PlaceOrderScreenArgs({
+    required this.cart,
+    this.tableID,
+  });
+}
+
 class PlaceOrderController extends GetxController {
+  final args = Utils.tryCast<PlaceOrderScreenArgs>(Get.arguments);
   final appDatabase = Get.find<AppDatabase>();
   late final BillDAO billDAO;
 
-  final cart = Get.arguments as Cart;
+  final cart = Cart(items: []).obs;
   final listCouponScreenData = <CouponScreenData>[].obs;
+  final paymentType = BillPayment.Cash.obs;
   final status = StatusPlaceOrder.DONE.obs;
 
   @override
   void onInit() {
     super.onInit();
     billDAO = BillDAO(appDatabase);
+
+    if (args == null) return;
+    cart.value = args!.cart;
   }
 
   void onAddCoupon() async {
     CouponScreenData? couponScreenData =
-        await Get.toNamed('/menu/place-order/add-coupon', arguments: cart)
+        await Get.toNamed('/menu/place-order/add-coupon', arguments: cart.value)
             as CouponScreenData?;
     if (couponScreenData == null) return;
 
@@ -36,15 +51,21 @@ class PlaceOrderController extends GetxController {
         listCouponScreenData.where((e) => e.name != couponName).toList();
   }
 
+  void onChangePaymentType(BillPayment? payment) {
+    if (payment == null) return;
+    paymentType.value = payment;
+  }
+
   void onConfirm() async {
     try {
       status.value = StatusPlaceOrder.LOADING;
       await billDAO.createBill(
-        cart,
-        BillPayment.Card,
-        listCouponScreenData.value,
+        cart.value,
+        paymentType.value,
+        listCouponScreenData,
         showTotalPriceWithCoupon(),
       );
+      await _printReceipt();
       status.value = StatusPlaceOrder.DONE;
       Utils.showSnackBar('Thành công', 'Tạo order thành công');
     } catch (err) {
@@ -56,6 +77,8 @@ class PlaceOrderController extends GetxController {
     }
   }
 
+  Future<void> _printReceipt() async {}
+
   double showTotalPriceWithCoupon() {
     double couponPrice = listCouponScreenData.fold(
         0.0,
@@ -63,6 +86,6 @@ class PlaceOrderController extends GetxController {
             ? previousValue + e.price
             : previousValue - e.price);
 
-    return cart.showTotalPrice() + couponPrice;
+    return cart.value.showTotalPrice() + couponPrice;
   }
 }
