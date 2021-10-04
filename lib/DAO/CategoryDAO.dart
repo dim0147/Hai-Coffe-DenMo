@@ -25,9 +25,22 @@ class CategoryDAO extends DatabaseAccessor<AppDatabase>
         .getSingleOrNull();
   }
 
+  Future<Category?> findCategoryById(int categoryId) async {
+    return (select(table!)..where((tbl) => tbl.id.equals(categoryId)))
+        .getSingleOrNull();
+  }
+
   Future<bool> addNew(CategoriesCompanion category) async {
     await into(table!).insert(category);
     return true;
+  }
+
+  Future updateCategoryById(
+    int categoryId,
+    CategoriesCompanion categoryCompanion,
+  ) async {
+    return (update(db.categories)..where((tbl) => tbl.id.equals(categoryId)))
+        .write(categoryCompanion);
   }
 
   Future<void> deleteCategoryById(int categoryId) async {

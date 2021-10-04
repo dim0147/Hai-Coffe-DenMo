@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/Controller/Category/EditCategoryController.dart';
 import 'package:hai_noob/Controller/Category/ListCategoryController.dart';
 import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderSuccessController.dart';
@@ -11,6 +12,7 @@ import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
 import 'package:hai_noob/Controller/Table/TablePanelController.dart';
+import 'package:hai_noob/Screen/Category/EditCategoryScreen.dart';
 import 'package:hai_noob/Screen/Category/ListCategoryScreen.dart';
 import 'package:hai_noob/Screen/Menu/AddSpecialItemScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderSuccessScreen.dart';
@@ -90,6 +92,14 @@ class AppConfig {
       page: () => CreateCategoryScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => CreateCategoryController());
+      }),
+    ),
+    GetPage(
+      transition: Transition.cupertinoDialog,
+      name: '/category/edit',
+      page: () => EditCategoryScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => EditCategoryController());
       }),
     ),
     GetPage(

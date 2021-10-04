@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Category/EditCategoryController.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 
@@ -22,8 +23,15 @@ class ListCategoryController extends GetxController
     }
   }
 
-  void onEditListItem(int categoryId) {
-    Get.defaultDialog(onConfirm: () {}, onCancel: () {});
+  void refreshListCategory() async {
+    categories.value = await categoryDAO.listAllCategory();
+    change(categories, status: RxStatus.success());
+  }
+
+  void onEditListItem(int categoryId) async {
+    final args = EditCategoryScreenArgs(categoryId);
+    await Get.toNamed('/category/edit', arguments: args);
+    refreshListCategory();
   }
 
   void onRemoveListItem(int categoryId) async {
@@ -39,9 +47,7 @@ class ListCategoryController extends GetxController
 
       await categoryDAO.deleteCategoryById(categoryId);
 
-      categories.value =
-          categories.value.where((e) => e.id != categoryId).toList();
-      change(categories, status: RxStatus.success());
+      refreshListCategory();
 
       Utils.showSnackBar('Thành công', 'Xoá danh mục thành công');
     } catch (err) {
