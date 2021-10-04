@@ -80,6 +80,26 @@ class Utils {
     );
   }
 
+  static Future<T?> showDialog<T>(
+    String title,
+    String text, {
+    void Function()? onConfirm,
+    void Function()? onCancel,
+  }) {
+    return Get.defaultDialog<T>(
+      backgroundColor: AppConfig.BACKGROUND_COLOR,
+      title: title,
+      middleText: text,
+      onConfirm: onConfirm,
+      onCancel: onCancel,
+      textConfirm: onConfirm != null ? 'Xác nhận' : null,
+      textCancel: onCancel != null ? 'Huỷ bỏ' : null,
+      buttonColor: AppConfig.TEXT_BTN_COLOR,
+      confirmTextColor: AppConfig.OUTLINE_TEXT_BTN_COLOR,
+      cancelTextColor: AppConfig.OUTLINE_TEXT_BTN_COLOR,
+    );
+  }
+
   static T? tryCast<T>(dynamic value) {
     try {
       return (value as T);

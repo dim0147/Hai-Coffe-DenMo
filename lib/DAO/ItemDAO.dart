@@ -143,4 +143,10 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
 
     return listData;
   }
+
+  Future deleteItemCategoryByCategoryId(int categoryId) async {
+    return (delete(db.itemCategories)
+          ..where((tbl) => tbl.categoryId.equals(categoryId)))
+        .go();
+  }
 }
