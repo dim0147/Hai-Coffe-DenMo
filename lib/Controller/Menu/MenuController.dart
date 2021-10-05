@@ -87,7 +87,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       imgPath.value = await Utils.getImgDirectory();
 
       // Get items
-      List<ItemDataClass> items = await itemsDAO.getAllItems();
+      List<ItemDataClass> items = await itemsDAO.getAllItemsInMenu();
       itemsDataDisplay.value = items
           .map((e) => ItemDataDisplay(
                 item: e.item,

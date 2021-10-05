@@ -91,9 +91,31 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
     // Raw query result
     var queryResult = await query.get();
 
+    return getListItemDataFromQuery(queryResult);
+  }
+
+  Future<List<ItemDataClass>> getAllItemsInMenu() async {
+    final query =
+        (select(db.items)..where((tbl) => tbl.visibility.equals(true))).join([
+      leftOuterJoin(
+          db.itemCategories, db.itemCategories.itemId.equalsExp(db.items.id)),
+      leftOuterJoin(
+          db.itemProperties, db.itemProperties.itemId.equalsExp(db.items.id)),
+      leftOuterJoin(db.categories,
+          db.categories.id.equalsExp(db.itemCategories.categoryId))
+    ]);
+
+    // Raw query result
+    final queryResult = await query.get();
+
+    return getListItemDataFromQuery(queryResult);
+  }
+
+  List<ItemDataClass> getListItemDataFromQuery(
+    List<TypedResult> queryResult,
+  ) {
     // Convert to list entry data
-    List<EntryItemWithCategoryWithProperties> listEntryData =
-        queryResult.map((row) {
+    final listEntryData = queryResult.map((row) {
       return EntryItemWithCategoryWithProperties(
           item: row.readTable(db.items),
           categories: row.readTableOrNull(db.categories),
@@ -101,15 +123,15 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
     }).toList();
 
     // Implement group by, return map
-    var MapGroupBy = groupBy(
+    final mapGroupBy = groupBy(
         listEntryData, (EntryItemWithCategoryWithProperties e) => e.item.id);
 
     // Shape result into list from map
-    List<ItemDataClass> listData = MapGroupBy.entries.map((entry) {
-      List<EntryItemWithCategoryWithProperties> value = entry.value;
+    final listData = mapGroupBy.entries.map((entry) {
+      final value = entry.value;
 
       // Get first index with item property
-      var item = value[0].item;
+      final item = value[0].item;
 
       // Unique categories
       bool isCategoryAllNull = value.every((e) => e.categories == null);
@@ -146,8 +168,8 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
 
   Future<int> deleteItemByItemId(int itemId) async {
     return transaction(() async {
-      final rs = await deleteItemCategoryByItemId(itemId);
-      final rs2 = await deleteItemPropertyByItemId(itemId);
+      await deleteItemCategoryByItemId(itemId);
+      await deleteItemPropertyByItemId(itemId);
       return (delete(db.items)..where((tbl) => tbl.id.equals(itemId))).go();
     });
   }
