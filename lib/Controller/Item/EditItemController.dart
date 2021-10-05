@@ -28,8 +28,15 @@ class Property {
   Property({required this.name, required this.amount});
 }
 
+class EditItemScreenArgs {
+  final int itemId;
+
+  EditItemScreenArgs(this.itemId);
+}
+
 class EditItemController extends GetxController {
-  AppDatabase db = Get.find<AppDatabase>();
+  final args = Utils.tryCast<EditItemScreenArgs>(Get.arguments);
+  final db = Get.find<AppDatabase>();
   late ItemsDAO itemDAO;
   late CategoryDAO categoryDAO;
 
@@ -41,11 +48,11 @@ class EditItemController extends GetxController {
     precision: 3,
   );
   final RxList<CategoryCheckbox> categories = <CategoryCheckbox>[].obs;
+  final RxList<Property> properties = <Property>[].obs;
   final TextEditingController propertyNameC = TextEditingController();
   final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController(
     precision: 3,
   );
-  final RxList<Property> properties = <Property>[].obs;
   final status = Status.InStock.obs;
   final visibility = true.obs;
   final img = Rxn<File>();
@@ -56,16 +63,58 @@ class EditItemController extends GetxController {
 
   @override
   void onInit() async {
-    itemDAO = ItemsDAO(db);
-    categoryDAO = CategoryDAO(db);
+    try {
+      super.onInit();
+      if (args == null) return;
 
-    // Load category
-    var listCategories = await categoryDAO.listAllCategory().then((value) =>
-        value.map((e) => CategoryCheckbox(id: e.id, name: e.name)).toList());
-    categories.assignAll(listCategories);
-    isLoadingCategory.value = false;
+      itemDAO = ItemsDAO(db);
+      categoryDAO = CategoryDAO(db);
 
-    super.onInit();
+      // Load category
+      var listCategories = await categoryDAO.listAllCategory().then((value) =>
+          value.map((e) => CategoryCheckbox(id: e.id, name: e.name)).toList());
+      categories.assignAll(listCategories);
+      isLoadingCategory.value = false;
+
+      // Load Item
+      final itemId = args!.itemId;
+      final itemData = await itemDAO.getItemById(itemId);
+
+      titleC.text = itemData.item.name;
+      priceC.updateValue(itemData.item.price);
+      visibility.value = itemData.item.visibility;
+
+      // Set Image
+      if (itemData.item.image != '') {
+        final imgFile = Utils.getImgFile(itemData.item.image);
+        if (imgFile != null) {
+          img.value = imgFile;
+        }
+      }
+
+      // Check Categories
+      if (itemData.categories != null) {
+        categories.value = categories.map((e) {
+          // Check if current category is one of item categories
+          final isIncludeInItemCategory =
+              itemData.categories?.any((i) => i.id == e.id);
+
+          if (isIncludeInItemCategory != null && isIncludeInItemCategory)
+            e.checked = true;
+
+          return e;
+        }).toList();
+      }
+
+      // Check Property
+      if (itemData.properties != null) {
+        properties.value = itemData.properties!
+            .map((e) => Property(name: e.name, amount: e.amount))
+            .toList();
+      }
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+    }
   }
 
   void onChangeCategoryCheckbox(bool? checked, int id) {

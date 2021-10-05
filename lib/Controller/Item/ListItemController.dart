@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Item/EditItemController.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Item.dart';
@@ -42,9 +43,9 @@ class ListItemController extends GetxController
     change(itemDatas, status: RxStatus.success());
   }
 
-  void onEditListItem(int categoryId) async {
-    // final args = EditCategoryScreenArgs(categoryId);
-    // await Get.toNamed('/category/edit', arguments: args);
+  void onEditListItem(int itemId) async {
+    final args = EditItemScreenArgs(itemId);
+    await Get.toNamed('/item/edit', arguments: args);
     refreshListItem();
   }
 

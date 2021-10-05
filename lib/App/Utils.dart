@@ -66,6 +66,16 @@ class Utils {
     return FileImage(File('${p.join(imgPath, imgName)}'));
   }
 
+  /// Get file
+  static File? getImgFile(String fileName) {
+    ConfigGlobal config = Get.find<ConfigGlobal>();
+    String? imgPath = config.imgPath;
+
+    if (imgPath == null || fileName == '') return null;
+
+    return File(p.join(imgPath, fileName));
+  }
+
   static showSnackBar(String title, String text, [Duration? duration]) {
     Get.snackbar(
       title,

@@ -22,7 +22,6 @@ class EditItemScreen extends GetView<EditItemController> {
         appBar: AppBar(
           title: Text('Chỉnh sửa Item'),
         ),
-        drawer: NavigateMenu(),
         body: SingleChildScrollView(
           child: Container(
             child: Column(

@@ -111,6 +111,25 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
     return getListItemDataFromQuery(queryResult);
   }
 
+  Future<ItemDataClass> getItemById(int itemId) async {
+    final query =
+        (select(db.items)..where((tbl) => tbl.id.equals(itemId))).join([
+      leftOuterJoin(
+          db.itemCategories, db.itemCategories.itemId.equalsExp(db.items.id)),
+      leftOuterJoin(
+          db.itemProperties, db.itemProperties.itemId.equalsExp(db.items.id)),
+      leftOuterJoin(db.categories,
+          db.categories.id.equalsExp(db.itemCategories.categoryId))
+    ]);
+
+    final queryResult = await query.get();
+    final listItemData = getListItemDataFromQuery(queryResult);
+    if (listItemData.length == 0) return Future.error('Không tìm thấy item');
+
+    // Return first item
+    return listItemData[0];
+  }
+
   List<ItemDataClass> getListItemDataFromQuery(
     List<TypedResult> queryResult,
   ) {
