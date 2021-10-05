@@ -280,16 +280,16 @@ class EditItemScreen extends GetView<EditItemController> {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(11.0, 0.0, 11.0, 11.0),
                     child: Obx(
-                      () => controller.isCreateItem.value
+                      () => controller.isSaveItem.value
                           ? ElevatedButton(
                               onPressed: null,
                               child: CircularProgressIndicator(),
                             )
                           : ElevatedButton.icon(
-                              icon: Icon(Icons.add_circle),
-                              onPressed: controller.onCreateItem,
+                              icon: Icon(Icons.save),
+                              onPressed: controller.onSaveItem,
                               label: Text(
-                                'Tạo',
+                                'Lưu',
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),

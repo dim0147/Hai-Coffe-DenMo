@@ -83,7 +83,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/login',
       page: () => LoginScreen(),
       binding: BindingsBuilder(() {
@@ -91,7 +90,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/category/add',
       page: () => CreateCategoryScreen(),
       binding: BindingsBuilder(() {
@@ -99,7 +97,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/category/edit',
       page: () => EditCategoryScreen(),
       binding: BindingsBuilder(() {
@@ -107,7 +104,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/category/list',
       page: () => ListCategoryScreen(),
       binding: BindingsBuilder(() {
@@ -115,7 +111,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/item/add',
       page: () => CreateItemScreen(),
       binding: BindingsBuilder(() {
@@ -123,7 +118,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/item/edit',
       page: () => EditItemScreen(),
       binding: BindingsBuilder(() {
@@ -131,7 +125,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/item/list',
       page: () => ListItemScreen(),
       binding: BindingsBuilder(() {
@@ -139,7 +132,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/menu',
       page: () => MenuScreen(),
       binding: BindingsBuilder(() {
@@ -147,7 +139,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/menu/add-special-item',
       page: () => AddSpecialItemScreen(),
       binding: BindingsBuilder(() {
@@ -155,7 +146,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/menu/cart',
       page: () => CartScreen(),
       binding: BindingsBuilder(() {
@@ -163,7 +153,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/place-order',
       page: () => PlaceOrderScreen(),
       binding: BindingsBuilder(() {
@@ -171,7 +160,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/place-order/add-coupon',
       page: () => PlaceOrderCouponScreen(),
       binding: BindingsBuilder(() {
@@ -179,7 +167,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/place-order/success',
       page: () => PlaceOrderSuccessScreen(),
       binding: BindingsBuilder(() {
@@ -187,7 +174,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/table',
       page: () => TablePanelScreen(),
       binding: BindingsBuilder(() {
@@ -195,7 +181,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/table/add',
       page: () => AddTableScreen(),
       binding: BindingsBuilder(() {
@@ -203,7 +188,6 @@ class AppConfig {
       }),
     ),
     GetPage(
-      transition: Transition.cupertinoDialog,
       name: '/table/local-info',
       page: () => TableLocalInfoScreen(),
       binding: BindingsBuilder(() {

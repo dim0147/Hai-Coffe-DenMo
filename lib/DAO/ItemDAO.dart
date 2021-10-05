@@ -185,6 +185,49 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
     return listData;
   }
 
+  Future updateItem(
+    int itemId,
+    ItemsCompanion itemUpdate,
+    List<CategoryCheckbox> categories,
+    List<Property> properties,
+  ) async {
+    return transaction(() async {
+      // Update item
+      await (update(db.items)..where((tbl) => tbl.id.equals(itemId)))
+          .write(itemUpdate);
+
+      // Delete all properties
+      await deleteItemPropertyByItemId(itemId);
+
+      final propertiesToInsert = properties
+          .map((property) => ItemPropertiesCompanion.insert(
+              itemId: itemId, name: property.name, amount: property.amount))
+          .toList();
+      // Add property if have
+      if (propertiesToInsert.length > 0)
+        await batch((batch) {
+          batch.insertAll(db.itemProperties, propertiesToInsert);
+        });
+
+      // Delete all categories
+      await deleteItemCategoryByItemId(itemId);
+
+      final categoriesToInsert = categories
+          .where((category) => category.checked)
+          .map((category) => ItemCategoriesCompanion.insert(
+              itemId: itemId, categoryId: category.id))
+          .toList();
+      // Add categories if have
+      if (categoriesToInsert.length > 0) {
+        await batch((batch) {
+          batch.insertAll(db.itemCategories, categoriesToInsert);
+        });
+      }
+
+      return true;
+    });
+  }
+
   Future<int> deleteItemByItemId(int itemId) async {
     return transaction(() async {
       await deleteItemCategoryByItemId(itemId);

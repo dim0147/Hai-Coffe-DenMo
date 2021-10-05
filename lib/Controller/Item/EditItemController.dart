@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
+import 'package:hai_noob/Controller/Item/CreateItemController.dart';
 import 'package:moor/moor.dart' as moor;
 import 'package:path/path.dart' as p;
 import 'package:get/get.dart';
@@ -9,24 +10,7 @@ import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
-import 'package:hai_noob/Model/Item.dart';
 import 'package:image_picker/image_picker.dart';
-
-class CategoryCheckbox {
-  int id;
-  String name;
-  bool checked;
-
-  CategoryCheckbox(
-      {required this.id, required this.name, this.checked = false});
-}
-
-class Property {
-  String name;
-  double amount;
-
-  Property({required this.name, required this.amount});
-}
 
 class EditItemScreenArgs {
   final int itemId;
@@ -58,7 +42,7 @@ class EditItemController extends GetxController {
 
   // Loading
   final Rx<bool> isLoadingCategory = true.obs;
-  final isCreateItem = false.obs;
+  final isSaveItem = false.obs;
 
   @override
   void onInit() async {
@@ -166,49 +150,58 @@ class EditItemController extends GetxController {
     img.value = null;
   }
 
-  void onCreateItem() async {
-    isCreateItem.value = true;
-    String title = titleC.text;
-    double? price = Utils.convertStringToDouble(priceC.text);
-    String? imgName;
-
-    // Validate
-    if (title.length == 0) {
-      isCreateItem.value = false;
-      return Utils.showSnackBar('Lỗi', 'Tên trống');
-    }
-
-    if (price == null) {
-      isCreateItem.value = false;
-      return Utils.showSnackBar('Lỗi', 'Giá không hợp lệ');
-    }
-
-    // Save image if have
-    if (img.value != null) {
-      File? imgSaved = await Utils.saveImg(img.value as File);
-      if (imgSaved == null) {
-        isCreateItem.value = false;
-        return;
-      }
-      imgName = p.basename(imgSaved.path);
-    }
-
-    // Create item to insert
-    ItemsCompanion itemToInsert = ItemsCompanion.insert(
-      name: title,
-      image: imgName ?? '',
-      price: price,
-      visibility: moor.Value(visibility.value),
-    );
-
+  void onSaveItem() async {
     // Create item
     try {
-      // await itemDAO.createItem(itemToInsert, categories.value, properties);
-      Utils.showSnackBar('Thành công', 'Tạo item \'$title\' thành công');
+      final itemId = args?.itemId;
+      if (itemId == null) return;
+
+      isSaveItem.value = true;
+      String title = titleC.text;
+      double? price = Utils.convertStringToDouble(priceC.text);
+      String? imgName;
+
+      // Validate
+      if (title.length == 0) {
+        isSaveItem.value = false;
+        return Utils.showSnackBar('Lỗi', 'Tên trống');
+      }
+
+      if (price == null) {
+        isSaveItem.value = false;
+        return Utils.showSnackBar('Lỗi', 'Giá không hợp lệ');
+      }
+
+      // Save image if have
+      if (img.value != null) {
+        File? imgSaved = await Utils.saveImg(img.value as File);
+        if (imgSaved == null) {
+          isSaveItem.value = false;
+          return;
+        }
+        imgName = p.basename(imgSaved.path);
+      }
+
+      // Create item to insert
+      final itemUpdate = ItemsCompanion(
+        name: moor.Value(title),
+        image: imgName != null ? moor.Value(imgName) : moor.Value(''),
+        price: moor.Value(price),
+        visibility: moor.Value(visibility.value),
+      );
+
+      await itemDAO.updateItem(
+        itemId,
+        itemUpdate,
+        categories,
+        properties,
+      );
+      Get.back();
+      Utils.showSnackBar('Thành công', 'Lưu item \'$title\' thành công');
     } catch (err) {
       Utils.showSnackBar(
-          'Lỗi', 'Có lỗi xảy ra khi tạo item: \n ${err.toString()}');
+          'Lỗi', 'Có lỗi xảy ra khi lưu item: \n ${err.toString()}');
     }
-    isCreateItem.value = false;
+    isSaveItem.value = false;
   }
 }
