@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:hai_noob/Model/Item.dart';
 
 class ListItemController extends GetxController
     with StateMixin<List<ItemDataClass>> {
@@ -11,6 +12,7 @@ class ListItemController extends GetxController
   final itemDatas = <ItemDataClass>[].obs;
 
   final searchString = ''.obs;
+  final visibilityFilter = Rxn<bool>();
 
   void onInit() async {
     try {
@@ -27,6 +29,11 @@ class ListItemController extends GetxController
   void onChangeSearchBar(String? string) {
     if (string == null) return;
     searchString.value = string;
+    change(itemDatas, status: RxStatus.success());
+  }
+
+  void onChangeFilterStatus(bool? visibility) {
+    visibilityFilter.value = visibility;
     change(itemDatas, status: RxStatus.success());
   }
 

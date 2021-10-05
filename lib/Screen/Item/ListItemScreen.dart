@@ -7,6 +7,7 @@ import 'package:hai_noob/Controller/Category/ListCategoryController.dart';
 import 'package:hai_noob/Controller/Item/ListItemController.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:hai_noob/Model/Item.dart';
 
 import '../Component.dart';
 
@@ -23,16 +24,19 @@ class ListItemScreen extends GetView<ListItemController> {
               if (itemDatas == null)
                 return Center(child: Text('Không có data'));
 
-              // Filter item
+              // Filter item by string and visibility
               final searchString = controller.searchString.value;
-              print('searchString: $searchString');
-              final listItemData = itemDatas
-                  .where((e) => searchString == ''
-                      ? true
-                      : e.item.name
-                          .toLowerCase()
-                          .contains(searchString.toLowerCase()))
-                  .toList();
+              final visibility = controller.visibilityFilter.value;
+              final listItemData = itemDatas.where((e) {
+                final isIncludeSearchString = searchString == ''
+                    ? true
+                    : e.item.name
+                        .toLowerCase()
+                        .contains(searchString.toLowerCase());
+                final isInVisibilityFilter =
+                    visibility == null ? true : e.item.visibility == visibility;
+                return isIncludeSearchString && isInVisibilityFilter;
+              }).toList();
 
               return Column(
                 children: [
@@ -48,11 +52,57 @@ class ListItemScreen extends GetView<ListItemController> {
                       onChanged: controller.onChangeSearchBar,
                     ),
                   ),
+                  Obx(
+                    () => Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          OutlinedButton(
+                            style: controller.visibilityFilter.value == null
+                                ? OutlinedButton.styleFrom(
+                                    backgroundColor: AppConfig.MAIN_COLOR,
+                                  )
+                                : null,
+                            onPressed: () => controller
+                                .onChangeFilterStatus(null), // null mean all
+                            child: Text('Tất cả'),
+                          ),
+                          SizedBox(width: 10.0),
+                          OutlinedButton(
+                            style: controller.visibilityFilter.value == true
+                                ? OutlinedButton.styleFrom(
+                                    backgroundColor: AppConfig.MAIN_COLOR,
+                                  )
+                                : null,
+                            onPressed: () =>
+                                controller.onChangeFilterStatus(true),
+                            child: Text('Hiển thị'),
+                          ),
+                          SizedBox(width: 10.0),
+                          OutlinedButton(
+                            style: controller.visibilityFilter.value == false
+                                ? OutlinedButton.styleFrom(
+                                    backgroundColor: AppConfig.MAIN_COLOR,
+                                  )
+                                : null,
+                            onPressed: () =>
+                                controller.onChangeFilterStatus(false),
+                            child: Text('Không hiển thị'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Expanded(
                     child: ListView.builder(
                       itemCount: listItemData.length,
-                      itemBuilder: (c, i) =>
+                      itemBuilder: (c, i) => Column(
+                        children: [
                           ListItem(itemData: listItemData[i]),
+                          Divider(),
+                        ],
+                      ),
                     ),
                   ),
                 ],
@@ -87,6 +137,12 @@ class ListItem extends GetView<ListItemController> {
             image: Utils.getImg(itemData.item.image),
           ),
           title: Text(itemData.item.name),
+          subtitle: Text(
+            itemData.item.visibility ? '' : 'Không hiển thị',
+            style: TextStyle(
+              color: itemData.item.visibility ? null : Colors.red,
+            ),
+          ),
           trailing: Text(itemData.item.price.toString() + 'đ'),
         ),
       ),
