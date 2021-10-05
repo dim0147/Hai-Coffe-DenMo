@@ -155,6 +155,7 @@ class CreateItemController extends GetxController {
     // Create item
     try {
       await itemDAO.createItem(itemToInsert, categories, properties);
+      Get.offAllNamed('/item/list');
       Utils.showSnackBar('Thành công', 'Tạo item \'$title\' thành công');
     } catch (err) {
       Utils.showSnackBar(

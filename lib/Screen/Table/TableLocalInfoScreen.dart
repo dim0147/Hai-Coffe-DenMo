@@ -41,7 +41,14 @@ class TableLocalInfoScreen extends GetView<TableLocalInfoController> {
                         SizedBox(height: 8.0),
                         Text('Số thứ tự: ${state.order}'),
                         SizedBox(height: 8.0),
-                        Text('Trạng thái: $status'),
+                        Text(
+                          'Trạng thái: $status',
+                          style: TextStyle(
+                            color: state.status == TableStatus.Empty
+                                ? null
+                                : Colors.green,
+                          ),
+                        ),
                         SizedBox(height: 8.0),
                         if (state.cart.showTotalQuantity() > 0)
                           Column(
