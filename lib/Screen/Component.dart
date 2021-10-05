@@ -266,6 +266,30 @@ Drawer NavigateMenu() {
                   Get.offAllNamed('/item/add');
                 },
               ),
+              ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.edit,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Chỉnh sủa',
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Get.offAllNamed('/item/list');
+                },
+              ),
             ],
           ),
 

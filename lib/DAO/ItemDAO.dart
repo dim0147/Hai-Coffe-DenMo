@@ -144,9 +144,29 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
     return listData;
   }
 
-  Future deleteItemCategoryByCategoryId(int categoryId) async {
+  Future<int> deleteItemByItemId(int itemId) async {
+    return transaction(() async {
+      final rs = await deleteItemCategoryByItemId(itemId);
+      final rs2 = await deleteItemPropertyByItemId(itemId);
+      return (delete(db.items)..where((tbl) => tbl.id.equals(itemId))).go();
+    });
+  }
+
+  Future<int> deleteItemCategoryByItemId(int itemId) async {
+    return (delete(db.itemCategories)
+          ..where((tbl) => tbl.itemId.equals(itemId)))
+        .go();
+  }
+
+  Future<int> deleteItemCategoryByCategoryId(int categoryId) async {
     return (delete(db.itemCategories)
           ..where((tbl) => tbl.categoryId.equals(categoryId)))
+        .go();
+  }
+
+  Future<int> deleteItemPropertyByItemId(int itemId) async {
+    return (delete(db.itemProperties)
+          ..where((tbl) => tbl.itemId.equals(itemId)))
         .go();
   }
 }
