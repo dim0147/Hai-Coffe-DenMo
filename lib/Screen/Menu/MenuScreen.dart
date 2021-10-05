@@ -65,22 +65,49 @@ class RightPanel extends GetView<MenuController> {
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Obx(
-          () => Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: controller.itemsDataDisplay
-                .where((e) {
-                  // Mean all categories
-                  if (controller.choosenCategoryId.value == null) return true;
+          () => Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: TextField(
+                  decoration: InputDecoration(
+                    labelText: 'Nhập từ khoá tìm kiếm',
+                    prefixIcon: Icon(Icons.search),
+                  ),
+                  onChanged: controller.onChangeSearchString,
+                ),
+              ),
+              Container(
+                child: Wrap(
+                  spacing: 8.0,
+                  runSpacing: 8.0,
+                  children: controller.itemsDataDisplay
+                      .where((e) {
+                        // Search string condition
+                        final searchString = controller.searchString.value;
+                        final isIncludeSearchString = searchString == ''
+                            ? true
+                            : e.item.name
+                                .toLowerCase()
+                                .contains(searchString.toLowerCase());
 
-                  if (e.categories == null) return false;
+                        // Mean all categories
+                        if (controller.choosenCategoryId.value == null)
+                          return isIncludeSearchString && true;
 
-                  return e.categories?.any(
-                          (e) => e.id == controller.choosenCategoryId.value)
-                      as bool;
-                })
-                .map((e) => MenuItem(itemDataDisplay: e))
-                .toList(),
+                        // Dont have category, we dont hansdle
+                        if (e.categories == null) return false;
+
+                        // Specific category
+                        return e.categories?.any((e) =>
+                            e.id == controller.choosenCategoryId.value &&
+                            isIncludeSearchString) as bool;
+                      })
+                      .map((e) => MenuItem(itemDataDisplay: e))
+                      .toList(),
+                ),
+              ),
+            ],
           ),
         ),
       ),

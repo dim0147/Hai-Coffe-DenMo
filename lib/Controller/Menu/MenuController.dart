@@ -49,6 +49,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   final itemsDataDisplay = <ItemDataDisplay>[].obs;
   final categories = <Category>[].obs;
   final choosenCategoryId = Rxn<int>();
+  final searchString = ''.obs;
 
   // Loading value
   final isLoading = true.obs;
@@ -110,6 +111,11 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
   void changeCategory(int? categoryId) {
     choosenCategoryId.value = categoryId;
+  }
+
+  void onChangeSearchString(String? string) {
+    if (string == null) return;
+    searchString.value = string;
   }
 
   void increaseItem(ItemDataDisplay item) async {
