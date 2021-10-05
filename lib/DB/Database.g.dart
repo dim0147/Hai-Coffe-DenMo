@@ -438,15 +438,13 @@ class Item extends DataClass implements Insertable<Item> {
   final double price;
   final int? ancestorItemId;
   final bool visibility;
-  final Status status;
   Item(
       {required this.id,
       required this.name,
       required this.image,
       required this.price,
       this.ancestorItemId,
-      required this.visibility,
-      required this.status});
+      required this.visibility});
   factory Item.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -463,8 +461,6 @@ class Item extends DataClass implements Insertable<Item> {
           .mapFromDatabaseResponse(data['${effectivePrefix}ancestor_item_id']),
       visibility: const BoolType()
           .mapFromDatabaseResponse(data['${effectivePrefix}visibility'])!,
-      status: $ItemsTable.$converter0.mapToDart(const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}status']))!,
     );
   }
   @override
@@ -478,10 +474,6 @@ class Item extends DataClass implements Insertable<Item> {
       map['ancestor_item_id'] = Variable<int?>(ancestorItemId);
     }
     map['visibility'] = Variable<bool>(visibility);
-    {
-      final converter = $ItemsTable.$converter0;
-      map['status'] = Variable<int>(converter.mapToSql(status)!);
-    }
     return map;
   }
 
@@ -495,7 +487,6 @@ class Item extends DataClass implements Insertable<Item> {
           ? const Value.absent()
           : Value(ancestorItemId),
       visibility: Value(visibility),
-      status: Value(status),
     );
   }
 
@@ -509,7 +500,6 @@ class Item extends DataClass implements Insertable<Item> {
       price: serializer.fromJson<double>(json['price']),
       ancestorItemId: serializer.fromJson<int?>(json['ancestorItemId']),
       visibility: serializer.fromJson<bool>(json['visibility']),
-      status: serializer.fromJson<Status>(json['status']),
     );
   }
   @override
@@ -522,7 +512,6 @@ class Item extends DataClass implements Insertable<Item> {
       'price': serializer.toJson<double>(price),
       'ancestorItemId': serializer.toJson<int?>(ancestorItemId),
       'visibility': serializer.toJson<bool>(visibility),
-      'status': serializer.toJson<Status>(status),
     };
   }
 
@@ -532,8 +521,7 @@ class Item extends DataClass implements Insertable<Item> {
           String? image,
           double? price,
           int? ancestorItemId,
-          bool? visibility,
-          Status? status}) =>
+          bool? visibility}) =>
       Item(
         id: id ?? this.id,
         name: name ?? this.name,
@@ -541,7 +529,6 @@ class Item extends DataClass implements Insertable<Item> {
         price: price ?? this.price,
         ancestorItemId: ancestorItemId ?? this.ancestorItemId,
         visibility: visibility ?? this.visibility,
-        status: status ?? this.status,
       );
   @override
   String toString() {
@@ -551,8 +538,7 @@ class Item extends DataClass implements Insertable<Item> {
           ..write('image: $image, ')
           ..write('price: $price, ')
           ..write('ancestorItemId: $ancestorItemId, ')
-          ..write('visibility: $visibility, ')
-          ..write('status: $status')
+          ..write('visibility: $visibility')
           ..write(')'))
         .toString();
   }
@@ -564,10 +550,8 @@ class Item extends DataClass implements Insertable<Item> {
           name.hashCode,
           $mrjc(
               image.hashCode,
-              $mrjc(
-                  price.hashCode,
-                  $mrjc(ancestorItemId.hashCode,
-                      $mrjc(visibility.hashCode, status.hashCode)))))));
+              $mrjc(price.hashCode,
+                  $mrjc(ancestorItemId.hashCode, visibility.hashCode))))));
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -577,8 +561,7 @@ class Item extends DataClass implements Insertable<Item> {
           other.image == this.image &&
           other.price == this.price &&
           other.ancestorItemId == this.ancestorItemId &&
-          other.visibility == this.visibility &&
-          other.status == this.status);
+          other.visibility == this.visibility);
 }
 
 class ItemsCompanion extends UpdateCompanion<Item> {
@@ -588,7 +571,6 @@ class ItemsCompanion extends UpdateCompanion<Item> {
   final Value<double> price;
   final Value<int?> ancestorItemId;
   final Value<bool> visibility;
-  final Value<Status> status;
   const ItemsCompanion({
     this.id = const Value.absent(),
     this.name = const Value.absent(),
@@ -596,7 +578,6 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     this.price = const Value.absent(),
     this.ancestorItemId = const Value.absent(),
     this.visibility = const Value.absent(),
-    this.status = const Value.absent(),
   });
   ItemsCompanion.insert({
     this.id = const Value.absent(),
@@ -605,11 +586,9 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     required double price,
     this.ancestorItemId = const Value.absent(),
     this.visibility = const Value.absent(),
-    required Status status,
   })  : name = Value(name),
         image = Value(image),
-        price = Value(price),
-        status = Value(status);
+        price = Value(price);
   static Insertable<Item> custom({
     Expression<int>? id,
     Expression<String>? name,
@@ -617,7 +596,6 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     Expression<double>? price,
     Expression<int?>? ancestorItemId,
     Expression<bool>? visibility,
-    Expression<Status>? status,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -626,7 +604,6 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       if (price != null) 'price': price,
       if (ancestorItemId != null) 'ancestor_item_id': ancestorItemId,
       if (visibility != null) 'visibility': visibility,
-      if (status != null) 'status': status,
     });
   }
 
@@ -636,8 +613,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       Value<String>? image,
       Value<double>? price,
       Value<int?>? ancestorItemId,
-      Value<bool>? visibility,
-      Value<Status>? status}) {
+      Value<bool>? visibility}) {
     return ItemsCompanion(
       id: id ?? this.id,
       name: name ?? this.name,
@@ -645,7 +621,6 @@ class ItemsCompanion extends UpdateCompanion<Item> {
       price: price ?? this.price,
       ancestorItemId: ancestorItemId ?? this.ancestorItemId,
       visibility: visibility ?? this.visibility,
-      status: status ?? this.status,
     );
   }
 
@@ -670,10 +645,6 @@ class ItemsCompanion extends UpdateCompanion<Item> {
     if (visibility.present) {
       map['visibility'] = Variable<bool>(visibility.value);
     }
-    if (status.present) {
-      final converter = $ItemsTable.$converter0;
-      map['status'] = Variable<int>(converter.mapToSql(status.value)!);
-    }
     return map;
   }
 
@@ -685,8 +656,7 @@ class ItemsCompanion extends UpdateCompanion<Item> {
           ..write('image: $image, ')
           ..write('price: $price, ')
           ..write('ancestorItemId: $ancestorItemId, ')
-          ..write('visibility: $visibility, ')
-          ..write('status: $status')
+          ..write('visibility: $visibility')
           ..write(')'))
         .toString();
   }
@@ -731,14 +701,9 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
       requiredDuringInsert: false,
       defaultConstraints: 'CHECK (visibility IN (0, 1))',
       defaultValue: Constant(true));
-  final VerificationMeta _statusMeta = const VerificationMeta('status');
-  late final GeneratedColumnWithTypeConverter<Status, int?> status =
-      GeneratedColumn<int?>('status', aliasedName, false,
-              typeName: 'INTEGER', requiredDuringInsert: true)
-          .withConverter<Status>($ItemsTable.$converter0);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, name, image, price, ancestorItemId, visibility, status];
+      [id, name, image, price, ancestorItemId, visibility];
   @override
   String get aliasedName => _alias ?? 'items';
   @override
@@ -781,7 +746,6 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
           visibility.isAcceptableOrUnknown(
               data['visibility']!, _visibilityMeta));
     }
-    context.handle(_statusMeta, const VerificationResult.success());
     return context;
   }
 
@@ -797,9 +761,6 @@ class $ItemsTable extends Items with TableInfo<$ItemsTable, Item> {
   $ItemsTable createAlias(String alias) {
     return $ItemsTable(_db, alias);
   }
-
-  static TypeConverter<Status, int> $converter0 =
-      const EnumIndexConverter<Status>(Status.values);
 }
 
 class ItemCategory extends DataClass implements Insertable<ItemCategory> {

@@ -55,10 +55,10 @@ class AppDatabase extends _$AppDatabase {
     into(categories).insert(CategoriesCompanion.insert(name: 'Đồ Ăn'));
 
     into(items).insert(ItemsCompanion.insert(
-        name: 'Trứng',
-        image: 'trung.jpg',
-        price: 300.000,
-        status: Status.InStock));
+      name: 'Trứng',
+      image: 'trung.jpg',
+      price: 300.000,
+    ));
 
     into(itemCategories)
         .insert(ItemCategoriesCompanion.insert(itemId: 1, categoryId: 1));

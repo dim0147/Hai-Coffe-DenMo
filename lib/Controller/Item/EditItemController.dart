@@ -53,7 +53,6 @@ class EditItemController extends GetxController {
   final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController(
     precision: 3,
   );
-  final status = Status.InStock.obs;
   final visibility = true.obs;
   final img = Rxn<File>();
 
@@ -149,12 +148,6 @@ class EditItemController extends GetxController {
         element.name == property.name && element.amount == property.amount);
   }
 
-  void onChangeStatus(Status? newStatus) {
-    if (newStatus == null) return;
-
-    status.value = newStatus;
-  }
-
   void onChangeVisibility(bool? newValue) {
     if (newValue == null) return;
 
@@ -205,7 +198,6 @@ class EditItemController extends GetxController {
       name: title,
       image: imgName ?? '',
       price: price,
-      status: status.value,
       visibility: moor.Value(visibility.value),
     );
 

@@ -46,7 +46,6 @@ class CreateItemController extends GetxController {
     precision: 3,
   );
   final RxList<Property> properties = <Property>[].obs;
-  final status = Status.InStock.obs;
   final visibility = true.obs;
   final img = Rxn<File>();
 
@@ -100,12 +99,6 @@ class CreateItemController extends GetxController {
         element.name == property.name && element.amount == property.amount);
   }
 
-  void onChangeStatus(Status? newStatus) {
-    if (newStatus == null) return;
-
-    status.value = newStatus;
-  }
-
   void onChangeVisibility(bool? newValue) {
     if (newValue == null) return;
 
@@ -156,7 +149,6 @@ class CreateItemController extends GetxController {
       name: title,
       image: imgName ?? '',
       price: price,
-      status: status.value,
       visibility: moor.Value(visibility.value),
     );
 

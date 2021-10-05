@@ -203,37 +203,6 @@ class CreateItemScreen extends GetView<CreateItemController> {
                   ],
                 ),
 
-                // Status
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Tình Trạng:',
-                      style: TextStyle(color: AppConfig.HEADER_COLOR),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Obx(
-                        () => DropdownButton<Status>(
-                          dropdownColor: AppConfig.MAIN_COLOR,
-                          items: [
-                            DropdownMenuItem<Status>(
-                              value: Status.InStock,
-                              child: Text('Còn Hàng'),
-                            ),
-                            DropdownMenuItem<Status>(
-                              value: Status.OutStock,
-                              child: Text('Hết Hàng'),
-                            ),
-                          ],
-                          value: controller.status.value,
-                          onChanged: controller.onChangeStatus,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-
                 // Visibility
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
