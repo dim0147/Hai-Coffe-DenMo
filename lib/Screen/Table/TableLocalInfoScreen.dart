@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/Controller/Table/AddTableController.dart';
 import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
-import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
-
-import '../Component.dart';
 
 class TableLocalInfoScreen extends GetView<TableLocalInfoController> {
   const TableLocalInfoScreen({Key? key}) : super(key: key);
