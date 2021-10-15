@@ -51,7 +51,8 @@ class ListItem extends GetView<ListTableController> {
           leading: CircleAvatar(
             child: Text(table.id.toString()),
           ),
-          title: Text(table.name),
+          title: Text('Tên: ${table.name}'),
+          subtitle: Text('Order: ${table.order.toString()}'),
         ),
       ),
       secondaryActions: <Widget>[
