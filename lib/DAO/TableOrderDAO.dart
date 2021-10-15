@@ -17,6 +17,11 @@ class TableOrderDAO extends DatabaseAccessor<AppDatabase>
     return query;
   }
 
+  Future<TableOrder?> findTableById(int id) {
+    final query = select(tableOrders)..where((tbl) => tbl.id.equals(id));
+    return query.getSingleOrNull();
+  }
+
   Future<TableOrder?> findTableByName(String name) {
     final query = select(tableOrders)..where((tbl) => tbl.name.equals(name));
     return query.getSingleOrNull();
@@ -35,6 +40,15 @@ class TableOrderDAO extends DatabaseAccessor<AppDatabase>
   Future<int> createTable(String name, int order) {
     final table = TableOrdersCompanion.insert(name: name, order: order);
     return into(tableOrders).insert(table);
+  }
+
+  /*
+    Update
+  */
+  Future<int> updateTable(int tableId, TableOrdersCompanion tableUpdate) {
+    final ad = Value(2);
+    return (update(tableOrders)..where((tbl) => tbl.id.equals(tableId)))
+        .write(tableUpdate);
   }
 
   /*

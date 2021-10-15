@@ -1,0 +1,75 @@
+import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:hai_noob/App/Contants.dart';
+import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Menu/MenuController.dart';
+import 'package:hai_noob/DAO/TableOrderDAO.dart';
+import 'package:hai_noob/DAO/TableLocalDAO.dart';
+import 'package:hai_noob/DB/Database.dart';
+import 'package:hai_noob/Model/Cart.dart';
+import 'package:hai_noob/Model/TableLocal.dart';
+import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
+import 'package:moor/moor.dart';
+import 'package:moor/src/runtime/data_class.dart' as moorRuntime;
+
+class EditTableScreenArgs {
+  final int tableId;
+
+  EditTableScreenArgs(this.tableId);
+}
+
+class EditTableController extends GetxController {
+  final EditTableScreenArgs args = Get.arguments;
+  late final TableOrderDAO tableOrderDAO;
+  final tableLocalDAO = Get.find<TableLocalDAO>();
+  final nameC = TextEditingController();
+  final orderC = TextEditingController();
+
+  @override
+  void onInit() async {
+    try {
+      super.onInit();
+
+      var db = Get.find<AppDatabase>();
+      tableOrderDAO = TableOrderDAO(db);
+
+      final table = await tableOrderDAO.findTableById(args.tableId);
+      if (table == null) {
+        return Utils.showSnackBar('Lỗi', 'Bàn không tìm thấy');
+      }
+
+      nameC.text = table.name;
+      orderC.text = table.order.toString();
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+    }
+  }
+
+  void onSave() async {
+    try {
+      String name = nameC.text;
+      int? order = int.tryParse(orderC.text);
+
+      if (name.length == 0)
+        return Utils.showSnackBar('Lỗi', 'Tên không được để trống');
+      if (order == null)
+        return Utils.showSnackBar('Lỗi', 'Thứ tự không hợp lệ');
+
+      // Update on DB
+      final TableOrdersCompanion tableUpdate = TableOrdersCompanion(
+        name: moorRuntime.Value(name),
+        order: moorRuntime.Value(order),
+      );
+      int tableID = await tableOrderDAO.updateTable(args.tableId, tableUpdate);
+
+      // Update to table locaL
+      await tableLocalDAO.updateTable(args.tableId, name: name, order: order);
+
+      Get.back();
+      Utils.showSnackBar('Thành công', 'Lưu bàn \'$name\' thành công');
+      orderC.text = (int.parse(orderC.text) + 1).toString();
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', 'Có lỗi xảy ra:\n ${err.toString()}');
+    }
+  }
+}

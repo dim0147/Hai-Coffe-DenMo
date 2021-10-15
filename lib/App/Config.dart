@@ -12,6 +12,7 @@ import 'package:hai_noob/Controller/Item/CreateItemController.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Controller/Table/EditTableController.dart';
 import 'package:hai_noob/Controller/Table/ListTableController.dart';
 import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
 import 'package:hai_noob/Controller/Table/TablePanelController.dart';
@@ -26,6 +27,7 @@ import 'package:hai_noob/Screen/Menu/CartScreen.dart';
 import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderCouponScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
+import 'package:hai_noob/Screen/Table/EditTableScreen.dart';
 import 'package:hai_noob/Screen/Table/ListTableScreen.dart';
 import 'package:hai_noob/Screen/Table/TableLocalInfoScreen.dart';
 import 'package:hai_noob/Screen/Table/TablePanelScreen.dart';
@@ -193,6 +195,13 @@ class AppConfig {
       page: () => AddTableScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => AddTableController());
+      }),
+    ),
+    GetPage(
+      name: '/table/edit',
+      page: () => EditTableScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => EditTableController());
       }),
     ),
     GetPage(

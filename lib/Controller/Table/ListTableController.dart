@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Table/EditTableController.dart';
 import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -25,7 +26,11 @@ class ListTableController extends GetxController
     change(listTables, status: RxStatus.success());
   }
 
-  void onEditListItem(int itemId) async {}
+  void onEditListItem(int itemId) async {
+    final EditTableScreenArgs args = EditTableScreenArgs(itemId);
+    await Get.toNamed('/table/edit', arguments: args);
+    change(listTables, status: RxStatus.success());
+  }
 
   void onRemoveListItem(int itemId) async {
     try {
