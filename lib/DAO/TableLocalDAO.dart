@@ -8,6 +8,11 @@ class TableLocalDAO {
   TableLocalDAO({required Box<TableLocal> box}) : _box = box;
 
   // Query
+  // https://stackoverflow.com/questions/68609519/flutter-how-to-bind-hive-watching-into-rxlist-object-in-getx
+  Stream<List<TableLocal>> getTableLocalsStream() {
+    return _box.watch().map((event) => getAllWithList());
+  }
+
   Map<dynamic, TableLocal> getAllWithMap() {
     return _box.toMap();
   }
@@ -76,8 +81,7 @@ class TableLocalDAO {
     return _updateTable(table);
   }
 
-  // https://stackoverflow.com/questions/68609519/flutter-how-to-bind-hive-watching-into-rxlist-object-in-getx
-  Stream<List<TableLocal>> getTableLocalsStream() {
-    return _box.watch().map((event) => getAllWithList());
+  Future<void> removeTable(int tableID) {
+    return _box.delete(tableID);
   }
 }

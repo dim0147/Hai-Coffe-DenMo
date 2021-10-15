@@ -2,21 +2,19 @@ import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/TableOrders.dart';
 import 'package:moor/moor.dart';
 
-part 'TableDAO.g.dart';
+part 'TableOrderDAO.g.dart';
 
 @UseDao(tables: [TableOrders])
 class TableOrderDAO extends DatabaseAccessor<AppDatabase>
     with _$TableOrderDAOMixin {
   TableOrderDAO(AppDatabase db) : super(db);
 
+  /*
+    QUERY
+  */
   Future<List<TableOrder>> getAllTableOrders() {
     final query = select(tableOrders).get();
     return query;
-  }
-
-  Future<int> createTable(String name, int order) {
-    final table = TableOrdersCompanion.insert(name: name, order: order);
-    return into(tableOrders).insert(table);
   }
 
   Future<TableOrder?> findTableByName(String name) {
@@ -29,5 +27,21 @@ class TableOrderDAO extends DatabaseAccessor<AppDatabase>
     final query = selectOnly(tableOrders)..addColumns([highestOrder]);
 
     return query.map((row) => row.read(highestOrder)).getSingleOrNull();
+  }
+
+  /*
+    CREATE
+  */
+  Future<int> createTable(String name, int order) {
+    final table = TableOrdersCompanion.insert(name: name, order: order);
+    return into(tableOrders).insert(table);
+  }
+
+  /*
+    Remove
+  */
+
+  Future<int> removeTable(int tableId) {
+    return (delete(tableOrders)..where((tbl) => tbl.id.equals(tableId))).go();
   }
 }
