@@ -6,6 +6,7 @@ import 'package:hai_noob/Controller/Item/EditItemController.dart';
 import 'package:hai_noob/Controller/Item/ListItemController.dart';
 import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderSuccessController.dart';
+import 'package:hai_noob/Controller/Phieu/CreatePhieuController.dart';
 import 'package:hai_noob/Controller/Table/AddTableController.dart';
 import 'package:hai_noob/Controller/Menu/CartController.dart';
 import 'package:hai_noob/Controller/Item/CreateItemController.dart';
@@ -22,6 +23,7 @@ import 'package:hai_noob/Screen/Item/EditItemScreen.dart';
 import 'package:hai_noob/Screen/Item/ListItemScreen.dart';
 import 'package:hai_noob/Screen/Menu/AddSpecialItemScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderSuccessScreen.dart';
+import 'package:hai_noob/Screen/Phieu/CreatePhieuScreen.dart';
 import 'package:hai_noob/Screen/Table/AddTableScreen.dart';
 import 'package:hai_noob/Screen/Menu/CartScreen.dart';
 import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
@@ -209,6 +211,13 @@ class AppConfig {
       page: () => TableLocalInfoScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => TableLocalInfoController());
+      }),
+    ),
+    GetPage(
+      name: '/phieu/add',
+      page: () => CreatePhieuScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => CreatePhieuController());
       }),
     ),
   ];

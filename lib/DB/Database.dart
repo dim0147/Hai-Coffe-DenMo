@@ -1,5 +1,6 @@
 // <Implement>
 import 'package:flutter/foundation.dart';
+import 'package:hai_noob/Model/Phieu.dart';
 import 'package:moor/ffi.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
@@ -40,7 +41,8 @@ LazyDatabase _openConnection() {
   Bills,
   BillItems,
   BillItemProperties,
-  BillCoupons
+  BillCoupons,
+  Phieus,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());

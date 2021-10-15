@@ -162,6 +162,85 @@ Drawer NavigateMenu() {
             color: AppConfig.HEADER_COLOR,
           ),
 
+          // Phieu
+          Column(
+            children: [
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.confirmation_num,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Phiếu',
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.add,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Tạo phiếu',
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Get.offAllNamed('/phieu/add');
+                },
+              ),
+              ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.receipt_long,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Xem phiếu',
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Get.offAllNamed('/phieu/list');
+                },
+              ),
+            ],
+          ),
+
+          Divider(
+            color: AppConfig.HEADER_COLOR,
+          ),
+
           // CATEGORY
           Column(
             children: [

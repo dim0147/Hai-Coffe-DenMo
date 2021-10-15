@@ -2753,6 +2753,290 @@ class $BillCouponsTable extends BillCoupons
       const EnumIndexConverter<CouponType>(CouponType.values);
 }
 
+class Phieu extends DataClass implements Insertable<Phieu> {
+  final int id;
+  final double amount;
+  final String reason;
+  final PhieuType type;
+  final DateTime createdAt;
+  Phieu(
+      {required this.id,
+      required this.amount,
+      required this.reason,
+      required this.type,
+      required this.createdAt});
+  factory Phieu.fromData(Map<String, dynamic> data, GeneratedDatabase db,
+      {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return Phieu(
+      id: const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
+      amount: const RealType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}amount'])!,
+      reason: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}reason'])!,
+      type: $PhieusTable.$converter0.mapToDart(const IntType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}type']))!,
+      createdAt: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}created_at'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<int>(id);
+    map['amount'] = Variable<double>(amount);
+    map['reason'] = Variable<String>(reason);
+    {
+      final converter = $PhieusTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type)!);
+    }
+    map['created_at'] = Variable<DateTime>(createdAt);
+    return map;
+  }
+
+  PhieusCompanion toCompanion(bool nullToAbsent) {
+    return PhieusCompanion(
+      id: Value(id),
+      amount: Value(amount),
+      reason: Value(reason),
+      type: Value(type),
+      createdAt: Value(createdAt),
+    );
+  }
+
+  factory Phieu.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return Phieu(
+      id: serializer.fromJson<int>(json['id']),
+      amount: serializer.fromJson<double>(json['amount']),
+      reason: serializer.fromJson<String>(json['reason']),
+      type: serializer.fromJson<PhieuType>(json['type']),
+      createdAt: serializer.fromJson<DateTime>(json['createdAt']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= moorRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<int>(id),
+      'amount': serializer.toJson<double>(amount),
+      'reason': serializer.toJson<String>(reason),
+      'type': serializer.toJson<PhieuType>(type),
+      'createdAt': serializer.toJson<DateTime>(createdAt),
+    };
+  }
+
+  Phieu copyWith(
+          {int? id,
+          double? amount,
+          String? reason,
+          PhieuType? type,
+          DateTime? createdAt}) =>
+      Phieu(
+        id: id ?? this.id,
+        amount: amount ?? this.amount,
+        reason: reason ?? this.reason,
+        type: type ?? this.type,
+        createdAt: createdAt ?? this.createdAt,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('Phieu(')
+          ..write('id: $id, ')
+          ..write('amount: $amount, ')
+          ..write('reason: $reason, ')
+          ..write('type: $type, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => $mrjf($mrjc(
+      id.hashCode,
+      $mrjc(amount.hashCode,
+          $mrjc(reason.hashCode, $mrjc(type.hashCode, createdAt.hashCode)))));
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is Phieu &&
+          other.id == this.id &&
+          other.amount == this.amount &&
+          other.reason == this.reason &&
+          other.type == this.type &&
+          other.createdAt == this.createdAt);
+}
+
+class PhieusCompanion extends UpdateCompanion<Phieu> {
+  final Value<int> id;
+  final Value<double> amount;
+  final Value<String> reason;
+  final Value<PhieuType> type;
+  final Value<DateTime> createdAt;
+  const PhieusCompanion({
+    this.id = const Value.absent(),
+    this.amount = const Value.absent(),
+    this.reason = const Value.absent(),
+    this.type = const Value.absent(),
+    this.createdAt = const Value.absent(),
+  });
+  PhieusCompanion.insert({
+    this.id = const Value.absent(),
+    required double amount,
+    required String reason,
+    required PhieuType type,
+    this.createdAt = const Value.absent(),
+  })  : amount = Value(amount),
+        reason = Value(reason),
+        type = Value(type);
+  static Insertable<Phieu> custom({
+    Expression<int>? id,
+    Expression<double>? amount,
+    Expression<String>? reason,
+    Expression<PhieuType>? type,
+    Expression<DateTime>? createdAt,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (amount != null) 'amount': amount,
+      if (reason != null) 'reason': reason,
+      if (type != null) 'type': type,
+      if (createdAt != null) 'created_at': createdAt,
+    });
+  }
+
+  PhieusCompanion copyWith(
+      {Value<int>? id,
+      Value<double>? amount,
+      Value<String>? reason,
+      Value<PhieuType>? type,
+      Value<DateTime>? createdAt}) {
+    return PhieusCompanion(
+      id: id ?? this.id,
+      amount: amount ?? this.amount,
+      reason: reason ?? this.reason,
+      type: type ?? this.type,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<int>(id.value);
+    }
+    if (amount.present) {
+      map['amount'] = Variable<double>(amount.value);
+    }
+    if (reason.present) {
+      map['reason'] = Variable<String>(reason.value);
+    }
+    if (type.present) {
+      final converter = $PhieusTable.$converter0;
+      map['type'] = Variable<int>(converter.mapToSql(type.value)!);
+    }
+    if (createdAt.present) {
+      map['created_at'] = Variable<DateTime>(createdAt.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('PhieusCompanion(')
+          ..write('id: $id, ')
+          ..write('amount: $amount, ')
+          ..write('reason: $reason, ')
+          ..write('type: $type, ')
+          ..write('createdAt: $createdAt')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $PhieusTable extends Phieus with TableInfo<$PhieusTable, Phieu> {
+  final GeneratedDatabase _db;
+  final String? _alias;
+  $PhieusTable(this._db, [this._alias]);
+  final VerificationMeta _idMeta = const VerificationMeta('id');
+  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+      'id', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
+  final VerificationMeta _amountMeta = const VerificationMeta('amount');
+  late final GeneratedColumn<double?> amount = GeneratedColumn<double?>(
+      'amount', aliasedName, false,
+      typeName: 'REAL', requiredDuringInsert: true);
+  final VerificationMeta _reasonMeta = const VerificationMeta('reason');
+  late final GeneratedColumn<String?> reason = GeneratedColumn<String?>(
+      'reason', aliasedName, false,
+      typeName: 'TEXT', requiredDuringInsert: true);
+  final VerificationMeta _typeMeta = const VerificationMeta('type');
+  late final GeneratedColumnWithTypeConverter<PhieuType, int?> type =
+      GeneratedColumn<int?>('type', aliasedName, false,
+              typeName: 'INTEGER', requiredDuringInsert: true)
+          .withConverter<PhieuType>($PhieusTable.$converter0);
+  final VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  late final GeneratedColumn<DateTime?> createdAt = GeneratedColumn<DateTime?>(
+      'created_at', aliasedName, false,
+      typeName: 'INTEGER',
+      requiredDuringInsert: false,
+      defaultValue: Constant(DateTime.now()));
+  @override
+  List<GeneratedColumn> get $columns => [id, amount, reason, type, createdAt];
+  @override
+  String get aliasedName => _alias ?? 'phieus';
+  @override
+  String get actualTableName => 'phieus';
+  @override
+  VerificationContext validateIntegrity(Insertable<Phieu> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('amount')) {
+      context.handle(_amountMeta,
+          amount.isAcceptableOrUnknown(data['amount']!, _amountMeta));
+    } else if (isInserting) {
+      context.missing(_amountMeta);
+    }
+    if (data.containsKey('reason')) {
+      context.handle(_reasonMeta,
+          reason.isAcceptableOrUnknown(data['reason']!, _reasonMeta));
+    } else if (isInserting) {
+      context.missing(_reasonMeta);
+    }
+    context.handle(_typeMeta, const VerificationResult.success());
+    if (data.containsKey('created_at')) {
+      context.handle(_createdAtMeta,
+          createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  Phieu map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return Phieu.fromData(data, _db,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $PhieusTable createAlias(String alias) {
+    return $PhieusTable(_db, alias);
+  }
+
+  static TypeConverter<PhieuType, int> $converter0 =
+      const EnumIndexConverter<PhieuType>(PhieuType.values);
+}
+
 abstract class _$AppDatabase extends GeneratedDatabase {
   _$AppDatabase(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $UsersTable users = $UsersTable(this);
@@ -2766,6 +3050,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $BillItemPropertiesTable billItemProperties =
       $BillItemPropertiesTable(this);
   late final $BillCouponsTable billCoupons = $BillCouponsTable(this);
+  late final $PhieusTable phieus = $PhieusTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
@@ -2779,6 +3064,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
         bills,
         billItems,
         billItemProperties,
-        billCoupons
+        billCoupons,
+        phieus
       ];
 }
