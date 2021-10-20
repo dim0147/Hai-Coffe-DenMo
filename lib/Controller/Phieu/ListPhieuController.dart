@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/PhieuDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Phieu.dart';
@@ -51,5 +52,12 @@ class ListPhieuController extends GetxController {
     filterType.value = value;
   }
 
-  void onRemoveListItem(int phieuId) async {}
+  void onRemoveListItem(int phieuId) async {
+    try {
+      await phieuDAO.removePhieuById(phieuId);
+      listPhieu.removeWhere((e) => e.id == phieuId);
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+    }
+  }
 }
