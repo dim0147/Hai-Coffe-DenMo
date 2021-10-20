@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Model/ConfigGlobal.dart';
+import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
@@ -116,5 +117,10 @@ class Utils {
     } on TypeError catch (_) {
       return null;
     }
+  }
+
+  static String dateToDateWithTime(DateTime date) {
+    final f = new DateFormat('dd-MM-yyyy hh:mm a');
+    return f.format(date);
   }
 }

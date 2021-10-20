@@ -10,6 +10,16 @@ part 'PhieuDAO.g.dart';
 class PhieuDAO extends DatabaseAccessor<AppDatabase> with _$PhieuDAOMixin {
   PhieuDAO(AppDatabase db) : super(db);
 
+  Future<List<Phieu>> getPhieuBetweenDays(
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    return (select(db.phieus)
+          ..where((tbl) => tbl.createdAt.isBetweenValues(startDate, endDate))
+          ..orderBy([(t) => OrderingTerm.desc(t.createdAt)]))
+        .get();
+  }
+
   Future<int> addNewPhieu(PhieusCompanion phieu) {
     return into(db.phieus).insert(phieu);
   }

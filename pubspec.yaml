@@ -35,6 +35,10 @@ dependencies:
   collection: ^1.15.0
   extended_masked_text: ^2.3.0
   flutter_slidable: ^0.6.0
+  syncfusion_flutter_datepicker: ^19.3.46
+  flutter_localizations: 
+    sdk: flutter         
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:

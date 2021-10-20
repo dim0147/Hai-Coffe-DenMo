@@ -2985,7 +2985,7 @@ class $PhieusTable extends Phieus with TableInfo<$PhieusTable, Phieu> {
       'created_at', aliasedName, false,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      clientDefault: () => DateTime.now());
   @override
   List<GeneratedColumn> get $columns => [id, amount, reason, type, createdAt];
   @override

@@ -9,6 +9,7 @@ import 'Screen/StartupScreen.dart';
 import 'Blinding/SpashBlinding.dart';
 
 import 'Controller/LoginController.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());
@@ -19,6 +20,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('vi'), // English, no country code
+      ],
+      locale: const Locale('vi'),
       theme: ThemeData(
         fontFamily: 'QuickSand',
       ).copyWith(

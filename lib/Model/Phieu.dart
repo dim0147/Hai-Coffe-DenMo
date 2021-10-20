@@ -11,5 +11,5 @@ class Phieus extends Table {
   TextColumn get reason => text()();
   IntColumn get type => intEnum<PhieuType>()();
   DateTimeColumn get createdAt =>
-      dateTime().withDefault(Constant(DateTime.now()))();
+      dateTime().clientDefault(() => DateTime.now())();
 }
