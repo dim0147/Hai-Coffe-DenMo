@@ -51,7 +51,7 @@ class DateRangeSelected extends GetView<ListPhieuController> {
           TextButton.icon(
             onPressed: () => controller
                 .setShowDateRangePicker(!controller.showDateRangePicker.value),
-            icon: Icon(Icons.expand),
+            icon: Icon(Icons.date_range),
             label: Text(
               'Chọn ngày',
             ),

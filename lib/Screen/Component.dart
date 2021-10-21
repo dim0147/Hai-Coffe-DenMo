@@ -175,7 +175,7 @@ Drawer NavigateMenu() {
                     children: [
                       WidgetSpan(
                         child: Icon(
-                          Icons.chair_alt,
+                          Icons.receipt,
                           color: AppConfig.HEADER_COLOR,
                         ),
                       ),
@@ -196,7 +196,7 @@ Drawer NavigateMenu() {
                     children: [
                       WidgetSpan(
                         child: Icon(
-                          Icons.edit,
+                          Icons.receipt_outlined,
                           color: AppConfig.HEADER_COLOR,
                         ),
                       ),

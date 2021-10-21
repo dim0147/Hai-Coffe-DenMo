@@ -5,7 +5,15 @@ import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Phieu.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
+class ListPhieuScreenArgs {
+  final DateTime startDate;
+  final DateTime endDate;
+
+  ListPhieuScreenArgs(this.startDate, this.endDate);
+}
+
 class ListPhieuController extends GetxController {
+  final ListPhieuScreenArgs? args = Get.arguments;
   final AppDatabase appDb = Get.find<AppDatabase>();
   late final PhieuDAO phieuDAO;
 
@@ -16,10 +24,25 @@ class ListPhieuController extends GetxController {
   final RxList<Phieu> listPhieu = <Phieu>[].obs;
   final Rxn<PhieuType> filterType = Rxn<PhieuType>();
 
+  Future queryListBetweenDay(DateTime startDate, DateTime endDate) async {
+    final phieus = await phieuDAO.getPhieuBetweenDays(startDate, endDate);
+    listPhieu.assignAll(phieus);
+  }
+
   @override
   void onInit() {
     super.onInit();
     phieuDAO = PhieuDAO(appDb);
+
+    DateTime startDate = Utils.getCurrentDay();
+    DateTime endDate = Utils.getNextDay();
+    // Query today
+    if (args != null) {}
+
+    final PickerDateRange pickerDateRange = PickerDateRange(startDate, endDate);
+    dateRangePickerC.selectedRange = pickerDateRange;
+    queryListBetweenDay(startDate, endDate);
+    return;
   }
 
   void setShowDateRangePicker(bool value) {
@@ -37,8 +60,7 @@ class ListPhieuController extends GetxController {
     if (endDate == null || endDate == startDate)
       endDate = startDate.add(Duration(hours: Duration.hoursPerDay));
 
-    final phieus = await phieuDAO.getPhieuBetweenDays(startDate, endDate);
-    listPhieu.assignAll(phieus);
+    await queryListBetweenDay(startDate, endDate);
 
     setShowDateRangePicker(false);
   }

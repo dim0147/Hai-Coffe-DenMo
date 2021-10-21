@@ -120,6 +120,27 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
     return convertQueryResultToListBillEntity(queryResult);
   }
 
+  Future<BillEntity?> getById(int billId) async {
+    final List<TypedResult> queryResult =
+        await (select(db.bills)..where((tbl) => tbl.id.equals(billId))).join([
+      leftOuterJoin(
+        db.billItems,
+        db.billItems.billId.equalsExp(db.bills.id),
+      ),
+      leftOuterJoin(
+        db.billItemProperties,
+        db.billItemProperties.billItemId.equalsExp(db.billItems.id),
+      ),
+      leftOuterJoin(
+        db.billCoupons,
+        db.billCoupons.billId.equalsExp(db.bills.id),
+      ),
+    ]).get();
+    final bills = convertQueryResultToListBillEntity(queryResult);
+    if (bills.length == 0) return null;
+    return bills[0];
+  }
+
   Future<int> createBill(
     Cart cart,
     BillPayment paymentType,

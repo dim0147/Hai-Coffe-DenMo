@@ -30,6 +30,7 @@ class ListOrderScreen extends GetView<ListOrderController> {
         body: Column(
           children: [
             DateRangeSelected(),
+            SearchBar(),
             TotalDisplay(),
             ListBill(),
           ],
@@ -52,7 +53,7 @@ class DateRangeSelected extends GetView<ListOrderController> {
           TextButton.icon(
             onPressed: () => controller
                 .setShowDateRangePicker(!controller.showDateRangePicker.value),
-            icon: Icon(Icons.expand),
+            icon: Icon(Icons.date_range),
             label: Text(
               'Chọn ngày',
             ),
@@ -76,6 +77,23 @@ class DateRangeSelected extends GetView<ListOrderController> {
   }
 }
 
+class SearchBar extends GetView<ListOrderController> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      child: TextField(
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          labelText: 'Nhập Bill ID...',
+          prefixIcon: Icon(Icons.search),
+        ),
+        onChanged: controller.onSearchKeyword,
+      ),
+    );
+  }
+}
+
 class TotalDisplay extends GetView<ListOrderController> {
   const TotalDisplay({
     Key? key,
@@ -91,7 +109,7 @@ class TotalDisplay extends GetView<ListOrderController> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text('Tổng chi phí: ${totalPriceAll.toPrecision(2)}đ'),
+            Text('Tổng cộng: ${totalPriceAll.toPrecision(2)}đ'),
           ],
         );
       },

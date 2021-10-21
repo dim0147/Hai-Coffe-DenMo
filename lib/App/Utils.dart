@@ -123,4 +123,15 @@ class Utils {
     final f = new DateFormat('dd-MM-yyyy hh:mm a');
     return f.format(date);
   }
+
+  static DateTime getCurrentDay() {
+    DateTime now = DateTime.now();
+    DateTime today = DateTime(now.year, now.month, now.day);
+    return today;
+  }
+
+  static DateTime getNextDay() {
+    DateTime today = getCurrentDay();
+    return today.add(Duration(hours: Duration.hoursPerDay));
+  }
 }
