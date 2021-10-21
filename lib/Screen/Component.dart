@@ -51,7 +51,8 @@ Drawer NavigateMenu() {
             ),
             onTap: () {
               final menuScreenArgs = MenuScreenArgs();
-              Get.offAllNamed('/menu', arguments: menuScreenArgs);
+              // Get.offNamed('/menu', arguments: menuScreenArgs);
+              Get.offNamed('/menu', arguments: menuScreenArgs);
             },
           ),
 
@@ -104,7 +105,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/table/');
+                  Get.offNamed('/table/');
                 },
               ),
               ListTile(
@@ -128,7 +129,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/table/add');
+                  Get.offNamed('/table/add');
                 },
               ),
               ListTile(
@@ -152,7 +153,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/table/list');
+                  Get.offNamed('/table/list');
                 },
               ),
             ],
@@ -207,7 +208,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/bill/list');
+                  Get.offNamed('/bill/list');
                 },
               ),
             ],
@@ -262,7 +263,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/phieu/add');
+                  Get.offNamed('/phieu/add');
                 },
               ),
               ListTile(
@@ -286,7 +287,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/phieu/list');
+                  Get.offNamed('/phieu/list');
                 },
               ),
             ],
@@ -342,7 +343,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/category/add');
+                  Get.offNamed('/category/add');
                 },
               ),
               ListTile(
@@ -366,7 +367,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/category/list');
+                  Get.offNamed('/category/list');
                 },
               ),
             ],
@@ -421,7 +422,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/item/add');
+                  Get.offNamed('/item/add');
                 },
               ),
               ListTile(
@@ -445,7 +446,7 @@ Drawer NavigateMenu() {
                   ),
                 ),
                 onTap: () {
-                  Get.offAllNamed('/item/list');
+                  Get.offNamed('/item/list');
                 },
               ),
             ],
