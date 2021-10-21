@@ -152,6 +152,9 @@ class ListItem extends GetView<ListOrderController> {
 
   @override
   Widget build(BuildContext context) {
+    final String couponTitle = billEntity.coupons.length > 0
+        ? 'Coupon: ${billEntity.coupons.length}'
+        : '';
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
@@ -162,8 +165,9 @@ class ListItem extends GetView<ListOrderController> {
           ),
           title: Text(
               ' ' + billEntity.bill.totalPrice.toPrecision(2).toString() + 'đ'),
-          subtitle: Text(Utils.dateToDateWithTime(billEntity.bill.createdAt)),
-          onTap: () {},
+          subtitle: Text(couponTitle),
+          trailing: Text(Utils.dateToDateWithTime(billEntity.bill.createdAt)),
+          onTap: () => controller.onClickItem(billEntity),
         ),
       ),
       secondaryActions: <Widget>[

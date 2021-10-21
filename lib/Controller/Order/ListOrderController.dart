@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Order/OrderDetailController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DAO/PhieuDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -80,6 +81,11 @@ class ListOrderController extends GetxController {
     if (bill == null) return listBill.clear();
 
     listBill.assignAll([bill]);
+  }
+
+  void onClickItem(BillEntity billEntity) {
+    final OrderDetailScreenArgs args = OrderDetailScreenArgs(billEntity);
+    Get.toNamed('/bill/detail', arguments: args);
   }
 
   void onRemoveListItem(int billId) async {
