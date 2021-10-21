@@ -1662,7 +1662,7 @@ class $BillsTable extends Bills with TableInfo<$BillsTable, Bill> {
       'created_at', aliasedName, false,
       typeName: 'INTEGER',
       requiredDuringInsert: false,
-      defaultValue: Constant(DateTime.now()));
+      clientDefault: () => DateTime.now());
   @override
   List<GeneratedColumn> get $columns =>
       [id, totalQuantities, subTotal, totalPrice, paymentType, createdAt];

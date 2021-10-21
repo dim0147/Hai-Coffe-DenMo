@@ -14,7 +14,7 @@ class ListOrderController extends GetxController {
   final DateRangePickerController dateRangePickerC =
       DateRangePickerController();
 
-  final RxList<Bill> listBill = <Bill>[].obs;
+  final RxList<BillEntity> listBill = <BillEntity>[].obs;
 
   @override
   void onInit() {
@@ -37,8 +37,8 @@ class ListOrderController extends GetxController {
     if (endDate == null || endDate == startDate)
       endDate = startDate.add(Duration(hours: Duration.hoursPerDay));
 
-    // final phieus = await billDAO.getPhieuBetweenDays(startDate, endDate);
-    // listBill.assignAll(phieus);
+    final bills = await billDAO.getBillBetweenDay(startDate, endDate);
+    listBill.assignAll(bills);
 
     setShowDateRangePicker(false);
   }
@@ -48,10 +48,10 @@ class ListOrderController extends GetxController {
     setShowDateRangePicker(false);
   }
 
-  void onRemoveListItem(int phieuId) async {
+  void onRemoveListItem(int billId) async {
     try {
-      // await billDAO.removePhieuById(phieuId);
-      // listPhieu.removeWhere((e) => e.id == phieuId);
+      await billDAO.removeById(billId);
+      listBill.removeWhere((e) => e.bill.id == billId);
     } catch (err) {
       Utils.showSnackBar('Lỗi', err.toString());
     }

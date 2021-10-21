@@ -11,7 +11,7 @@ class Bills extends Table {
   RealColumn get totalPrice => real()();
   IntColumn get paymentType => intEnum<BillPayment>()();
   DateTimeColumn get createdAt =>
-      dateTime().withDefault(Constant(DateTime.now()))();
+      dateTime().clientDefault(() => DateTime.now())();
 }
 
 // One bill have many items

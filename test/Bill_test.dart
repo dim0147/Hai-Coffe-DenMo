@@ -9,8 +9,6 @@ void main() {
 
     final BillDAO billDAO = BillDAO(appDb);
 
-    final list = await billDAO.getBillBetweenDay();
-
     var ad;
   });
 }

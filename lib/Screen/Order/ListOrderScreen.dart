@@ -5,6 +5,7 @@ import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Order/ListOrderController.dart';
 import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
+import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Phieu.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -23,7 +24,7 @@ class ListOrderScreen extends GetView<ListOrderController> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tất cả phiếu'),
+          title: Text('Tất cả bill'),
         ),
         drawer: NavigateMenu(),
         body: Column(
@@ -84,12 +85,13 @@ class TotalDisplay extends GetView<ListOrderController> {
   Widget build(BuildContext context) {
     return Obx(
       () {
-        final double totalAll = 500;
+        final double totalPriceAll = controller.listBill
+            .fold(0.0, (pre, cur) => pre + cur.bill.totalPrice);
 
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text('Tổng chi phí: ${totalAll.toPrecision(2)}đ'),
+            Text('Tổng chi phí: ${totalPriceAll.toPrecision(2)}đ'),
           ],
         );
       },
@@ -113,7 +115,7 @@ class ListBill extends GetView<ListOrderController> {
           return ListView.builder(
             itemCount: controller.listBill.length,
             itemBuilder: (c, i) => ListItem(
-              bill: controller.listBill[i],
+              billEntity: controller.listBill[i],
             ),
           );
         },
@@ -123,11 +125,11 @@ class ListBill extends GetView<ListOrderController> {
 }
 
 class ListItem extends GetView<ListOrderController> {
-  final Bill bill;
+  final BillEntity billEntity;
 
   const ListItem({
     Key? key,
-    required this.bill,
+    required this.billEntity,
   }) : super(key: key);
 
   @override
@@ -138,11 +140,12 @@ class ListItem extends GetView<ListOrderController> {
       child: Container(
         child: ListTile(
           leading: CircleAvatar(
-            child: Text(bill.id.toString()),
+            child: Text(billEntity.bill.id.toString()),
           ),
-          title: Text(bill.totalPrice.toString()),
-          subtitle: Text(Utils.dateToDateWithTime(bill.createdAt)),
-          // trailing: trailingText,
+          title: Text(
+              ' ' + billEntity.bill.totalPrice.toPrecision(2).toString() + 'đ'),
+          subtitle: Text(Utils.dateToDateWithTime(billEntity.bill.createdAt)),
+          onTap: () {},
         ),
       ),
       secondaryActions: <Widget>[
@@ -150,7 +153,7 @@ class ListItem extends GetView<ListOrderController> {
           caption: 'Xoá',
           color: Colors.red,
           icon: Icons.delete,
-          onTap: () => controller.onRemoveListItem(bill.id),
+          onTap: () => controller.onRemoveListItem(billEntity.bill.id),
         ),
       ],
     );

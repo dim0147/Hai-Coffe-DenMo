@@ -162,6 +162,61 @@ Drawer NavigateMenu() {
             color: AppConfig.HEADER_COLOR,
           ),
 
+          // Bill
+          Column(
+            children: [
+              Center(
+                child: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.chair_alt,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Bill',
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              ListTile(
+                title: RichText(
+                  text: TextSpan(
+                    style: TextStyle(
+                        color: AppConfig.HEADER_COLOR,
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold),
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.edit,
+                          color: AppConfig.HEADER_COLOR,
+                        ),
+                      ),
+                      TextSpan(
+                        text: ' Xem Bill',
+                      )
+                    ],
+                  ),
+                ),
+                onTap: () {
+                  Get.offAllNamed('/bill/list');
+                },
+              ),
+            ],
+          ),
+
+          Divider(
+            color: AppConfig.HEADER_COLOR,
+          ),
+
           // Phieu
           Column(
             children: [

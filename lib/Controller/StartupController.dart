@@ -65,7 +65,7 @@ class StartupController extends GetxController with StateMixin<void> {
   void testCase() async {
     final appDb = Get.find<AppDatabase>();
     final billDAO = BillDAO(appDb);
-    final ad = await billDAO.getBillBetweenDay();
+    // final ad = await billDAO.getBillBetweenDay();
 
     var ada;
   }

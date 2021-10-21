@@ -5,6 +5,7 @@ import 'package:hai_noob/Controller/Category/ListCategoryController.dart';
 import 'package:hai_noob/Controller/Item/EditItemController.dart';
 import 'package:hai_noob/Controller/Item/ListItemController.dart';
 import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
+import 'package:hai_noob/Controller/Order/ListOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderSuccessController.dart';
 import 'package:hai_noob/Controller/Phieu/CreatePhieuController.dart';
 import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
@@ -23,6 +24,7 @@ import 'package:hai_noob/Screen/Category/ListCategoryScreen.dart';
 import 'package:hai_noob/Screen/Item/EditItemScreen.dart';
 import 'package:hai_noob/Screen/Item/ListItemScreen.dart';
 import 'package:hai_noob/Screen/Menu/AddSpecialItemScreen.dart';
+import 'package:hai_noob/Screen/Order/ListOrderScreen.dart';
 import 'package:hai_noob/Screen/Order/PlaceOrderSuccessScreen.dart';
 import 'package:hai_noob/Screen/Phieu/CreatePhieuScreen.dart';
 import 'package:hai_noob/Screen/Phieu/ListPhieuScreen.dart';
@@ -157,6 +159,13 @@ class AppConfig {
       page: () => CartScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => CartController());
+      }),
+    ),
+    GetPage(
+      name: '/bill/list',
+      page: () => ListOrderScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => ListOrderController());
       }),
     ),
     GetPage(

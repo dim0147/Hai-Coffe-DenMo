@@ -94,8 +94,16 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
     }).toList();
   }
 
-  Future getBillBetweenDay() async {
-    final List<TypedResult> queryResult = await select(db.bills).join([
+  Future<List<BillEntity>> getBillBetweenDay(
+      DateTime startDay, DateTime endDay) async {
+    final List<TypedResult> queryResult = await (select(db.bills)
+          ..where((tbl) => tbl.createdAt.isBetweenValues(startDay, endDay))
+          ..orderBy(
+            [
+              (t) => OrderingTerm.desc(t.createdAt),
+            ],
+          ))
+        .join([
       leftOuterJoin(
         db.billItems,
         db.billItems.billId.equalsExp(db.bills.id),
@@ -178,6 +186,29 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
       await batch((batch) => batch.insertAll(billCoupons, listCoupon));
 
       return billId;
+    });
+  }
+
+  Future removeById(int billId) {
+    return transaction(() async {
+      final billItem = await (select(db.billItems)
+            ..where((tbl) => tbl.billId.equals(billId)))
+          .get();
+      final billItemIds = billItem.map((e) => e.id);
+
+      await (delete(db.billItemProperties)
+            ..where((tbl) => tbl.billItemId.isIn(billItemIds)))
+          .go();
+
+      await (delete(db.billItems)..where((tbl) => tbl.billId.equals(billId)))
+          .go();
+
+      await (delete(db.billCoupons)..where((tbl) => tbl.billId.equals(billId)))
+          .go();
+
+      await (delete(db.bills)..where((tbl) => tbl.id.equals(billId))).go();
+
+      return;
     });
   }
 }
