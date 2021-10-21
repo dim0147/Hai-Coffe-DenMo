@@ -23,6 +23,7 @@ class BillItems extends Table {
   RealColumn get itemPrice => real()();
   IntColumn get totalQuantity => integer()();
   RealColumn get totalPrice => real()();
+  RealColumn get totalPriceWithProperty => real()();
 }
 
 // One item have many properties, eg: Thêm đường
@@ -34,6 +35,7 @@ class BillItemProperties extends Table {
   RealColumn get propertyPrice => real()();
   IntColumn get totalQuantity => integer()();
   RealColumn get totalPrice => real()();
+  RealColumn get totalPriceMinusItemQuantity => real()();
 }
 
 // Bill can have many coupon, eg: Khuyễn mãi cho e linh

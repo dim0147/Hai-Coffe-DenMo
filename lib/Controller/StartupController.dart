@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -50,6 +51,9 @@ class StartupController extends GetxController with StateMixin<void> {
       // Redirect
       Get.offNamed(AppConfig.initRoute);
 
+      // Test case
+      // testCase();
+
       // queryTestData();
     } catch (error, stack) {
       change(null, status: RxStatus.error());
@@ -58,10 +62,16 @@ class StartupController extends GetxController with StateMixin<void> {
     }
   }
 
+  void testCase() async {
+    final appDb = Get.find<AppDatabase>();
+    final billDAO = BillDAO(appDb);
+    final ad = await billDAO.getBillBetweenDay();
+
+    var ada;
+  }
+
   void queryTestData() async {
     var db = Get.find<AppDatabase>();
-
-    // await deleteFist();
 
     var users = await db.select(db.users).get();
     var items = await db.select(db.items).get();

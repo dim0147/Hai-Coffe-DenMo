@@ -1,3 +1,4 @@
+import 'package:collection/collection.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Bill.dart';
@@ -5,9 +6,111 @@ import 'package:hai_noob/Model/Cart.dart';
 import 'package:moor/moor.dart';
 part 'BillDAO.g.dart';
 
+class EntryBillWithJoinData {
+  final Bill bill;
+  final BillItem item;
+  final BillItemPropertie? property;
+  final BillCoupon? coupon;
+
+  EntryBillWithJoinData({
+    required this.bill,
+    required this.item,
+    required this.property,
+    required this.coupon,
+  });
+}
+
+class BillItemEntity {
+  final BillItem item;
+  final List<BillItemPropertie> properties;
+
+  BillItemEntity(this.item, this.properties);
+}
+
+class BillEntity {
+  final Bill bill;
+  final List<BillItemEntity> items;
+  final List<BillCoupon> coupons;
+
+  BillEntity(this.bill, this.items, this.coupons);
+}
+
 @UseDao(tables: [Bills, BillItems, BillItemProperties, BillCoupons])
 class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
   BillDAO(AppDatabase db) : super(db);
+
+  List<BillEntity> convertQueryResultToListBillEntity(
+    List<TypedResult> queryResult,
+  ) {
+    // Convert to list entry data
+    List<EntryBillWithJoinData> listEntryData = queryResult.map((row) {
+      return EntryBillWithJoinData(
+          bill: row.readTable(db.bills),
+          item: row.readTable(db.billItems),
+          property: row.readTableOrNull(db.billItemProperties),
+          coupon: row.readTableOrNull(db.billCoupons));
+    }).toList();
+
+    // Group bill by bill id
+    Map<int, List<EntryBillWithJoinData>> billGroupBy =
+        groupBy<EntryBillWithJoinData, int>(
+            listEntryData, (EntryBillWithJoinData e) => e.bill.id);
+
+    // Convert EntryBillWithJoinData to BillEntity
+    List<BillEntity> bills = billGroupBy.entries.map((e) {
+      Bill bill = e.value[0].bill;
+
+      // Convert item with list properties  (BillItemEntity)
+      Map<int, List<EntryBillWithJoinData>> itemGroupBy =
+          groupBy(e.value, (EntryBillWithJoinData ev) => ev.item.id);
+      List<BillItemEntity> items = convertItemMapToBillItemEntity(itemGroupBy);
+
+      // Get coupon
+      List<BillCoupon> coupons = e.value
+          .map((ev) => ev.coupon)
+          .whereType<BillCoupon>()
+          .toSet()
+          .toList();
+
+      return BillEntity(bill, items, coupons);
+    }).toList();
+
+    return bills;
+  }
+
+  List<BillItemEntity> convertItemMapToBillItemEntity(
+    Map<int, List<EntryBillWithJoinData>> itemGroupBy,
+  ) {
+    return itemGroupBy.entries.map((e) {
+      BillItem item = e.value[0].item;
+      // Final property
+      List<BillItemPropertie> properties = e.value
+          .map((e) => e.property)
+          .whereType<BillItemPropertie>()
+          .toSet()
+          .toList();
+
+      return BillItemEntity(item, properties);
+    }).toList();
+  }
+
+  Future getBillBetweenDay() async {
+    final List<TypedResult> queryResult = await select(db.bills).join([
+      leftOuterJoin(
+        db.billItems,
+        db.billItems.billId.equalsExp(db.bills.id),
+      ),
+      leftOuterJoin(
+        db.billItemProperties,
+        db.billItemProperties.billItemId.equalsExp(db.billItems.id),
+      ),
+      leftOuterJoin(
+        db.billCoupons,
+        db.billCoupons.billId.equalsExp(db.bills.id),
+      ),
+    ]).get();
+    return convertQueryResultToListBillEntity(queryResult);
+  }
 
   Future<int> createBill(
     Cart cart,
@@ -34,7 +137,8 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
           itemImg: e.item.img,
           itemPrice: e.item.price,
           totalQuantity: e.totalQuantity,
-          totalPrice: e.showPriceMinusPropertiesItem(),
+          totalPrice: e.showPriceMinusItemQuantity(),
+          totalPriceWithProperty: e.totalPrice,
         );
         int billItemId = await into(billItems).insert(item);
 
@@ -50,6 +154,8 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
                   propertyPrice: p.amount,
                   totalQuantity: p.quantity,
                   totalPrice: p.showTotalPrice(),
+                  totalPriceMinusItemQuantity:
+                      p.showTotalPriceMinusItemQuantity(e.totalQuantity),
                 ))
             .toList();
         await batch((batch) => batch.insertAll(billItemProperties, properties));

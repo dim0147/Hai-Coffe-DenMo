@@ -82,14 +82,17 @@ class AppDatabase extends _$AppDatabase {
         itemName: 'Bia 333',
         itemPrice: 30.0,
         totalQuantity: 10,
-        totalPrice: 100));
+        totalPrice: 100,
+        totalPriceWithProperty: 200));
 
     into(billItemProperties).insert(BillItemPropertiesCompanion.insert(
-        billItemId: 1,
-        name: 'Thêm muối',
-        propertyPrice: 10,
-        totalQuantity: 1,
-        totalPrice: 300.00));
+      billItemId: 1,
+      name: 'Thêm muối',
+      propertyPrice: 10,
+      totalQuantity: 1,
+      totalPrice: 300.00,
+      totalPriceMinusItemQuantity: 400,
+    ));
   }
 
   void _seedData() async {

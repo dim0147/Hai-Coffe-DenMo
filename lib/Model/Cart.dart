@@ -176,7 +176,7 @@ class CartItem {
   double totalPrice;
 
   /// Equal this.quantity * this.item.price
-  double showPriceMinusPropertiesItem() {
+  double showPriceMinusItemQuantity() {
     return this.totalQuantity * this.item.price;
   }
 

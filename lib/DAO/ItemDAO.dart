@@ -143,7 +143,9 @@ class ItemsDAO extends DatabaseAccessor<AppDatabase> with _$ItemsDAOMixin {
 
     // Implement group by, return map
     final mapGroupBy = groupBy(
-        listEntryData, (EntryItemWithCategoryWithProperties e) => e.item.id);
+      listEntryData,
+      (EntryItemWithCategoryWithProperties e) => e.item.id,
+    );
 
     // Shape result into list from map
     final listData = mapGroupBy.entries.map((entry) {
