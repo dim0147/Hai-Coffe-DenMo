@@ -7,6 +7,7 @@ import 'package:hai_noob/Controller/Order/ListOrderController.dart';
 import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Model/Phieu.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
@@ -152,8 +153,10 @@ class ListItem extends GetView<ListOrderController> {
 
   @override
   Widget build(BuildContext context) {
+    final String paymentTitle =
+        billEntity.bill.paymentType == BillPayment.Card ? 'Tiền mặt' : 'Thẻ';
     final String couponTitle = billEntity.coupons.length > 0
-        ? 'Coupon: ${billEntity.coupons.length}'
+        ? '| Coupon: ${billEntity.coupons.length}'
         : '';
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
@@ -165,7 +168,7 @@ class ListItem extends GetView<ListOrderController> {
           ),
           title: Text(
               ' ' + billEntity.bill.totalPrice.toPrecision(2).toString() + 'đ'),
-          subtitle: Text(couponTitle),
+          subtitle: Text('Loại: $paymentTitle $couponTitle'),
           trailing: Text(Utils.dateToDateWithTime(billEntity.bill.createdAt)),
           onTap: () => controller.onClickItem(billEntity),
         ),

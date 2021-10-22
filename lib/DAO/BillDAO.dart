@@ -38,6 +38,52 @@ class BillEntity {
 @UseDao(tables: [Bills, BillItems, BillItemProperties, BillCoupons])
 class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
   BillDAO(AppDatabase db) : super(db);
+  Future<List<BillEntity>> getBillBetweenDay(
+      DateTime startDay, DateTime endDay) async {
+    final List<TypedResult> queryResult = await (select(db.bills)
+          ..where((tbl) => tbl.createdAt.isBetweenValues(startDay, endDay))
+          ..orderBy(
+            [
+              (t) => OrderingTerm.desc(t.createdAt),
+            ],
+          ))
+        .join([
+      leftOuterJoin(
+        db.billItems,
+        db.billItems.billId.equalsExp(db.bills.id),
+      ),
+      leftOuterJoin(
+        db.billItemProperties,
+        db.billItemProperties.billItemId.equalsExp(db.billItems.id),
+      ),
+      leftOuterJoin(
+        db.billCoupons,
+        db.billCoupons.billId.equalsExp(db.bills.id),
+      ),
+    ]).get();
+    return convertQueryResultToListBillEntity(queryResult);
+  }
+
+  Future<BillEntity?> getById(int billId) async {
+    final List<TypedResult> queryResult =
+        await (select(db.bills)..where((tbl) => tbl.id.equals(billId))).join([
+      leftOuterJoin(
+        db.billItems,
+        db.billItems.billId.equalsExp(db.bills.id),
+      ),
+      leftOuterJoin(
+        db.billItemProperties,
+        db.billItemProperties.billItemId.equalsExp(db.billItems.id),
+      ),
+      leftOuterJoin(
+        db.billCoupons,
+        db.billCoupons.billId.equalsExp(db.bills.id),
+      ),
+    ]).get();
+    final bills = convertQueryResultToListBillEntity(queryResult);
+    if (bills.length == 0) return null;
+    return bills[0];
+  }
 
   List<BillEntity> convertQueryResultToListBillEntity(
     List<TypedResult> queryResult,
@@ -92,53 +138,6 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
 
       return BillItemEntity(item, properties);
     }).toList();
-  }
-
-  Future<List<BillEntity>> getBillBetweenDay(
-      DateTime startDay, DateTime endDay) async {
-    final List<TypedResult> queryResult = await (select(db.bills)
-          ..where((tbl) => tbl.createdAt.isBetweenValues(startDay, endDay))
-          ..orderBy(
-            [
-              (t) => OrderingTerm.desc(t.createdAt),
-            ],
-          ))
-        .join([
-      leftOuterJoin(
-        db.billItems,
-        db.billItems.billId.equalsExp(db.bills.id),
-      ),
-      leftOuterJoin(
-        db.billItemProperties,
-        db.billItemProperties.billItemId.equalsExp(db.billItems.id),
-      ),
-      leftOuterJoin(
-        db.billCoupons,
-        db.billCoupons.billId.equalsExp(db.bills.id),
-      ),
-    ]).get();
-    return convertQueryResultToListBillEntity(queryResult);
-  }
-
-  Future<BillEntity?> getById(int billId) async {
-    final List<TypedResult> queryResult =
-        await (select(db.bills)..where((tbl) => tbl.id.equals(billId))).join([
-      leftOuterJoin(
-        db.billItems,
-        db.billItems.billId.equalsExp(db.bills.id),
-      ),
-      leftOuterJoin(
-        db.billItemProperties,
-        db.billItemProperties.billItemId.equalsExp(db.billItems.id),
-      ),
-      leftOuterJoin(
-        db.billCoupons,
-        db.billCoupons.billId.equalsExp(db.bills.id),
-      ),
-    ]).get();
-    final bills = convertQueryResultToListBillEntity(queryResult);
-    if (bills.length == 0) return null;
-    return bills[0];
   }
 
   Future<int> createBill(
