@@ -56,6 +56,32 @@ Drawer NavigateMenu() {
             },
           ),
 
+          // Revenue
+          ListTile(
+            title: RichText(
+              text: TextSpan(
+                style: TextStyle(
+                    color: AppConfig.HEADER_COLOR,
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+                children: [
+                  WidgetSpan(
+                    child: Icon(
+                      Icons.bar_chart,
+                      color: AppConfig.HEADER_COLOR,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' Doanh thu',
+                  )
+                ],
+              ),
+            ),
+            onTap: () {
+              Get.offNamed('/revenue');
+            },
+          ),
+
           Divider(
             color: AppConfig.HEADER_COLOR,
           ),

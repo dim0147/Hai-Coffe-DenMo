@@ -3,17 +3,18 @@ import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Model/Phieu.dart';
 import 'package:hai_noob/Model/Revenue.dart';
 import 'package:moor/moor.dart';
-part 'AnalyzeDAO.g.dart';
+part 'RevenueDAO.g.dart';
 
 @UseDao(tables: [Bills, Phieus])
 class AnalyzeDAO extends DatabaseAccessor<AppDatabase> with _$AnalyzeDAOMixin {
   AnalyzeDAO(AppDatabase db) : super(db);
 
-  Future getRevenue(DateTime startDate, DateTime endDate) async {
+  Future<Revenue> getRevenue(DateTime startDate, DateTime endDate) async {
     BillRevenue? billRevenue;
     PhieuRevenue? phieuThuRevenue;
     PhieuRevenue? phieuChiRevenue;
 
+    // Init task
     final Future<BillRevenue> billRevenueTask =
         getBillRevenue(startDate, endDate).then((value) => billRevenue = value);
 
@@ -25,21 +26,25 @@ class AnalyzeDAO extends DatabaseAccessor<AppDatabase> with _$AnalyzeDAOMixin {
         getPhieuRevenue(startDate, endDate, PhieuType.PHIEU_THU)
             .then((value) => phieuThuRevenue = value);
 
+    // Run task
     await Future.wait<void>(
         [billRevenueTask, phieuChiRevenueTask, phieuThuRevenueTask]);
 
+    // Checking
     if (billRevenue == null ||
         phieuThuRevenue == null ||
         phieuChiRevenue == null)
       return Future.error('Một trong những task get Revenue is null');
 
+    // Gerenate data
     final Revenue revenue = Revenue(
       billRevenue as BillRevenue,
       phieuThuRevenue as PhieuRevenue,
       phieuChiRevenue as PhieuRevenue,
+      startDate,
+      endDate,
     );
-
-    var ad;
+    return revenue;
   }
 
   Future<BillRevenue> getBillRevenue(
@@ -56,8 +61,6 @@ class AnalyzeDAO extends DatabaseAccessor<AppDatabase> with _$AnalyzeDAOMixin {
     final BillRevenue billRevenue = BillRevenue(
       queryResult.read(amountOfBills),
       queryResult.read(totalRevenue),
-      startDate,
-      endDate,
     );
 
     return billRevenue;
@@ -79,8 +82,6 @@ class AnalyzeDAO extends DatabaseAccessor<AppDatabase> with _$AnalyzeDAOMixin {
     final PhieuRevenue phieuRevenue = PhieuRevenue(
       queryResult.read(ammountOfPhieus),
       queryResult.read(totalRevenue),
-      startDate,
-      endDate,
       phieuType,
     );
 

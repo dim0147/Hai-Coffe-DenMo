@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/DAO/AnalyzeDAO.dart';
+import 'package:hai_noob/DAO/RevenueDAO.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -54,7 +54,7 @@ class StartupController extends GetxController with StateMixin<void> {
       Get.offNamed(AppConfig.initRoute);
 
       // Test case
-      testCase();
+      // testCase();
 
       // queryTestData();
     } catch (error, stack) {

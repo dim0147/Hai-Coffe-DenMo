@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'AnalyzeDAO.dart';
+part of 'RevenueDAO.dart';
 
 // **************************************************************************
 // DaoGenerator
