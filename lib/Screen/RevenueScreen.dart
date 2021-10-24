@@ -189,6 +189,7 @@ class ListRevenue extends GetView<RevenueController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final List<Revenue> listRevenues = controller.listRevenues.value;
+      listRevenues.sort((a, b) => (b.total() - a.total()).toInt());
       final String headerTitle =
           controller.viewType.value == RevenueScreenViewType.MONTH
               ? 'Theo tháng'

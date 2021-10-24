@@ -20,7 +20,7 @@ class TestCase {
         BillPayment.Cash,
         [],
         cart.showTotalPrice(),
-        randomTime(),
+        // randomTime(),
       );
       listTask.add(task);
     }
