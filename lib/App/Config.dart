@@ -53,7 +53,7 @@ import '../Controller/Category/CreateCategoryController.dart';
 
 class AppConfig {
   // RUN TEST CASE OR NOT
-  static final runTestCase = false;
+  static final runTestCase = true;
 
   // Admin password
   static final String DEFAULT_ADMIN_PASSWORD = '123456';

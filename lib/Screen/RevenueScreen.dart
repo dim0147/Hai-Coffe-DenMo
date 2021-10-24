@@ -230,6 +230,12 @@ class RevenueItem extends GetView<RevenueController> {
     final bill = revenue.bill.totalRevenue ?? 0.0;
     final phieuChi = revenue.phieuChi.totalRevenue ?? 0.0;
     final phieuThu = revenue.phieuThu.totalRevenue ?? 0.0;
+    if (bill == 0.0 && phieuChi == 0.0 && phieuThu == 0.0) return Container();
+
+    final phieuChiText =
+        phieuChi == 0.0 ? '' : '| Chi: -${Utils.formatDouble(phieuChi)}đ';
+    final phieuThuText =
+        phieuThu == 0.0 ? '' : '| Thu: +${Utils.formatDouble(phieuThu)}đ';
 
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
@@ -237,8 +243,9 @@ class RevenueItem extends GetView<RevenueController> {
       child: Container(
         child: ListTile(
           title: Text('$date'),
-          subtitle: Text('Bill: +$billđ | Thu: +$phieuThuđ | Chi: -$phieuChiđ'),
-          trailing: Text('Tổng cộng: ${revenue.total()}đ'),
+          subtitle: Text(
+              'Bill: +${Utils.formatDouble(bill)}đ $phieuThuText $phieuChiText'),
+          trailing: Text('Tổng cộng: ${Utils.formatDouble(revenue.total())}đ'),
         ),
       ),
       secondaryActions: <Widget>[

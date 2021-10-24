@@ -147,7 +147,7 @@ class BillItemProperties extends StatelessWidget {
       child: Row(
         children: [
           Text(
-              '+ ${property.name} (${property.propertyPrice}đ x ${property.totalQuantity})'),
+              '+ ${property.name} (${Utils.formatDouble(property.propertyPrice)}đ x ${property.totalQuantity})'),
           Spacer(),
           Text('x$itemQuantity'),
           SizedBox(
@@ -178,7 +178,7 @@ class BillItemHeader extends StatelessWidget {
           height: 50,
           width: 70,
         ),
-        Text('${item.itemName} (${item.itemPrice}đ)'),
+        Text('${item.itemName} (${Utils.formatDouble(item.itemPrice)}đ)'),
         Spacer(),
         Text('x${item.totalQuantity}'),
         SizedBox(
@@ -270,7 +270,7 @@ class CouponWidget extends StatelessWidget {
           ),
           Spacer(),
           Text(
-              '$plusOrMinusString ${billCoupon.price}đ (${billCoupon.percent}%)'),
+              '$plusOrMinusString ${Utils.formatDouble(billCoupon.price)}đ (${billCoupon.percent}%)'),
         ],
       ),
     );
