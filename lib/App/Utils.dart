@@ -5,12 +5,14 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Model/ConfigGlobal.dart';
+import 'package:hai_noob/Model/Revenue.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class Utils {
   static DateExtension dateExtension = DateExtension();
+  static RandomExtension randomExtension = RandomExtension();
 
   static double? convertStringToDouble(String str) {
     return double.tryParse(str.replaceAll('.', '').replaceAll(',', '.'));
@@ -120,17 +122,53 @@ class Utils {
       return null;
     }
   }
+
+  static String formatDouble(double numb) {
+    NumberFormat numberFormat = NumberFormat.decimalPattern('vi');
+    return numberFormat.format(numb);
+  }
+}
+
+class RandomExtension {
+  int randomNumber(int min, int max) {
+    final rn = new Random();
+    final numb = min + rn.nextInt(max - min);
+    return numb;
+  }
+
+  String randomWords() {
+    List<String> words = [
+      'Coffe',
+      'Gà',
+      'String',
+      'Pepsi',
+      'Hủ tiếu',
+      'Mì Quảng',
+      'Canh',
+      'Bò kho',
+      'Bánh',
+      'Bún bò Hút',
+      'Kẹo',
+      'Sữa',
+    ];
+    int index = randomNumber(0, words.length);
+    return words[index];
+  }
 }
 
 class DateExtension {
-  DateTime getLastDayOfMonth(DateTime date) {
-    int lastday = DateTime(date.year, date.month + 1, 0).day;
-    return DateTime(date.year, date.month, lastday);
-  }
-
   String dateToDateWithTime(DateTime date) {
     final f = new DateFormat('dd-MM-yyyy hh:mm a');
     return f.format(date);
+  }
+
+  String dateToDateOnly(DateTime date) {
+    final f = new DateFormat('dd-MM-yyyy');
+    return f.format(date);
+  }
+
+  String dateToMonth(DateTime date) {
+    return 'Tháng ${date.month}/${date.year}';
   }
 
   DateTime getCurrentDay() {
@@ -142,5 +180,58 @@ class DateExtension {
   DateTime getNextDay() {
     DateTime today = getCurrentDay();
     return today.add(Duration(hours: Duration.hoursPerDay));
+  }
+
+  DateTime getFirstDateOfMonth(DateTime date) {
+    return DateTime(date.year, date.month);
+  }
+
+  DateTime getLastDateOfMonth(DateTime date) {
+    int lastday = DateTime(date.year, date.month + 1, 0).day;
+    return DateTime(date.year, date.month, lastday);
+  }
+
+  MonthRange getMonthRangeFromDate(DateTime date) {
+    final DateTime startDate = getFirstDateOfMonth(date);
+    final DateTime endDate = getLastDateOfMonth(date);
+    return MonthRange(startDate, endDate);
+  }
+
+  DateTime getFirstDateOfNextMonth(DateTime date) {
+    return DateTime(
+      date.year,
+      date.month + 1,
+    );
+  }
+
+  List<MonthRange>? getListMonthRangesFromDateRange(
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    if (startDate.isAfter(endDate)) return null;
+
+    // If same month
+    if (startDate.month == endDate.month && startDate.year == endDate.year) {
+      final newMonthRange =
+          MonthRange(startDate, getLastDateOfMonth(startDate));
+      return [newMonthRange];
+    }
+
+    final List<MonthRange> monthRanges = [];
+
+    // Add current month of startDate
+    monthRanges.add(MonthRange(startDate, getLastDateOfMonth(startDate)));
+    DateTime cur = startDate;
+
+    while (cur.month != endDate.month || cur.year != endDate.year) {
+      // Get next month of startDate
+      cur = getFirstDateOfNextMonth(cur);
+      DateTime endDate = getLastDateOfMonth(cur);
+
+      MonthRange newMonthRange = MonthRange(cur, endDate);
+      monthRanges.add(newMonthRange);
+    }
+
+    return monthRanges;
   }
 }

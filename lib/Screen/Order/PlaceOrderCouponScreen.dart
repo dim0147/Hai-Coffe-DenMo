@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Screen/Component.dart';
@@ -23,7 +24,8 @@ class PlaceOrderCouponScreen extends GetView<PlaceOrderCouponController> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text('Giá: ${controller.cart.showTotalPrice()}đ'),
+                  child: Text(
+                      'Giá: ${Utils.formatDouble(controller.cart.showTotalPrice())}đ'),
                 ),
 
                 // Name

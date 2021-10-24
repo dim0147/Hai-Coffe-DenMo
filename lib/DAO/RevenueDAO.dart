@@ -6,8 +6,8 @@ import 'package:moor/moor.dart';
 part 'RevenueDAO.g.dart';
 
 @UseDao(tables: [Bills, Phieus])
-class AnalyzeDAO extends DatabaseAccessor<AppDatabase> with _$AnalyzeDAOMixin {
-  AnalyzeDAO(AppDatabase db) : super(db);
+class RevenueDAO extends DatabaseAccessor<AppDatabase> with _$RevenueDAOMixin {
+  RevenueDAO(AppDatabase db) : super(db);
 
   Future<Revenue> getRevenue(DateTime startDate, DateTime endDate) async {
     BillRevenue? billRevenue;

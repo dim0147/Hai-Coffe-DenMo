@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/RevenueController.dart';
 import 'package:hai_noob/Model/Phieu.dart';
+import 'package:hai_noob/Model/Revenue.dart';
 import 'package:hai_noob/Screen/Component.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -122,54 +124,59 @@ class GraphRevenue extends GetView<RevenueController> {
     final gridColor = AppConfig.MENU_ITEM_CONTAINER_COLOR;
     final textColor = Colors.white;
 
-    return Container(
-      child: SfCartesianChart(
-        tooltipBehavior: TooltipBehavior(enable: true),
-        borderColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
-        backgroundColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
-        plotAreaBorderColor: gridColor,
-        title: ChartTitle(
-          text: 'Biểu đồ',
-          textStyle: TextStyle(color: textColor),
-        ),
-        // Initialize category axis
-        primaryXAxis: CategoryAxis(
-          title: AxisTitle(
-            text: 'Theo ngày',
+    return Obx(() {
+      final List<Revenue> listRevenues = controller.listRevenues.value;
+      final String headerTitle =
+          controller.viewType.value == RevenueScreenViewType.MONTH
+              ? 'Theo tháng'
+              : 'Theo ngày';
+
+      return Container(
+        child: SfCartesianChart(
+          tooltipBehavior: TooltipBehavior(enable: true),
+          borderColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
+          backgroundColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
+          plotAreaBorderColor: gridColor,
+          title: ChartTitle(
+            text: 'Biểu đồ',
             textStyle: TextStyle(color: textColor),
           ),
-          majorGridLines: const MajorGridLines(width: 0),
-          labelStyle: TextStyle(color: textColor),
-          axisLine: AxisLine(color: gridColor),
-        ),
-        primaryYAxis: NumericAxis(
-          title: AxisTitle(
-            text: 'Doanh thu (đ)',
-            textStyle: TextStyle(color: textColor),
+          // Initialize category axis
+          primaryXAxis: CategoryAxis(
+            title: AxisTitle(
+              text: headerTitle,
+              textStyle: TextStyle(color: textColor),
+            ),
+            majorGridLines: const MajorGridLines(width: 0),
+            labelStyle: TextStyle(color: textColor),
+            axisLine: AxisLine(color: gridColor),
           ),
-          majorGridLines: MajorGridLines(color: gridColor),
-          labelStyle: TextStyle(color: textColor),
-          numberFormat: NumberFormat.compactSimpleCurrency(locale: 'vi'),
-          axisLine: AxisLine(color: gridColor),
+          primaryYAxis: NumericAxis(
+            numberFormat: NumberFormat.compactCurrency(locale: 'vi'),
+            title: AxisTitle(
+              text: 'Doanh thu (đ)',
+              textStyle: TextStyle(color: textColor),
+            ),
+            majorGridLines: MajorGridLines(color: gridColor),
+            labelStyle: TextStyle(color: textColor),
+            axisLine: AxisLine(color: gridColor),
+          ),
+          // Init data
+          series: <LineSeries<Revenue, String>>[
+            LineSeries<Revenue, String>(
+              name: '',
+              // Bind data source
+              dataSource: listRevenues,
+              xValueMapper: (Revenue revenue, _) =>
+                  'Tháng ${revenue.startDate.month}',
+              yValueMapper: (Revenue revenue, _) => revenue.total(),
+              markerSettings: MarkerSettings(isVisible: true),
+              color: AppConfig.MAIN_COLOR,
+            )
+          ],
         ),
-        // Init data
-        series: <LineSeries<SalesData, String>>[
-          LineSeries<SalesData, String>(
-            name: '',
-            // Bind data source
-            dataSource: <SalesData>[
-              SalesData('14/1', 70000),
-              SalesData('15/1', 28000),
-              SalesData('16/1', 34000),
-            ],
-            xValueMapper: (SalesData sales, _) => sales.year,
-            yValueMapper: (SalesData sales, _) => sales.sales,
-            markerSettings: MarkerSettings(isVisible: true),
-            color: AppConfig.MAIN_COLOR,
-          )
-        ],
-      ),
-    );
+      );
+    });
   }
 }
 
@@ -180,43 +187,58 @@ class ListRevenue extends GetView<RevenueController> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Divider(
-          thickness: 3.0,
-        ),
-        Text(
-          'Chi Tiết (Theo ngày)',
-          style: TextStyle(fontSize: 20.0),
-        ),
-        Container(
-          padding: EdgeInsets.all(8.0),
-          height: 500,
-          child: ListView.builder(itemBuilder: (c, i) => RevenueItem()),
-        ),
-      ],
-    );
+    return Obx(() {
+      final List<Revenue> listRevenues = controller.listRevenues.value;
+      final String headerTitle =
+          controller.viewType.value == RevenueScreenViewType.MONTH
+              ? 'Theo tháng'
+              : 'Theo ngày';
+      return Column(
+        children: [
+          Divider(
+            thickness: 3.0,
+          ),
+          Text(
+            'Chi Tiết ($headerTitle)',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          Container(
+            padding: EdgeInsets.all(8.0),
+            height: 500,
+            child: ListView.builder(
+                itemCount: listRevenues.length,
+                itemBuilder: (c, i) => RevenueItem(
+                      revenue: listRevenues[i],
+                    )),
+          ),
+        ],
+      );
+    });
   }
 }
 
 class RevenueItem extends GetView<RevenueController> {
+  final Revenue revenue;
   const RevenueItem({
     Key? key,
+    required this.revenue,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final date = Utils.dateExtension.dateToMonth(revenue.startDate);
+    final bill = revenue.bill.totalRevenue ?? 0.0;
+    final phieuChi = revenue.phieuChi.totalRevenue ?? 0.0;
+    final phieuThu = revenue.phieuThu.totalRevenue ?? 0.0;
+
     return Slidable(
       actionPane: SlidableDrawerActionPane(),
       actionExtentRatio: 0.25,
       child: Container(
         child: ListTile(
-          leading: CircleAvatar(
-            child: Text('leading'),
-          ),
-          title: Text('title'),
-          subtitle: Text('sub title'),
-          trailing: Text('trailing'),
+          title: Text('$date'),
+          subtitle: Text('Bill: +$billđ | Thu: +$phieuThuđ | Chi: -$phieuChiđ'),
+          trailing: Text('Tổng cộng: ${revenue.total()}đ'),
         ),
       ),
       secondaryActions: <Widget>[

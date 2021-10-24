@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
@@ -66,7 +67,7 @@ class ListProperty extends GetView<AddSpecialItemController> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        'Tổng cộng: ${controller.totalProperty.value.toString()}đ',
+                        'Tổng cộng: ${Utils.formatDouble(controller.totalProperty.value)}đ',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
@@ -127,7 +128,7 @@ class PropertyContainer extends GetView<AddSpecialItemController> {
                     text: TextSpan(children: [
                       TextSpan(
                           text: property.quantity > 0
-                              ? '${property.showTotalPrice().toString()}đ'
+                              ? '${Utils.formatDouble(property.showTotalPrice())}đ'
                               : '${property.amount.toString()}đ',
                           style: TextStyle(color: Colors.blueAccent)),
                       if (property.quantity > 0)
@@ -260,7 +261,7 @@ class Amount extends GetView<AddSpecialItemController> {
                           padding: const EdgeInsets.all(8.0),
                           child: Center(
                             child: Text(
-                              '${controller.cartItem.item.price} đ',
+                              '${Utils.formatDouble(controller.cartItem.item.price)} đ',
                               style:
                                   TextStyle(fontSize: 20, color: Colors.white),
                             ),
@@ -282,7 +283,7 @@ class Amount extends GetView<AddSpecialItemController> {
                           '=',
                         ),
                         Text(
-                          ' ${controller.totalDonGia}đ',
+                          ' ${Utils.formatDouble(controller.totalDonGia.value)}đ',
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ],
@@ -328,7 +329,7 @@ class TotalPrice extends GetView<AddSpecialItemController> {
                       ),
                     ),
                   Text(
-                    'Tổng đơn giá: ${controller.totalDonGia.value.toString()}đ',
+                    'Tổng đơn giá: ${Utils.formatDouble(controller.totalDonGia.value)}đ',
                     style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
@@ -345,7 +346,7 @@ class TotalPrice extends GetView<AddSpecialItemController> {
               ),
             ),
             Text(
-              'Thành tiền: ${allPrice.toString()} đ',
+              'Thành tiền: ${Utils.formatDouble(allPrice)} đ',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,

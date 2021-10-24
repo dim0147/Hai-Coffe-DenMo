@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/App/TestCase.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/RevenueDAO.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
@@ -54,13 +55,18 @@ class StartupController extends GetxController with StateMixin<void> {
       Get.offNamed(AppConfig.initRoute);
 
       // Test case
-      // testCase();
-
-      // queryTestData();
+      if (AppConfig.runTestCase) {
+        final testCase = TestCase();
+        await testCase.run();
+      }
     } catch (error, stack) {
       change(null, status: RxStatus.error());
-      statusText.value =
-          'Có lỗi khi khởi tạo, liên hệ anh đức đẹp trai, lỗi: \n${error.toString()} \nStack Trace: ${stack.toString()}';
+      Utils.showSnackBar(
+        'Lỗi',
+        error.toString(),
+      );
+      // statusText.value =
+      //     'Có lỗi khi khởi tạo, liên hệ anh đức đẹp trai, lỗi: \n${error.toString()} \nStack Trace: ${stack.toString()}';
     }
   }
 
@@ -69,7 +75,7 @@ class StartupController extends GetxController with StateMixin<void> {
     // final billDAO = BillDAO(appDb);
     // final ad = await billDAO.getBillBetweenDay();
 
-    final analyzeDAO = AnalyzeDAO(appDb);
+    final analyzeDAO = RevenueDAO(appDb);
 
     final yesterDay =
         Utils.dateExtension.getCurrentDay().subtract(Duration(hours: 24));

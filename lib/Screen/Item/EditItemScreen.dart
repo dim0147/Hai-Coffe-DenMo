@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Item/CreateItemController.dart';
 import 'package:hai_noob/Controller/Item/EditItemController.dart';
 import 'package:image_picker/image_picker.dart';
@@ -178,7 +179,7 @@ class EditItemScreen extends GetView<EditItemController> {
                               .map(
                                 (property) => Chip(
                                   label: Text(
-                                      '${property.name} | ${property.amount}đ'),
+                                      '${property.name} | ${Utils.formatDouble(property.amount)}đ'),
                                   deleteIcon: Icon(Icons.close),
                                   onDeleted: () =>
                                       controller.removeProperty(property),

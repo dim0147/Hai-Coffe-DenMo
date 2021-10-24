@@ -110,7 +110,7 @@ class TotalDisplay extends GetView<ListOrderController> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text('Tổng cộng: ${totalPriceAll.toPrecision(2)}đ'),
+            Text('Tổng cộng: ${Utils.formatDouble(totalPriceAll)}đ'),
           ],
         );
       },
@@ -166,8 +166,8 @@ class ListItem extends GetView<ListOrderController> {
           leading: CircleAvatar(
             child: Text(billEntity.bill.id.toString()),
           ),
-          title: Text(
-              ' ' + billEntity.bill.totalPrice.toPrecision(2).toString() + 'đ'),
+          title:
+              Text(' ' + Utils.formatDouble(billEntity.bill.totalPrice) + 'đ'),
           subtitle: Text('Loại: $paymentTitle $couponTitle'),
           trailing: Text(Utils.dateExtension
               .dateToDateWithTime(billEntity.bill.createdAt)),

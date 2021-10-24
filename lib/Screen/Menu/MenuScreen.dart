@@ -200,10 +200,11 @@ class MenuItem extends GetView<MenuController> {
                 // Price
                 Padding(
                   padding: const EdgeInsets.only(top: 10),
-                  child: Text(itemDataDisplay.item.price.toString() + 'đ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      )),
+                  child:
+                      Text(Utils.formatDouble(itemDataDisplay.item.price) + 'đ',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )),
                 ),
 
                 if (itemQuantity > 0)
@@ -277,7 +278,8 @@ class Footer extends GetView<MenuController> {
                             ),
                           ),
                           Text(
-                            controller.cart.value.showTotalPrice().toString() +
+                            Utils.formatDouble(
+                                    controller.cart.value.showTotalPrice()) +
                                 'đ',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,

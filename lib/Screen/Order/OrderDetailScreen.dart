@@ -153,7 +153,7 @@ class BillItemProperties extends StatelessWidget {
           SizedBox(
             width: 10.0,
           ),
-          Text('${property.totalPriceMinusItemQuantity}đ')
+          Text('${Utils.formatDouble(property.totalPriceMinusItemQuantity)}đ')
         ],
       ),
     );
@@ -184,7 +184,7 @@ class BillItemHeader extends StatelessWidget {
         SizedBox(
           width: 20.0,
         ),
-        Text('${item.totalPrice}đ')
+        Text('${Utils.formatDouble(item.totalPrice)}đ')
       ],
     );
   }
@@ -206,7 +206,7 @@ class SubTotalWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(right: 8.0),
           child: Text(
-            'Sub Total: ${billEntity.bill.subTotal}đ',
+            'Sub Total: ${Utils.formatDouble(billEntity.bill.subTotal)}đ',
             style: TextStyle(
               fontSize: 17.0,
             ),
@@ -296,7 +296,7 @@ class TotalWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                'TỔNG CỘNG: ${billEntity.bill.totalPrice}đ',
+                'TỔNG CỘNG: ${Utils.formatDouble(billEntity.bill.totalPrice)}đ',
                 style: TextStyle(fontSize: 20.0),
               ),
             ),

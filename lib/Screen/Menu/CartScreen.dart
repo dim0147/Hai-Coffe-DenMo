@@ -36,7 +36,7 @@ class CartScreen extends GetView<CartController> {
                       child: Align(
                         alignment: Alignment.topRight,
                         child: Text(
-                          'Tổng cộng: ${controller.cart.value.showTotalPrice()}đ',
+                          'Tổng cộng: ${Utils.formatDouble(controller.cart.value.showTotalPrice())}đ',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -86,7 +86,7 @@ class CartItem extends GetView<CartController> {
                     ),
                     Expanded(
                       child: Text(
-                        '${cartItem.item.name} (${cartItem.item.price}đ)',
+                        '${cartItem.item.name} (${Utils.formatDouble(cartItem.item.price)}đ)',
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -102,7 +102,8 @@ class CartItem extends GetView<CartController> {
               Expanded(
                   flex: 1,
                   child: Text(
-                    cartItem.showPriceMinusItemQuantity().toString() + 'đ',
+                    Utils.formatDouble(cartItem.showPriceMinusItemQuantity()) +
+                        'đ',
                     style: TextStyle(color: Colors.white),
                   )),
             ],
@@ -130,7 +131,7 @@ class CartItem extends GetView<CartController> {
                             )),
                             Expanded(
                                 child: Text(
-                              '${e.showTotalPriceMinusItemQuantity(cartItem.totalQuantity)}đ',
+                              '${Utils.formatDouble(e.showTotalPriceMinusItemQuantity(cartItem.totalQuantity))}đ',
                               style: TextStyle(color: Colors.white),
                             ))
                           ],

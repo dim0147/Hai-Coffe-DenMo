@@ -141,13 +141,13 @@ class TotalDisplay extends GetView<ListPhieuController> {
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            Text('Tổng chi phí: ${totalAll.toPrecision(2)}đ'),
+            Text('Tổng chi phí: ${Utils.formatDouble(totalAll)}đ'),
             Text(
-              'Tổng thu: +${totalThu.toPrecision(2)}đ',
+              'Tổng thu: +${Utils.formatDouble(totalThu)}đ',
               style: TextStyle(color: Colors.green),
             ),
             Text(
-              'Tổng chi: -${totalChi.toPrecision(2)}đ',
+              'Tổng chi: -${Utils.formatDouble(totalChi)}đ',
               style: TextStyle(color: Colors.red),
             ),
           ],
@@ -203,11 +203,11 @@ class ListItem extends GetView<ListPhieuController> {
   Widget build(BuildContext context) {
     final Widget trailingText = phieu.type == PhieuType.PHIEU_THU
         ? Text(
-            '+${phieu.amount}đ',
+            '+${Utils.formatDouble(phieu.amount)}đ',
             style: TextStyle(color: Colors.green),
           )
         : Text(
-            '-${phieu.amount}đ',
+            '-${Utils.formatDouble(phieu.amount)}đ',
             style: TextStyle(color: Colors.red),
           );
 

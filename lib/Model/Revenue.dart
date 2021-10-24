@@ -42,4 +42,19 @@ class Revenue {
 
   Revenue(
       this.bill, this.phieuChi, this.phieuThu, this.startDate, this.endDate);
+
+  double total() {
+    final billRevenue = bill.totalRevenue ?? 0.0;
+    final phieuChiRevenue = phieuChi.totalRevenue ?? 0.0;
+    final phieuThuRevenue = phieuThu.totalRevenue ?? 0.0;
+
+    return (billRevenue + phieuChiRevenue) - phieuThuRevenue;
+  }
+}
+
+class MonthRange {
+  final DateTime startDate;
+  final DateTime endDate;
+
+  MonthRange(this.startDate, this.endDate);
 }

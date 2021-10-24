@@ -6,7 +6,7 @@ part of 'RevenueDAO.dart';
 // DaoGenerator
 // **************************************************************************
 
-mixin _$AnalyzeDAOMixin on DatabaseAccessor<AppDatabase> {
+mixin _$RevenueDAOMixin on DatabaseAccessor<AppDatabase> {
   $BillsTable get bills => attachedDatabase.bills;
   $PhieusTable get phieus => attachedDatabase.phieus;
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
 import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
 import 'package:hai_noob/Model/Bill.dart';
@@ -26,7 +27,7 @@ class PlaceOrderScreen extends GetView<PlaceOrderController> {
                 Container(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
-                    'Tổng Giá: ${controller.cart.value.showTotalPrice()}đ',
+                    'Tổng Giá: ${Utils.formatDouble(controller.cart.value.showTotalPrice())}đ',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 15.0,
@@ -57,8 +58,10 @@ class PlaceOrderScreen extends GetView<PlaceOrderController> {
                                 Padding(
                                   padding: const EdgeInsets.only(right: 8.0),
                                   child: e.type == CouponType.increase
-                                      ? Text('+ ${e.price}đ (${e.percent}%)')
-                                      : Text('- ${e.price}đ (${e.percent}%)'),
+                                      ? Text(
+                                          '+ ${Utils.formatDouble(e.price)}đ (${e.percent}%)')
+                                      : Text(
+                                          '- ${Utils.formatDouble(e.price)}đ (${e.percent}%)'),
                                 ),
                                 IconButton(
                                   color: AppConfig.MAIN_COLOR,
@@ -135,7 +138,7 @@ class PlaceOrderScreen extends GetView<PlaceOrderController> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
-                          'TỔNG CỘNG: ${controller.showTotalPriceWithCoupon()}Đ',
+                          'TỔNG CỘNG: ${Utils.formatDouble(controller.showTotalPriceWithCoupon())}Đ',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20.0,

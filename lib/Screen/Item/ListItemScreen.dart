@@ -143,7 +143,7 @@ class ListItem extends GetView<ListItemController> {
               color: itemData.item.visibility ? null : Colors.red,
             ),
           ),
-          trailing: Text(itemData.item.price.toString() + 'đ'),
+          trailing: Text(Utils.formatDouble(itemData.item.price) + 'đ'),
         ),
       ),
       secondaryActions: <Widget>[

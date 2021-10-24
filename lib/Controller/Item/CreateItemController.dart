@@ -37,14 +37,10 @@ class CreateItemController extends GetxController {
 
   // Value
   final TextEditingController titleC = TextEditingController();
-  final MoneyMaskedTextController priceC = MoneyMaskedTextController(
-    precision: 3,
-  );
+  final MoneyMaskedTextController priceC = MoneyMaskedTextController();
   final RxList<CategoryCheckbox> categories = <CategoryCheckbox>[].obs;
   final TextEditingController propertyNameC = TextEditingController();
-  final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController(
-    precision: 3,
-  );
+  final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController();
   final RxList<Property> properties = <Property>[].obs;
   final visibility = true.obs;
   final img = Rxn<File>();

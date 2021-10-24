@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 
@@ -49,7 +50,8 @@ class TableLocalInfoScreen extends GetView<TableLocalInfoController> {
                         if (state.cart.showTotalQuantity() > 0)
                           Column(
                             children: [
-                              Text('Giỏ hàng: ${state.cart.showTotalPrice()}đ'),
+                              Text(
+                                  'Giỏ hàng: ${Utils.formatDouble(state.cart.showTotalPrice())}đ'),
                               SizedBox(height: 8.0),
                             ],
                           ),

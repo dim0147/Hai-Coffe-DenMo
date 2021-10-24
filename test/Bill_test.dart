@@ -5,10 +5,6 @@ import 'package:hai_noob/DB/Database.dart';
 
 void main() {
   test('Get list bill', () async {
-    final AppDatabase appDb = AppDatabase();
-
-    final BillDAO billDAO = BillDAO(appDb);
-
-    var ad;
+    // final words =
   });
 }

@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/DAO/RevenueDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Revenue.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
@@ -10,10 +11,17 @@ enum RevenueScreenViewType {
 }
 
 class RevenueController extends GetxController {
-  final AppDatabase appDb = Get.find<AppDatabase>();
+  late final RevenueDAO revenueDAO;
 
   final Rx<RevenueScreenViewType> viewType = RevenueScreenViewType.MONTH.obs;
   final RxList<Revenue> listRevenues = <Revenue>[].obs;
+
+  @override
+  void onInit() {
+    super.onInit();
+    final AppDatabase appDb = Get.find<AppDatabase>();
+    revenueDAO = RevenueDAO(appDb);
+  }
 
   void onChangeViewType(RevenueScreenViewType? type) {
     if (type == null) return;
@@ -25,10 +33,24 @@ class RevenueController extends GetxController {
 
     final DateTime? startDate = value.startDate;
     DateTime? endDate = value.endDate;
+    if (startDate == null) return;
+    if (endDate == null)
+      endDate = Utils.dateExtension.getLastDateOfMonth(startDate);
 
-    if (startDate == null || endDate == null) return;
+    final listOfMonthRanges =
+        Utils.dateExtension.getListMonthRangesFromDateRange(startDate, endDate);
+    if (listOfMonthRanges == null)
+      return Utils.showSnackBar(
+        'Lỗi',
+        'Không thể get listOfMonthRanges',
+      );
 
-    final lastDay = Utils.dateExtension.getLastDayOfMonth(startDate);
+    final taskGetRevenues = listOfMonthRanges
+        .map((e) => revenueDAO.getRevenue(e.startDate, e.endDate));
+
+    final revenue = await Future.wait(taskGetRevenues);
+    listRevenues.assignAll(revenue);
+
     var ad;
   }
 }
