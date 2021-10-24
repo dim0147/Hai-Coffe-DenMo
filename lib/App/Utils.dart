@@ -10,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class Utils {
+  static DateExtension dateExtension = DateExtension();
+
   static double? convertStringToDouble(String str) {
     return double.tryParse(str.replaceAll('.', '').replaceAll(',', '.'));
   }
@@ -118,19 +120,26 @@ class Utils {
       return null;
     }
   }
+}
 
-  static String dateToDateWithTime(DateTime date) {
+class DateExtension {
+  DateTime getLastDayOfMonth(DateTime date) {
+    int lastday = DateTime(date.year, date.month + 1, 0).day;
+    return DateTime(date.year, date.month, lastday);
+  }
+
+  String dateToDateWithTime(DateTime date) {
     final f = new DateFormat('dd-MM-yyyy hh:mm a');
     return f.format(date);
   }
 
-  static DateTime getCurrentDay() {
+  DateTime getCurrentDay() {
     DateTime now = DateTime.now();
     DateTime today = DateTime(now.year, now.month, now.day);
     return today;
   }
 
-  static DateTime getNextDay() {
+  DateTime getNextDay() {
     DateTime today = getCurrentDay();
     return today.add(Duration(hours: Duration.hoursPerDay));
   }

@@ -169,7 +169,8 @@ class ListItem extends GetView<ListOrderController> {
           title: Text(
               ' ' + billEntity.bill.totalPrice.toPrecision(2).toString() + 'đ'),
           subtitle: Text('Loại: $paymentTitle $couponTitle'),
-          trailing: Text(Utils.dateToDateWithTime(billEntity.bill.createdAt)),
+          trailing: Text(Utils.dateExtension
+              .dateToDateWithTime(billEntity.bill.createdAt)),
           onTap: () => controller.onClickItem(billEntity),
         ),
       ),

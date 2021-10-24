@@ -71,8 +71,9 @@ class StartupController extends GetxController with StateMixin<void> {
 
     final analyzeDAO = AnalyzeDAO(appDb);
 
-    final yesterDay = Utils.getCurrentDay().subtract(Duration(hours: 24));
-    final toDay = Utils.getCurrentDay();
+    final yesterDay =
+        Utils.dateExtension.getCurrentDay().subtract(Duration(hours: 24));
+    final toDay = Utils.dateExtension.getCurrentDay();
 
     analyzeDAO.getRevenue(yesterDay, toDay);
 

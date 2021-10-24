@@ -35,8 +35,8 @@ class ListOrderController extends GetxController {
     super.onInit();
     billDAO = BillDAO(appDb);
 
-    DateTime startDate = Utils.getCurrentDay();
-    DateTime endDate = Utils.getNextDay();
+    DateTime startDate = Utils.dateExtension.getCurrentDay();
+    DateTime endDate = Utils.dateExtension.getNextDay();
     // Query today
     if (args != null) {}
 

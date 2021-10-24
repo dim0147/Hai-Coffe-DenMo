@@ -56,7 +56,7 @@ class Header extends StatelessWidget {
             ),
           ),
           Text(
-            'Thoanh toán lúc: ${Utils.dateToDateWithTime(billEntity.bill.createdAt)}',
+            'Thoanh toán lúc: ${Utils.dateExtension.dateToDateWithTime(billEntity.bill.createdAt)}',
             style: TextStyle(
               fontSize: 15.0,
             ),

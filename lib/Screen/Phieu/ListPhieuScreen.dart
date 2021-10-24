@@ -220,7 +220,8 @@ class ListItem extends GetView<ListPhieuController> {
             child: Text(phieu.id.toString()),
           ),
           title: Text(phieu.reason),
-          subtitle: Text(Utils.dateToDateWithTime(phieu.createdAt)),
+          subtitle:
+              Text(Utils.dateExtension.dateToDateWithTime(phieu.createdAt)),
           trailing: trailingText,
         ),
       ),
