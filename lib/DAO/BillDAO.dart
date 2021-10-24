@@ -140,10 +140,12 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
     }).toList();
   }
 
-  Future<int> createBill(Cart cart, BillPayment paymentType,
-      List<CouponScreenData> coupons, double totalPriceOfBill,
-      [DateTime? createdAt]) {
-    if (createdAt == null) return Future.value(0);
+  Future<int> createBill(
+    Cart cart,
+    BillPayment paymentType,
+    List<CouponScreenData> coupons,
+    double totalPriceOfBill,
+  ) {
     return transaction<int>(() async {
       // Create bill
       BillsCompanion bill = BillsCompanion.insert(
@@ -151,7 +153,6 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
         subTotal: cart.showTotalPrice(),
         totalPrice: totalPriceOfBill,
         paymentType: paymentType,
-        createdAt: Value(createdAt),
       );
       int billId = await into(bills).insert(bill);
 

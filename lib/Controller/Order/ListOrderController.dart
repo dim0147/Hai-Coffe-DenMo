@@ -61,8 +61,6 @@ class ListOrderController extends GetxController {
     if (endDate == null || endDate == startDate)
       endDate = startDate.add(Duration(hours: Duration.hoursPerDay));
 
-    // final bills = await billDAO.getBillBetweenDay(startDate, endDate);
-    // listBill.assignAll(bills);
     await queryListBetweenDay(startDate, endDate);
     setShowDateRangePicker(false);
   }
