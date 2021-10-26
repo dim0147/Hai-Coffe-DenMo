@@ -3,12 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillCouponController.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
-class PlaceOrderCouponScreen extends GetView<PlaceOrderCouponController> {
-  const PlaceOrderCouponScreen({Key? key}) : super(key: key);
+class PlaceBillCouponScreen extends GetView<PlaceBillCouponController> {
+  const PlaceBillCouponScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

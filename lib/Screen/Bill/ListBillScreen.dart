@@ -3,7 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Order/ListOrderController.dart';
+import 'package:hai_noob/Controller/Bill/ListBillController.dart';
 import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -13,7 +13,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../Component.dart';
 
-class ListOrderScreen extends GetView<ListOrderController> {
+class ListBillScreen extends GetView<ListBillController> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -35,7 +35,7 @@ class ListOrderScreen extends GetView<ListOrderController> {
   }
 }
 
-class DateRangeSelected extends GetView<ListOrderController> {
+class DateRangeSelected extends GetView<ListBillController> {
   const DateRangeSelected({
     Key? key,
   }) : super(key: key);
@@ -73,7 +73,7 @@ class DateRangeSelected extends GetView<ListOrderController> {
   }
 }
 
-class SearchBar extends GetView<ListOrderController> {
+class SearchBar extends GetView<ListBillController> {
   @override
   Widget build(BuildContext context) {
     if (controller.args != null) return SizedBox();
@@ -91,7 +91,7 @@ class SearchBar extends GetView<ListOrderController> {
   }
 }
 
-class TotalDisplay extends GetView<ListOrderController> {
+class TotalDisplay extends GetView<ListBillController> {
   const TotalDisplay({
     Key? key,
   }) : super(key: key);
@@ -114,7 +114,7 @@ class TotalDisplay extends GetView<ListOrderController> {
   }
 }
 
-class ListBill extends GetView<ListOrderController> {
+class ListBill extends GetView<ListBillController> {
   const ListBill({
     Key? key,
   }) : super(key: key);
@@ -139,7 +139,7 @@ class ListBill extends GetView<ListOrderController> {
   }
 }
 
-class ListItem extends GetView<ListOrderController> {
+class ListItem extends GetView<ListBillController> {
   final BillEntity billEntity;
 
   const ListItem({

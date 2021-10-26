@@ -5,9 +5,9 @@ import 'package:hai_noob/Controller/Category/ListCategoryController.dart';
 import 'package:hai_noob/Controller/Item/EditItemController.dart';
 import 'package:hai_noob/Controller/Item/ListItemController.dart';
 import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
-import 'package:hai_noob/Controller/Order/ListOrderController.dart';
-import 'package:hai_noob/Controller/Order/OrderDetailController.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderSuccessController.dart';
+import 'package:hai_noob/Controller/Bill/ListBillController.dart';
+import 'package:hai_noob/Controller/Bill/BillDetailController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillSuccessController.dart';
 import 'package:hai_noob/Controller/Phieu/CreatePhieuController.dart';
 import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/Controller/RevenueController.dart';
@@ -15,8 +15,8 @@ import 'package:hai_noob/Controller/Table/AddTableController.dart';
 import 'package:hai_noob/Controller/Menu/CartController.dart';
 import 'package:hai_noob/Controller/Item/CreateItemController.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillCouponController.dart';
 import 'package:hai_noob/Controller/Table/EditTableController.dart';
 import 'package:hai_noob/Controller/Table/ListTableController.dart';
 import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
@@ -26,17 +26,17 @@ import 'package:hai_noob/Screen/Category/ListCategoryScreen.dart';
 import 'package:hai_noob/Screen/Item/EditItemScreen.dart';
 import 'package:hai_noob/Screen/Item/ListItemScreen.dart';
 import 'package:hai_noob/Screen/Menu/AddSpecialItemScreen.dart';
-import 'package:hai_noob/Screen/Order/ListOrderScreen.dart';
-import 'package:hai_noob/Screen/Order/OrderDetailScreen.dart';
-import 'package:hai_noob/Screen/Order/PlaceOrderSuccessScreen.dart';
+import 'package:hai_noob/Screen/Bill/ListBillScreen.dart';
+import 'package:hai_noob/Screen/Bill/BillDetailScreen.dart';
+import 'package:hai_noob/Screen/Bill/PlaceBillSuccessScreen.dart';
 import 'package:hai_noob/Screen/Phieu/CreatePhieuScreen.dart';
 import 'package:hai_noob/Screen/Phieu/ListPhieuScreen.dart';
 import 'package:hai_noob/Screen/RevenueScreen.dart';
 import 'package:hai_noob/Screen/Table/AddTableScreen.dart';
 import 'package:hai_noob/Screen/Menu/CartScreen.dart';
 import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
-import 'package:hai_noob/Screen/Order/PlaceOrderCouponScreen.dart';
-import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
+import 'package:hai_noob/Screen/Bill/PlaceBillCouponScreen.dart';
+import 'package:hai_noob/Screen/Bill/PlaceBillScreen.dart';
 import 'package:hai_noob/Screen/Table/EditTableScreen.dart';
 import 'package:hai_noob/Screen/Table/ListTableScreen.dart';
 import 'package:hai_noob/Screen/Table/TableLocalInfoScreen.dart';
@@ -170,37 +170,37 @@ class AppConfig {
     ),
     GetPage(
       name: '/bill/list',
-      page: () => ListOrderScreen(),
+      page: () => ListBillScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut(() => ListOrderController());
+        Get.lazyPut(() => ListBillController());
       }),
     ),
     GetPage(
       name: '/bill/detail',
-      page: () => OrderDetailScreen(),
+      page: () => BillDetailScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut(() => OrderDetailController());
+        Get.lazyPut(() => BillDetailController());
       }),
     ),
     GetPage(
-      name: '/place-order',
-      page: () => PlaceOrderScreen(),
+      name: '/place-bill',
+      page: () => PlaceBillScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut(() => PlaceOrderController());
+        Get.lazyPut(() => PlaceBillController());
       }),
     ),
     GetPage(
-      name: '/place-order/add-coupon',
-      page: () => PlaceOrderCouponScreen(),
+      name: '/place-bill/add-coupon',
+      page: () => PlaceBillCouponScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut(() => PlaceOrderCouponController());
+        Get.lazyPut(() => PlaceBillCouponController());
       }),
     ),
     GetPage(
-      name: '/place-order/success',
-      page: () => PlaceOrderSuccessScreen(),
+      name: '/place-bill/success',
+      page: () => PlaceBillSuccessScreen(),
       binding: BindingsBuilder(() {
-        Get.lazyPut(() => PlaceOrderSuccessController());
+        Get.lazyPut(() => PlaceBillSuccessController());
       }),
     ),
     GetPage(

@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillController.dart';
 import 'package:hai_noob/Model/Cart.dart';
 
 class CartScreenArgs {
@@ -43,7 +43,7 @@ class CartController extends GetxController {
 
   void onPayment() {
     final placeOrderScreenArgs =
-        PlaceOrderScreenArgs(cart: cart.value, tableID: args!.tableID);
-    Get.toNamed('/place-order', arguments: placeOrderScreenArgs);
+        PlaceBillScreenArgs(cart: cart.value, tableID: args!.tableID);
+    Get.toNamed('/place-bill', arguments: placeOrderScreenArgs);
   }
 }

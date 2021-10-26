@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillController.dart';
 import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/Model/Cart.dart';
@@ -67,11 +67,11 @@ class TablePanelController extends GetxController {
         );
         break;
       case TableAction.GO_PAYMENT:
-        final placeOrderScreenArgs = PlaceOrderScreenArgs(
+        final placeOrderScreenArgs = PlaceBillScreenArgs(
           cart: table.cart,
           tableID: tableID,
         );
-        Get.toNamed('/place-order', arguments: placeOrderScreenArgs);
+        Get.toNamed('/place-bill', arguments: placeOrderScreenArgs);
         break;
       case TableAction.SEE_INFO:
         final tableLocalInfoArgs = TableLocalInfoArgs(tableID);

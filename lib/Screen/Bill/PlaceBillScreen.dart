@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillCouponController.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
-class PlaceOrderScreen extends GetView<PlaceOrderController> {
-  const PlaceOrderScreen({Key? key}) : super(key: key);
+class PlaceBillScreen extends GetView<PlaceBillController> {
+  const PlaceBillScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +157,7 @@ class PlaceOrderScreen extends GetView<PlaceOrderController> {
   }
 }
 
-class Footer extends GetView<PlaceOrderController> {
+class Footer extends GetView<PlaceBillController> {
   const Footer({
     Key? key,
   }) : super(key: key);
@@ -176,7 +176,7 @@ class Footer extends GetView<PlaceOrderController> {
           children: [
             // Payment
             SizedBox(
-              child: controller.status.value != StatusPlaceOrder.LOADING
+              child: controller.status.value != StatusPlaceBill.LOADING
                   ? ElevatedButton.icon(
                       onPressed: controller.onConfirm,
                       icon: Icon(Icons.check),

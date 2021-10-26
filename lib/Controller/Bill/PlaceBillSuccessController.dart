@@ -3,20 +3,20 @@ import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/Model/Cart.dart';
 
-class PlaceOrderSuccessScreenArgs {
+class PlaceBillSuccessScreenArgs {
   final int? tableID;
   final Cart cart;
   final int billID;
 
-  PlaceOrderSuccessScreenArgs({
+  PlaceBillSuccessScreenArgs({
     required this.cart,
     required this.billID,
     this.tableID,
   });
 }
 
-class PlaceOrderSuccessController extends GetxController {
-  final args = Utils.tryCast<PlaceOrderSuccessScreenArgs>(Get.arguments);
+class PlaceBillSuccessController extends GetxController {
+  final args = Utils.tryCast<PlaceBillSuccessScreenArgs>(Get.arguments);
 
   void onGoMenu() {
     final menuScreenArgs = MenuScreenArgs();

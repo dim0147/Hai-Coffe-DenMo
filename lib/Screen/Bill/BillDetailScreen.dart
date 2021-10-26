@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Order/OrderDetailController.dart';
+import 'package:hai_noob/Controller/Bill/BillDetailController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Bill.dart';
 
-class OrderDetailScreen extends GetView<OrderDetailController> {
-  const OrderDetailScreen({Key? key}) : super(key: key);
+class BillDetailScreen extends GetView<BillDetailController> {
+  const BillDetailScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

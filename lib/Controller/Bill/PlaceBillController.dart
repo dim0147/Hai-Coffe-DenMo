@@ -1,34 +1,34 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderSuccessController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillCouponController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillSuccessController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
-import 'package:hai_noob/Screen/Order/PlaceOrderSuccessScreen.dart';
+import 'package:hai_noob/Screen/Bill/PlaceBillSuccessScreen.dart';
 
-enum StatusPlaceOrder { LOADING, DONE, ERROR }
+enum StatusPlaceBill { LOADING, DONE, ERROR }
 
-class PlaceOrderScreenArgs {
+class PlaceBillScreenArgs {
   final int? tableID;
   final Cart cart;
 
-  PlaceOrderScreenArgs({
+  PlaceBillScreenArgs({
     required this.cart,
     this.tableID,
   });
 }
 
-class PlaceOrderController extends GetxController {
-  final args = Utils.tryCast<PlaceOrderScreenArgs>(Get.arguments);
+class PlaceBillController extends GetxController {
+  final args = Utils.tryCast<PlaceBillScreenArgs>(Get.arguments);
   final appDatabase = Get.find<AppDatabase>();
   final tableLocalDAO = Get.find<TableLocalDAO>();
   late final BillDAO billDAO;
 
-  final status = StatusPlaceOrder.DONE.obs;
+  final status = StatusPlaceBill.DONE.obs;
   final cart = Cart(items: []).obs;
   final listCouponScreenData = <CouponScreenData>[].obs;
   final paymentType = BillPayment.Cash.obs;
@@ -45,7 +45,7 @@ class PlaceOrderController extends GetxController {
 
   void onAddCoupon() async {
     CouponScreenData? couponScreenData =
-        await Get.toNamed('/place-order/add-coupon', arguments: cart.value)
+        await Get.toNamed('/place-bill/add-coupon', arguments: cart.value)
             as CouponScreenData?;
     if (couponScreenData == null) return;
 
@@ -69,7 +69,7 @@ class PlaceOrderController extends GetxController {
 
   void onConfirm() async {
     try {
-      status.value = StatusPlaceOrder.LOADING;
+      status.value = StatusPlaceBill.LOADING;
 
       // Create bill
       final billID = await billDAO.createBill(
@@ -84,18 +84,18 @@ class PlaceOrderController extends GetxController {
       await _printReceipt();
 
       // Goto success order screeen
-      final placeOrderSuccesScreensArgs = PlaceOrderSuccessScreenArgs(
+      final placeOrderSuccesScreensArgs = PlaceBillSuccessScreenArgs(
         cart: cart.value,
         billID: billID,
         tableID: args!.tableID,
       );
       Get.offAllNamed(
-        '/place-order/success',
+        '/place-bill/success',
         arguments: placeOrderSuccesScreensArgs,
       );
-      status.value = StatusPlaceOrder.DONE;
+      status.value = StatusPlaceBill.DONE;
     } catch (err) {
-      status.value = StatusPlaceOrder.ERROR;
+      status.value = StatusPlaceBill.ERROR;
       Utils.showSnackBar(
         'Lỗi',
         'Không thể tạo order:\n- ${err.toString()}',

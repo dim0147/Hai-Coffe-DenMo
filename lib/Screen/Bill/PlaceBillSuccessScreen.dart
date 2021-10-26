@@ -3,13 +3,13 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderCouponController.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderSuccessController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillCouponController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillSuccessController.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
-class PlaceOrderSuccessScreen extends GetView<PlaceOrderSuccessController> {
-  const PlaceOrderSuccessScreen({Key? key}) : super(key: key);
+class PlaceBillSuccessScreen extends GetView<PlaceBillSuccessController> {
+  const PlaceBillSuccessScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

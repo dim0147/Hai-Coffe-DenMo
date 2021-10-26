@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Order/OrderDetailController.dart';
+import 'package:hai_noob/Controller/Bill/BillDetailController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DAO/PhieuDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -14,7 +14,7 @@ class ListBillsScreenArgs {
   ListBillsScreenArgs(this.startDate, this.endDate);
 }
 
-class ListOrderController extends GetxController {
+class ListBillController extends GetxController {
   final ListBillsScreenArgs? args = Get.arguments;
   final AppDatabase appDb = Get.find<AppDatabase>();
   late final BillDAO billDAO;
@@ -87,7 +87,7 @@ class ListOrderController extends GetxController {
   }
 
   void onClickItem(BillEntity billEntity) {
-    final OrderDetailScreenArgs args = OrderDetailScreenArgs(billEntity);
+    final BillDetailScreenArgs args = BillDetailScreenArgs(billEntity);
     Get.toNamed('/bill/detail', arguments: args);
   }
 

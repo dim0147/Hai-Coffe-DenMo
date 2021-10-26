@@ -6,7 +6,7 @@ import 'package:hai_noob/App/Contants.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Menu/CartController.dart';
 import 'package:hai_noob/Controller/Menu/SelectTableDialogController.dart';
-import 'package:hai_noob/Controller/Order/PlaceOrderController.dart';
+import 'package:hai_noob/Controller/Bill/PlaceBillController.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
@@ -14,7 +14,7 @@ import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
 import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hai_noob/Screen/Menu/SelectTableDialogScreen.dart';
-import 'package:hai_noob/Screen/Order/PlaceOrderScreen.dart';
+import 'package:hai_noob/Screen/Bill/PlaceBillScreen.dart';
 
 class MenuScreenArgs extends DefaultScreentArgs {
   final int? tableID;
@@ -226,8 +226,8 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
 
   void onClickPayment() async {
     final placeOrderScreenArgs =
-        PlaceOrderScreenArgs(cart: cart.value, tableID: tableIDLocal.value);
-    Get.toNamed('/place-order', arguments: placeOrderScreenArgs);
+        PlaceBillScreenArgs(cart: cart.value, tableID: tableIDLocal.value);
+    Get.toNamed('/place-bill', arguments: placeOrderScreenArgs);
   }
 
   void onClickSelectTable() async {

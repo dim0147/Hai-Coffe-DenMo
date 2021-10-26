@@ -18,7 +18,7 @@ class CouponScreenData {
       required this.type});
 }
 
-class PlaceOrderCouponController extends GetxController {
+class PlaceBillCouponController extends GetxController {
   final cart = Get.arguments as Cart;
   final couponType = CouponType.decrease.obs;
   final nameC = TextEditingController();
@@ -40,7 +40,6 @@ class PlaceOrderCouponController extends GetxController {
     double price = priceC.numberValue;
 
     // Calculate percent
-    var total = cart.showTotalPrice();
     int priceWithPercent = priceToPercent(price);
     percentC.text = priceWithPercent.toString();
   }
@@ -53,7 +52,6 @@ class PlaceOrderCouponController extends GetxController {
     if (percent == null) return;
 
     // Calculate price
-    var total = cart.showTotalPrice();
     double price = percentToPrice(percent);
     priceC.updateValue(price);
   }
