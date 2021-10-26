@@ -34,10 +34,15 @@ class ListPhieuController extends GetxController {
     super.onInit();
     phieuDAO = PhieuDAO(appDb);
 
+    // Query today
     DateTime startDate = Utils.dateExtension.getCurrentDay();
     DateTime endDate = Utils.dateExtension.getNextDay();
-    // Query today
-    if (args != null) {}
+
+    final args = this.args;
+    if (args != null) {
+      startDate = args.startDate;
+      endDate = args.endDate;
+    }
 
     final PickerDateRange pickerDateRange = PickerDateRange(startDate, endDate);
     dateRangePickerC.selectedRange = pickerDateRange;

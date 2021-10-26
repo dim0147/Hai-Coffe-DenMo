@@ -1,6 +1,8 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Constant.dart';
+import 'package:hai_noob/Controller/Order/ListOrderController.dart';
+import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/DAO/RevenueDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Revenue.dart';
@@ -17,7 +19,7 @@ class RevenueController extends GetxController {
   final DateRangePickerController dateRangePickerC =
       DateRangePickerController();
 
-  final Rx<CBaseState> cState = CBaseState(CState.LOADING, null).obs;
+  final Rx<CBaseState> cState = CBaseState(CState.LOADING).obs;
   final Rx<RevenueScreenViewType> viewType = RevenueScreenViewType.DAY.obs;
   final RxList<Revenue> listRevenues = <Revenue>[].obs;
 
@@ -25,6 +27,7 @@ class RevenueController extends GetxController {
   void onInit() async {
     try {
       super.onInit();
+
       final AppDatabase appDb = Get.find<AppDatabase>();
       revenueDAO = RevenueDAO(appDb);
       dateRangePickerC.view = DateRangePickerView.month;
@@ -33,17 +36,20 @@ class RevenueController extends GetxController {
       final cState = this.cState.value;
       cState.setGetC(this.cState);
 
-      // Query all day of current month
+      // Default query start day of current month to now
       final now = Utils.dateExtension.getCurrentDay();
       final startDate = Utils.dateExtension.getFirstDateOfMonth(now);
-
-      // Same day
+      // Now is same day with start date
       if (now.isAtSameMomentAs(startDate)) {
         cState.changeState(CState.DONE);
         return;
       }
 
       await queryOnDayViewType(startDate, now);
+
+      final PickerDateRange pickerDateRange = PickerDateRange(startDate, now);
+      dateRangePickerC.selectedRange = pickerDateRange;
+
       cState.changeState(CState.DONE);
     } catch (err) {
       cState.value.changeState(CState.ERROR, err.toString());
@@ -120,5 +126,17 @@ class RevenueController extends GetxController {
 
     final revenue = await Future.wait(taskGetRevenues);
     listRevenues.assignAll(revenue);
+  }
+
+  void onSeeBill(Revenue revenue) {
+    final ListBillsScreenArgs args =
+        ListBillsScreenArgs(revenue.startDate, revenue.endDate);
+    Get.toNamed('/bill/list', arguments: args);
+  }
+
+  void onSeePhieu(Revenue revenue) {
+    final ListPhieuScreenArgs args =
+        ListPhieuScreenArgs(revenue.startDate, revenue.endDate);
+    Get.toNamed('/phieu/list', arguments: args);
   }
 }

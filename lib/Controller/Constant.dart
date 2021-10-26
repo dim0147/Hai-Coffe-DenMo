@@ -11,7 +11,7 @@ class CBaseState {
   String? message;
   Rx<CBaseState>? getC;
 
-  CBaseState(this.state, this.message);
+  CBaseState(this.state, [this.message]);
 
   void setGetC(Rx<CBaseState> getC) {
     this.getC = getC;

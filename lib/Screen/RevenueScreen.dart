@@ -266,7 +266,7 @@ class RevenueItem extends GetView<RevenueController> {
     final String dateDisplay =
         controller.viewType.value == RevenueScreenViewType.MONTH
             ? 'Tháng ${Utils.dateExtension.dateToMonthYear(revenue.startDate)}'
-            : 'Ngày ${Utils.dateExtension.dateToDayMonth(revenue.endDate)}';
+            : 'Ngày ${Utils.dateExtension.dateToDayMonth(revenue.startDate)}';
     final bill = revenue.bill.totalRevenue ?? 0.0;
     final phieuChi = revenue.phieuChi.totalRevenue ?? 0.0;
     final phieuThu = revenue.phieuThu.totalRevenue ?? 0.0;
@@ -293,13 +293,13 @@ class RevenueItem extends GetView<RevenueController> {
           caption: 'Xem Bill',
           color: Colors.red,
           icon: Icons.receipt,
-          onTap: () => {},
+          onTap: () => controller.onSeeBill(revenue),
         ),
         IconSlideAction(
           caption: 'Xem Phiếu',
           color: Colors.black,
           icon: Icons.receipt_long,
-          onTap: () => {},
+          onTap: () => controller.onSeePhieu(revenue),
         ),
       ],
     );

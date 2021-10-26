@@ -14,20 +14,14 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../Component.dart';
 
 class ListOrderScreen extends GetView<ListOrderController> {
-  void onSubmit(Object? value) {
-    if (value == null || !(value is PickerDateRange)) return;
-
-    var ad = value;
-  }
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tất cả bill'),
+          title: Obx(() => Text('Tất cả Bill (${controller.listBill.length})')),
         ),
-        drawer: NavigateMenu(),
+        drawer: controller.args == null ? NavigateMenu() : null,
         body: Column(
           children: [
             DateRangeSelected(),
@@ -48,6 +42,7 @@ class DateRangeSelected extends GetView<ListOrderController> {
 
   @override
   Widget build(BuildContext context) {
+    if (controller.args != null) return SizedBox();
     return Obx(
       () => Column(
         children: [
@@ -81,6 +76,7 @@ class DateRangeSelected extends GetView<ListOrderController> {
 class SearchBar extends GetView<ListOrderController> {
   @override
   Widget build(BuildContext context) {
+    if (controller.args != null) return SizedBox();
     return Container(
       padding: EdgeInsets.all(8.0),
       child: TextField(

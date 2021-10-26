@@ -22,9 +22,10 @@ class ListPhieuScreen extends GetView<ListPhieuController> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Tất cả phiếu'),
+          title:
+              Obx(() => Text('Tất cả Phiếu (${controller.listPhieu.length})')),
         ),
-        drawer: NavigateMenu(),
+        drawer: controller.args == null ? NavigateMenu() : null,
         body: Column(
           children: [
             DateRangeSelected(),
@@ -45,6 +46,7 @@ class DateRangeSelected extends GetView<ListPhieuController> {
 
   @override
   Widget build(BuildContext context) {
+    if (controller.args != null) return SizedBox();
     return Obx(
       () => Column(
         children: [

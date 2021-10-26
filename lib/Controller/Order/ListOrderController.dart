@@ -7,15 +7,15 @@ import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Phieu.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-class ListOrderScreenArgs {
+class ListBillsScreenArgs {
   final DateTime startDate;
   final DateTime endDate;
 
-  ListOrderScreenArgs(this.startDate, this.endDate);
+  ListBillsScreenArgs(this.startDate, this.endDate);
 }
 
 class ListOrderController extends GetxController {
-  final ListOrderScreenArgs? args = Get.arguments;
+  final ListBillsScreenArgs? args = Get.arguments;
   final AppDatabase appDb = Get.find<AppDatabase>();
   late final BillDAO billDAO;
 
@@ -35,10 +35,15 @@ class ListOrderController extends GetxController {
     super.onInit();
     billDAO = BillDAO(appDb);
 
+    // Default query today
     DateTime startDate = Utils.dateExtension.getCurrentDay();
     DateTime endDate = Utils.dateExtension.getNextDay();
-    // Query today
-    if (args != null) {}
+
+    final args = this.args;
+    if (args != null) {
+      startDate = args.startDate;
+      endDate = args.endDate;
+    }
 
     final PickerDateRange pickerDateRange = PickerDateRange(startDate, endDate);
     dateRangePickerC.selectedRange = pickerDateRange;
