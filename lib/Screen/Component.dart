@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/Menu/MenuController.dart';
 
-Drawer NavigateMenu() {
+Widget NavigateMenu() {
   return Drawer(
     child: Container(
       color: Get.theme.scaffoldBackgroundColor,
@@ -12,479 +12,553 @@ Drawer NavigateMenu() {
         padding: EdgeInsets.all(8.0),
         children: [
           // HEADER
-          DrawerHeader(
-            child: Column(
-              children: [
-                Image.asset(
-                  'assets/img/background.png',
-                  width: Get.width * 0.8,
-                  height: Get.height * 0.10,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('Bảng Điều Khiển'),
-                )
-              ],
-            ),
-          ),
+          HeaderMenu(),
 
-          // MENU
-          ListTile(
-            title: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                    color: AppConfig.HEADER_COLOR,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-                children: [
-                  WidgetSpan(
-                    child: Icon(
-                      Icons.restaurant_menu,
-                      color: AppConfig.HEADER_COLOR,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' Menu',
-                  )
-                ],
-              ),
-            ),
-            onTap: () {
-              final menuScreenArgs = MenuScreenArgs();
-              // Get.offNamed('/menu', arguments: menuScreenArgs);
-              Get.offNamed('/menu', arguments: menuScreenArgs);
-            },
-          ),
+          MainMenu(),
+          RevenueMenu(),
+          MenuDivider(),
 
-          // Revenue
-          ListTile(
-            title: RichText(
-              text: TextSpan(
-                style: TextStyle(
-                    color: AppConfig.HEADER_COLOR,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-                children: [
-                  WidgetSpan(
-                    child: Icon(
-                      Icons.bar_chart,
-                      color: AppConfig.HEADER_COLOR,
-                    ),
-                  ),
-                  TextSpan(
-                    text: ' Doanh thu',
-                  )
-                ],
-              ),
-            ),
-            onTap: () {
-              Get.offNamed('/revenue');
-            },
-          ),
+          TableMenu(),
+          MenuDivider(),
 
-          Divider(
-            color: AppConfig.HEADER_COLOR,
-          ),
+          BillMenu(),
+          MenuDivider(),
 
-          // TABLE
-          Column(
-            children: [
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.chair_alt,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Bàn',
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.airplay,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Bảng Điều Khiển',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/table/');
-                },
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.add,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Tạo bàn',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/table/add');
-                },
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.edit,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Chỉnh sửa',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/table/list');
-                },
-              ),
-            ],
-          ),
+          PhieuMenu(),
+          MenuDivider(),
 
-          Divider(
-            color: AppConfig.HEADER_COLOR,
-          ),
+          MenuItem(),
+          MenuDivider(),
 
-          // Bill
-          Column(
-            children: [
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.receipt,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Bill',
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.receipt_outlined,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Xem Bill',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/bill/list');
-                },
-              ),
-            ],
-          ),
-
-          Divider(
-            color: AppConfig.HEADER_COLOR,
-          ),
-
-          // Phieu
-          Column(
-            children: [
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.confirmation_num,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Phiếu',
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.add,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Tạo phiếu',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/phieu/add');
-                },
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.receipt_long,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Xem phiếu',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/phieu/list');
-                },
-              ),
-            ],
-          ),
-
-          Divider(
-            color: AppConfig.HEADER_COLOR,
-          ),
-
-          // CATEGORY
-          Column(
-            children: [
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                      color: AppConfig.HEADER_COLOR,
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.category,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Danh Mục',
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.add,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Tạo danh mục',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/category/add');
-                },
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.edit,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Chỉnh sửa',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/category/list');
-                },
-              ),
-            ],
-          ),
-
-          Divider(
-            color: AppConfig.HEADER_COLOR,
-          ),
-
-          // ITEM
-          Column(
-            children: [
-              Center(
-                child: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.fastfood,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Item',
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.add,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Tạo Item',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/item/add');
-                },
-              ),
-              ListTile(
-                title: RichText(
-                  text: TextSpan(
-                    style: TextStyle(
-                        color: AppConfig.HEADER_COLOR,
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold),
-                    children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.edit,
-                          color: AppConfig.HEADER_COLOR,
-                        ),
-                      ),
-                      TextSpan(
-                        text: ' Chỉnh sủa',
-                      )
-                    ],
-                  ),
-                ),
-                onTap: () {
-                  Get.offNamed('/item/list');
-                },
-              ),
-            ],
-          ),
-
-          Divider(
-            color: AppConfig.HEADER_COLOR,
-          ),
+          CategoyMenu(),
         ],
       ),
     ),
   );
+}
+
+class HeaderMenu extends StatelessWidget {
+  const HeaderMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return DrawerHeader(
+      child: Column(
+        children: [
+          Image.asset(
+            'assets/img/background.png',
+            width: Get.width * 0.8,
+            height: Get.height * 0.10,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text('Bảng Điều Khiển'),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class MainMenu extends StatelessWidget {
+  const MainMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: RichText(
+        text: TextSpan(
+          style: TextStyle(
+              color: AppConfig.HEADER_COLOR,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+          children: [
+            WidgetSpan(
+              child: Icon(
+                Icons.restaurant_menu,
+                color: AppConfig.HEADER_COLOR,
+              ),
+            ),
+            TextSpan(
+              text: ' Menu',
+            )
+          ],
+        ),
+      ),
+      onTap: () {
+        final menuScreenArgs = MenuScreenArgs();
+        // Get.offNamed('/menu', arguments: menuScreenArgs);
+        Get.offNamed('/menu', arguments: menuScreenArgs);
+      },
+    );
+  }
+}
+
+class RevenueMenu extends StatelessWidget {
+  const RevenueMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: RichText(
+        text: TextSpan(
+          style: TextStyle(
+              color: AppConfig.HEADER_COLOR,
+              fontSize: 20,
+              fontWeight: FontWeight.bold),
+          children: [
+            WidgetSpan(
+              child: Icon(
+                Icons.bar_chart,
+                color: AppConfig.HEADER_COLOR,
+              ),
+            ),
+            TextSpan(
+              text: ' Doanh thu',
+            )
+          ],
+        ),
+      ),
+      onTap: () {
+        Get.offNamed('/revenue');
+      },
+    );
+  }
+}
+
+class TableMenu extends StatelessWidget {
+  const TableMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.chair_alt,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Bàn',
+                )
+              ],
+            ),
+          ),
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.airplay,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Bảng Điều Khiển',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/table/');
+          },
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.add,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Tạo bàn',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/table/add');
+          },
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.edit,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Chỉnh sửa',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/table/list');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class BillMenu extends StatelessWidget {
+  const BillMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.receipt,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Bill',
+                )
+              ],
+            ),
+          ),
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.receipt_outlined,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Xem Bill',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/bill/list');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class PhieuMenu extends StatelessWidget {
+  const PhieuMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.confirmation_num,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Phiếu',
+                )
+              ],
+            ),
+          ),
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.add,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Tạo phiếu',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/phieu/add');
+          },
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.receipt_long,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Xem phiếu',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/phieu/list');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class CategoyMenu extends StatelessWidget {
+  const CategoyMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                color: AppConfig.HEADER_COLOR,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.category,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Danh Mục',
+                )
+              ],
+            ),
+          ),
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.add,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Tạo danh mục',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/category/add');
+          },
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.edit,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Chỉnh sửa',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/category/list');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class MenuItem extends StatelessWidget {
+  const MenuItem({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.fastfood,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Item',
+                )
+              ],
+            ),
+          ),
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.add,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Tạo Item',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/item/add');
+          },
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.edit,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Chỉnh sủa',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/item/list');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class MenuDivider extends StatelessWidget {
+  const MenuDivider({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Divider(
+      color: AppConfig.HEADER_COLOR,
+    );
+  }
 }
 
 class CheckboxPrimary extends StatelessWidget {

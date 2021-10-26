@@ -75,6 +75,14 @@ class ListBillController extends GetxController {
 
   void onSearchKeyword(String? keyword) async {
     if (keyword == null) return;
+
+    if (keyword.length == 0) {
+      final pickerDateRange = dateRangePickerC.selectedRange;
+      if (pickerDateRange == null) return;
+      onSubmitDateRange(pickerDateRange);
+      return;
+    }
+
     int? billId = int.tryParse(keyword);
     if (billId == null) return;
 
