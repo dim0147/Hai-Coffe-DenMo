@@ -4,11 +4,8 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Bill/ListBillController.dart';
-import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
-import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Bill.dart';
-import 'package:hai_noob/Model/Phieu.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../Component.dart';

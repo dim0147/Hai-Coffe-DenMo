@@ -87,4 +87,8 @@ class ListPhieuController extends GetxController {
       Utils.showSnackBar('Lỗi', err.toString());
     }
   }
+
+  void onFloatingBtn() {
+    Get.offNamed('/phieu/add');
+  }
 }

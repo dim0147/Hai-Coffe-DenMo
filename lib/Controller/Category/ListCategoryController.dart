@@ -54,4 +54,8 @@ class ListCategoryController extends GetxController
       Utils.showSnackBar('Lỗi', err.toString());
     }
   }
+
+  void onFloatingBtn() {
+    Get.offNamed('/category/add');
+  }
 }

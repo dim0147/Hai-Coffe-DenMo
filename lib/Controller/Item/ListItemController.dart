@@ -67,4 +67,8 @@ class ListItemController extends GetxController
       Utils.showSnackBar('Lỗi', err.toString());
     }
   }
+
+  void onFloatingBtn() {
+    Get.offNamed('/item/add');
+  }
 }

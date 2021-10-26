@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/Category/ListCategoryController.dart';
 import 'package:hai_noob/DB/Database.dart';
 
@@ -25,6 +26,11 @@ class ListCategoryScreen extends GetView<ListCategoryController> {
               );
             },
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: controller.onFloatingBtn,
+          child: const Icon(Icons.add),
+          backgroundColor: AppConfig.MAIN_COLOR,
         ),
       ),
     );

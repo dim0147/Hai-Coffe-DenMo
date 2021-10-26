@@ -107,6 +107,11 @@ class ListItemScreen extends GetView<ListItemController> {
             },
           ),
         ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: controller.onFloatingBtn,
+          child: const Icon(Icons.add),
+          backgroundColor: AppConfig.MAIN_COLOR,
+        ),
       ),
     );
   }

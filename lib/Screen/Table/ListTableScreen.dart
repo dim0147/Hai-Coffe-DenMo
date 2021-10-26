@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
+import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/Table/ListTableController.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 
@@ -25,6 +26,11 @@ class ListTableScreen extends GetView<ListTableController> {
               );
             },
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: controller.onFloatingBtn,
+          child: const Icon(Icons.add),
+          backgroundColor: AppConfig.MAIN_COLOR,
         ),
       ),
     );
