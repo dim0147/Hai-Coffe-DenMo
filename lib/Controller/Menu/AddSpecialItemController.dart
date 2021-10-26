@@ -36,7 +36,7 @@ class AddSpecialItemController extends GetxController {
 
   final TextEditingController customNameC = TextEditingController();
   final MoneyMaskedTextController customAmountC = MoneyMaskedTextController(
-    precision: 3,
+    precision: 0,
   );
 
   @override

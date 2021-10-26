@@ -29,13 +29,13 @@ class EditItemController extends GetxController {
   // Value
   final TextEditingController titleC = TextEditingController();
   final MoneyMaskedTextController priceC = MoneyMaskedTextController(
-    precision: 3,
+    precision: 0,
   );
   final RxList<CategoryCheckbox> categories = <CategoryCheckbox>[].obs;
   final RxList<Property> properties = <Property>[].obs;
   final TextEditingController propertyNameC = TextEditingController();
   final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController(
-    precision: 3,
+    precision: 0,
   );
   final visibility = true.obs;
   final img = Rxn<File>();

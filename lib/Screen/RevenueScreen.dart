@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/Controller/RevenueController.dart';
 import 'package:hai_noob/Model/Phieu.dart';
 import 'package:hai_noob/Model/Revenue.dart';
@@ -91,12 +92,20 @@ class DateRangePicker extends GetView<RevenueController> {
     return Obx(() {
       final RevenueScreenViewType viewType = controller.viewType.value;
 
+      final cState = controller.cState.value;
+      if (cState.state == CState.LOADING) return CircularProgressIndicator();
+      if (cState.state == CState.ERROR) {
+        final String errText =
+            cState.message != null ? 'Lỗi: ${cState.message}' : '';
+        return Center(
+          child: Text(errText),
+        );
+      }
+
       return Container(
         key: Key(viewType.toString()),
         child: SfDateRangePicker(
-          view: viewType == RevenueScreenViewType.MONTH
-              ? DateRangePickerView.year
-              : DateRangePickerView.month,
+          controller: controller.dateRangePickerC,
           allowViewNavigation:
               viewType == RevenueScreenViewType.MONTH ? false : true,
           selectionMode: DateRangePickerSelectionMode.range,
@@ -106,8 +115,8 @@ class DateRangePicker extends GetView<RevenueController> {
           rangeSelectionColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
           startRangeSelectionColor: AppConfig.MAIN_COLOR,
           endRangeSelectionColor: AppConfig.MAIN_COLOR,
-          // onSubmit: (Object? ad) => print('cc?'),
           onSubmit: controller.onSubmitDateRange,
+          onCancel: () => controller.dateRangePickerC.selectedRange = null,
         ),
       );
     });
@@ -125,11 +134,26 @@ class GraphRevenue extends GetView<RevenueController> {
     final textColor = Colors.white;
 
     return Obx(() {
+      final cState = controller.cState.value;
+      if (cState.state == CState.LOADING) return CircularProgressIndicator();
+      if (cState.state == CState.ERROR) {
+        final String errText =
+            cState.message != null ? 'Lỗi: ${cState.message}' : '';
+        return Center(
+          child: Text(errText),
+        );
+      }
+
       final List<Revenue> listRevenues = controller.listRevenues.value;
       final String headerTitle =
           controller.viewType.value == RevenueScreenViewType.MONTH
               ? 'Theo tháng'
               : 'Theo ngày';
+
+      String xValueMapper(Revenue revenue, int _) =>
+          controller.viewType.value == RevenueScreenViewType.MONTH
+              ? 'Tháng ${revenue.startDate.month}'
+              : '${Utils.dateExtension.dateToDayMonth(revenue.startDate)}';
 
       return Container(
         child: SfCartesianChart(
@@ -167,8 +191,9 @@ class GraphRevenue extends GetView<RevenueController> {
               name: '',
               // Bind data source
               dataSource: listRevenues,
-              xValueMapper: (Revenue revenue, _) =>
-                  'Tháng ${revenue.startDate.month}',
+              xValueMapper: xValueMapper,
+              // xValueMapper: (Revenue revenue, _) =>
+              //     'Tháng ${revenue.startDate.month}',
               yValueMapper: (Revenue revenue, _) => revenue.total(),
               markerSettings: MarkerSettings(isVisible: true),
               color: AppConfig.MAIN_COLOR,
@@ -188,7 +213,18 @@ class ListRevenue extends GetView<RevenueController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final List<Revenue> listRevenues = controller.listRevenues.value;
+      final cState = controller.cState.value;
+      if (cState.state == CState.LOADING) return CircularProgressIndicator();
+      if (cState.state == CState.ERROR) {
+        final String errText =
+            cState.message != null ? 'Lỗi: ${cState.message}' : '';
+        return Center(
+          child: Text(errText),
+        );
+      }
+
+      final List<Revenue> listRevenues =
+          List.from(controller.listRevenues.value);
       listRevenues.sort((a, b) => (b.total() - a.total()).toInt());
       final String headerTitle =
           controller.viewType.value == RevenueScreenViewType.MONTH
@@ -227,7 +263,10 @@ class RevenueItem extends GetView<RevenueController> {
 
   @override
   Widget build(BuildContext context) {
-    final date = Utils.dateExtension.dateToMonth(revenue.startDate);
+    final String dateDisplay =
+        controller.viewType.value == RevenueScreenViewType.MONTH
+            ? 'Tháng ${Utils.dateExtension.dateToMonthYear(revenue.startDate)}'
+            : 'Ngày ${Utils.dateExtension.dateToDayMonth(revenue.endDate)}';
     final bill = revenue.bill.totalRevenue ?? 0.0;
     final phieuChi = revenue.phieuChi.totalRevenue ?? 0.0;
     final phieuThu = revenue.phieuThu.totalRevenue ?? 0.0;
@@ -243,7 +282,7 @@ class RevenueItem extends GetView<RevenueController> {
       actionExtentRatio: 0.25,
       child: Container(
         child: ListTile(
-          title: Text('$date'),
+          title: Text('- $dateDisplay'),
           subtitle: Text(
               'Bill: +${Utils.formatDouble(bill)}đ $phieuThuText $phieuChiText'),
           trailing: Text('Tổng cộng: ${Utils.formatDouble(revenue.total())}đ'),

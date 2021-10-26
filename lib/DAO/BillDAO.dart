@@ -144,15 +144,21 @@ class BillDAO extends DatabaseAccessor<AppDatabase> with _$BillDAOMixin {
     Cart cart,
     BillPayment paymentType,
     List<CouponScreenData> coupons,
-    double totalPriceOfBill,
-  ) {
+    double totalPriceOfBill, [
+    DateTime? randomTime,
+  ]) {
     return transaction<int>(() async {
+      // Validate
+      if (cart.items.length == 0)
+        return Future.error('Không có item nào trong giỏ hàng!');
+
       // Create bill
       BillsCompanion bill = BillsCompanion.insert(
         totalQuantities: cart.showTotalQuantity(),
         subTotal: cart.showTotalPrice(),
         totalPrice: totalPriceOfBill,
         paymentType: paymentType,
+        createdAt: randomTime == null ? Value.absent() : Value(randomTime),
       );
       int billId = await into(bills).insert(bill);
 

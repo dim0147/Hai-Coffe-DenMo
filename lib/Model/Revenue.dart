@@ -52,9 +52,9 @@ class Revenue {
   }
 }
 
-class MonthRange {
+class DayRange {
   final DateTime startDate;
   final DateTime endDate;
 
-  MonthRange(this.startDate, this.endDate);
+  DayRange(this.startDate, this.endDate);
 }

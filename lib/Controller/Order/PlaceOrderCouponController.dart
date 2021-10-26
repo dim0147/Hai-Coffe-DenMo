@@ -23,7 +23,7 @@ class PlaceOrderCouponController extends GetxController {
   final couponType = CouponType.decrease.obs;
   final nameC = TextEditingController();
   final priceC = MoneyMaskedTextController(
-    precision: 3,
+    precision: 0,
   );
   final percentC = TextEditingController();
 

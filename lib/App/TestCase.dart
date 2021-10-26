@@ -20,7 +20,7 @@ class TestCase {
         BillPayment.Cash,
         [],
         cart.showTotalPrice(),
-        // randomTime(),
+        randomTime(inYear: 2021),
       );
       listTask.add(task);
     }
@@ -35,7 +35,7 @@ class TestCase {
 
   List<CartItem> genereListCartItem() {
     List<CartItem> list = [];
-    int limit = Utils.randomExtension.randomNumber(0, 20);
+    int limit = Utils.randomExtension.randomNumber(1, 20);
     while (limit > 0) {
       final cartItem = CartItem(
           totalQuantity: Utils.randomExtension.randomNumber(0, 10),
@@ -57,9 +57,17 @@ class TestCase {
         img: '');
   }
 
-  DateTime randomTime() {
-    return DateTime(2021, Utils.randomExtension.randomNumber(1, 12),
-        Utils.randomExtension.randomNumber(1, 30));
+  DateTime randomTime({
+    required int inYear,
+    int startMonth = 1,
+    int endMonth = 12,
+    int startDay = 1,
+    int endDay = 30,
+  }) {
+    return DateTime(
+        2021,
+        Utils.randomExtension.randomNumber(startMonth, endMonth),
+        Utils.randomExtension.randomNumber(startDay, endDay));
   }
 
   Future run() async {

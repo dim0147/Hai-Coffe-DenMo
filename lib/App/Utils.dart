@@ -167,8 +167,12 @@ class DateExtension {
     return f.format(date);
   }
 
-  String dateToMonth(DateTime date) {
-    return 'Tháng ${date.month}/${date.year}';
+  String dateToMonthYear(DateTime date) {
+    return '${date.month}/${date.year}';
+  }
+
+  String dateToDayMonth(DateTime date) {
+    return '${date.day}/${date.month}';
   }
 
   DateTime getCurrentDay() {
@@ -177,8 +181,8 @@ class DateExtension {
     return today;
   }
 
-  DateTime getNextDay() {
-    DateTime today = getCurrentDay();
+  DateTime getNextDay([DateTime? specificDate]) {
+    DateTime today = specificDate == null ? getCurrentDay() : specificDate;
     return today.add(Duration(hours: Duration.hoursPerDay));
   }
 
@@ -191,10 +195,10 @@ class DateExtension {
     return DateTime(date.year, date.month, lastday);
   }
 
-  MonthRange getMonthRangeFromDate(DateTime date) {
+  DayRange getMonthRangeFromDate(DateTime date) {
     final DateTime startDate = getFirstDateOfMonth(date);
     final DateTime endDate = getLastDateOfMonth(date);
-    return MonthRange(startDate, endDate);
+    return DayRange(startDate, endDate);
   }
 
   DateTime getFirstDateOfNextMonth(DateTime date) {
@@ -204,23 +208,20 @@ class DateExtension {
     );
   }
 
-  List<MonthRange>? getListMonthRangesFromDateRange(
+  List<DayRange> getListMonthRanges(
     DateTime startDate,
     DateTime endDate,
   ) {
-    if (startDate.isAfter(endDate)) return null;
-
     // If same month
     if (startDate.month == endDate.month && startDate.year == endDate.year) {
-      final newMonthRange =
-          MonthRange(startDate, getLastDateOfMonth(startDate));
+      final newMonthRange = DayRange(startDate, getLastDateOfMonth(startDate));
       return [newMonthRange];
     }
 
-    final List<MonthRange> monthRanges = [];
+    final List<DayRange> monthRanges = [];
 
     // Add current month of startDate
-    monthRanges.add(MonthRange(startDate, getLastDateOfMonth(startDate)));
+    monthRanges.add(DayRange(startDate, getLastDateOfMonth(startDate)));
     DateTime cur = startDate;
 
     while (cur.month != endDate.month || cur.year != endDate.year) {
@@ -228,10 +229,28 @@ class DateExtension {
       cur = getFirstDateOfNextMonth(cur);
       DateTime endDate = getLastDateOfMonth(cur);
 
-      MonthRange newMonthRange = MonthRange(cur, endDate);
+      DayRange newMonthRange = DayRange(cur, endDate);
       monthRanges.add(newMonthRange);
     }
 
     return monthRanges;
+  }
+
+  List<DayRange> getListDayRange(
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    final List<DayRange> listDayRanges = [];
+
+    DateTime curr = startDate;
+
+    while (!curr.isAfter(endDate)) {
+      final DateTime nextDay = getNextDay(curr);
+      final DayRange newDayRange = DayRange(curr, nextDay);
+      listDayRanges.add(newDayRange);
+      curr = nextDay;
+    }
+
+    return listDayRanges;
   }
 }

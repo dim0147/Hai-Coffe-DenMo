@@ -11,7 +11,7 @@ class CreatePhieuController extends GetxController {
   late final PhieuDAO phieuDAO;
   final TextEditingController textC = TextEditingController();
   final MoneyMaskedTextController amountC = MoneyMaskedTextController(
-    precision: 3,
+    precision: 0,
   );
   final Rx<PhieuType> phieuType = PhieuType.PHIEU_CHI.obs;
 
