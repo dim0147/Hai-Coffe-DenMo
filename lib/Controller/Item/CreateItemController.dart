@@ -1,16 +1,15 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:extended_masked_text/extended_masked_text.dart';
-import 'package:moor/moor.dart' as moor;
-import 'package:path/path.dart' as p;
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
-import 'package:hai_noob/Model/Item.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moor/moor.dart' as moor;
+import 'package:path/path.dart' as p;
 
 class CategoryCheckbox {
   int id;

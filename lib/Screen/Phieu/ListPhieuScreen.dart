@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
-import 'package:hai_noob/Model/Phieu.dart';
-import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:hai_noob/Model/Phieu.dart';
+import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../Component.dart';
 
 class ListPhieuScreen extends GetView<ListPhieuController> {
   void onSubmit(Object? value) {
     if (value == null || !(value is PickerDateRange)) return;
-
-    var ad = value;
   }
 
   @override

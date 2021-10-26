@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/Controller/RevenueController.dart';
-import 'package:hai_noob/Model/Phieu.dart';
 import 'package:hai_noob/Model/Revenue.dart';
 import 'package:hai_noob/Screen/Component.dart';
 import 'package:intl/intl.dart';

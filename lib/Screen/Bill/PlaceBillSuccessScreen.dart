@@ -1,12 +1,8 @@
-import 'dart:developer';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/Controller/Bill/PlaceBillCouponController.dart';
 import 'package:hai_noob/Controller/Bill/PlaceBillSuccessController.dart';
-import 'package:hai_noob/Model/Bill.dart';
-import 'package:hai_noob/Screen/Component.dart';
 
 class PlaceBillSuccessScreen extends GetView<PlaceBillSuccessController> {
   const PlaceBillSuccessScreen({Key? key}) : super(key: key);

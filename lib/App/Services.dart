@@ -1,15 +1,15 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
+import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/Model/ConfigGlobal.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../DB/Database.dart';
 import '../DAO/UserDAO.dart';
+import '../DB/Database.dart';
 import '../Model/Cart.dart';
 
 class DbService extends GetxService {
@@ -72,16 +72,9 @@ class StartUpService {
     final tableLocalDAO = Get.find<TableLocalDAO>();
 
     // Get all table locals
-    final tableLocals = tableLocalDAO.getAllWithMap();
 
     // Get all tables DB
     final tableOrders = await TableOrderDAO(db).getAllTableOrders();
-
-    // TODO: Test this shit
-    // Remove table where id don't exist in database
-    // Map<dynamic, TableLocal> tableLocalsExistIDs = Map.from(tableLocals)
-    //   ..removeWhere((key, value) => tableOrders.every((e) => e.id != key));
-    // await tableLocalDAO.updateAllByMap(tableLocalsExistIDs);
 
     // Loop all table orders to checking
     tableOrders.forEach((e) {

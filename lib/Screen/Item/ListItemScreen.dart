@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Category/ListCategoryController.dart';
 import 'package:hai_noob/Controller/Item/ListItemController.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
-import 'package:hai_noob/DB/Database.dart';
-import 'package:hai_noob/Model/Item.dart';
 
 import '../Component.dart';
 

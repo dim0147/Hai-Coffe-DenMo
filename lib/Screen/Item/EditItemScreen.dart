@@ -3,14 +3,9 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:extended_masked_text/extended_masked_text.dart';
-import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Item/CreateItemController.dart';
-import 'package:hai_noob/Controller/Item/EditItemController.dart';
-import 'package:image_picker/image_picker.dart';
-
 import 'package:hai_noob/App/Config.dart';
-import 'package:hai_noob/Model/Item.dart';
+import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Item/EditItemController.dart';
 import 'package:hai_noob/Screen/Component.dart';
 
 class EditItemScreen extends GetView<EditItemController> {

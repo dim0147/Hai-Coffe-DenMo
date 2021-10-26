@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Bill/PlaceBillController.dart';
-import 'package:hai_noob/Controller/Bill/PlaceBillCouponController.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Screen/Component.dart';
 

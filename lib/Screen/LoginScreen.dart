@@ -4,7 +4,6 @@ import 'package:hai_noob/App/Config.dart';
 
 import './Component.dart';
 import '../Controller/LoginController.dart';
-import '../Model/User.dart';
 
 class LoginScreen extends GetView<LoginController> {
   @override

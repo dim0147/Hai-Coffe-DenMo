@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/Controller/Table/EditTableController.dart';
 
-import '../Component.dart';
-
 class EditTableScreen extends GetView<EditTableController> {
   const EditTableScreen({Key? key}) : super(key: key);
 

@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
-import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Menu/CartController.dart';
 import 'package:hai_noob/Controller/Menu/SelectTableDialogController.dart';
-import 'package:hai_noob/Model/Cart.dart' as CartModel;
 
 class SelectTableDialogScreen extends GetView<SelectTableDialogController> {
   const SelectTableDialogScreen({Key? key}) : super(key: key);

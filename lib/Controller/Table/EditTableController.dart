@@ -1,15 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/App/Contants.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/Controller/Menu/MenuController.dart';
-import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
+import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
-import 'package:hai_noob/Model/Cart.dart';
-import 'package:hai_noob/Model/TableLocal.dart';
-import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/src/runtime/data_class.dart' as moorRuntime;
 
 class EditTableScreenArgs {
@@ -60,7 +54,7 @@ class EditTableController extends GetxController {
         name: moorRuntime.Value(name),
         order: moorRuntime.Value(order),
       );
-      int tableID = await tableOrderDAO.updateTable(args.tableId, tableUpdate);
+      await tableOrderDAO.updateTable(args.tableId, tableUpdate);
 
       // Update to table locaL
       await tableLocalDAO.updateTable(args.tableId, name: name, order: order);

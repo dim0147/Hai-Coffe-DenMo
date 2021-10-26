@@ -3,7 +3,6 @@ import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Item/EditItemController.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
-import 'package:hai_noob/Model/Item.dart';
 
 class ListItemController extends GetxController
     with StateMixin<List<ItemDataClass>> {

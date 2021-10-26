@@ -4,10 +4,6 @@ import 'package:hai_noob/Controller/Category/EditCategoryController.dart';
 
 import '../../App/Config.dart';
 
-import '../Component.dart';
-
-import '../../Controller/Category/CreateCategoryController.dart';
-
 class EditCategoryScreen extends GetView<EditCategoryController> {
   @override
   Widget build(BuildContext context) {

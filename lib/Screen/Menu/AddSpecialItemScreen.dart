@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Menu/AddSpecialItemController.dart';
-import 'package:hai_noob/Screen/Component.dart';
 
 class AddSpecialItemScreen extends GetView<AddSpecialItemController> {
   const AddSpecialItemScreen({Key? key}) : super(key: key);

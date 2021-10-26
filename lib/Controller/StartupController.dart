@@ -1,21 +1,11 @@
-import 'dart:convert';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/TestCase.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/RevenueDAO.dart';
-import 'package:hai_noob/DAO/BillDAO.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 import '../App/Services.dart';
 import '../DB/Database.dart';
-
-import '../Model/Cart.dart' as Cart;
-
-import '../DAO/UserDAO.dart';
 
 class StartupController extends GetxController with StateMixin<void> {
   Rx<String> statusText = ''.obs;
@@ -59,7 +49,7 @@ class StartupController extends GetxController with StateMixin<void> {
         final testCase = TestCase();
         await testCase.run();
       }
-    } catch (error, stack) {
+    } catch (error) {
       change(null, status: RxStatus.error());
       Utils.showSnackBar(
         'Lỗi',
@@ -82,25 +72,9 @@ class StartupController extends GetxController with StateMixin<void> {
     final toDay = Utils.dateExtension.getCurrentDay();
 
     analyzeDAO.getRevenue(yesterDay, toDay);
-
-    var ada;
   }
 
-  void queryTestData() async {
-    var db = Get.find<AppDatabase>();
-
-    var users = await db.select(db.users).get();
-    var items = await db.select(db.items).get();
-    var categories = await db.select(db.categories).get();
-    var itemCategories = await db.select(db.itemCategories).get();
-    var itemProperties = await db.select(db.itemProperties).get();
-    var tables = await db.select(db.tableOrders).get();
-    var bills = await db.select(db.bills).get();
-    var billItems = await db.select(db.billItems).get();
-    var billItemProperties = await db.select(db.billItemProperties).get();
-    var billCoupons = await db.select(db.billCoupons).get();
-    var vc;
-  }
+  void queryTestData() async {}
 
   Future deleteFist() async {
     var db = Get.find<AppDatabase>();

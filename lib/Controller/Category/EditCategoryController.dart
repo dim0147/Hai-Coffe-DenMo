@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
-import 'package:moor/moor.dart';
 import 'package:moor/src/runtime/data_class.dart' as MOOR_RUNTIME;
 
 class EditCategoryScreenArgs {

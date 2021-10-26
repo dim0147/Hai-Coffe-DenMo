@@ -42,7 +42,6 @@ class AddSpecialItemController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    var itemEdit = Get.arguments;
 
     // Setup default list property
     List<PropertyAdded> defaultListPropertyAdded = cartItem.properties

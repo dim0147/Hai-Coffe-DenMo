@@ -8,7 +8,6 @@ import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
-import 'package:hai_noob/Screen/Bill/PlaceBillSuccessScreen.dart';
 
 enum StatusPlaceBill { LOADING, DONE, ERROR }
 

@@ -1,15 +1,8 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hai_noob/App/Config.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-
-import '../DB/Database.dart';
-import '../Model/Cart.dart' as Cart;
 
 import '../DAO/UserDAO.dart';
+import '../DB/Database.dart';
 
 class LoginController extends GetxController with StateMixin<void> {
   Color? mainColor = Colors.amber[300];
@@ -36,7 +29,6 @@ class LoginController extends GetxController with StateMixin<void> {
     change(null, status: RxStatus.loading());
 
     // Get input data
-    String username = textUsernameC.text;
     String password = textPasswordC.text;
 
     // Query User

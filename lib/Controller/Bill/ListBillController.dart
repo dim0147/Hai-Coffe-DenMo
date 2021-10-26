@@ -2,9 +2,7 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Bill/BillDetailController.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
-import 'package:hai_noob/DAO/PhieuDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
-import 'package:hai_noob/Model/Phieu.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ListBillsScreenArgs {

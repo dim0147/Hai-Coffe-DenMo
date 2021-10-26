@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
-import 'package:hai_noob/Controller/StartupController.dart';
-
-import 'Screen/LoginScreen.dart';
-import 'Screen/StartupScreen.dart';
 
 import 'Blinding/SpashBlinding.dart';
-
-import 'Controller/LoginController.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() {
   runApp(MyApp());

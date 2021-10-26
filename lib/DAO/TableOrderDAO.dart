@@ -46,7 +46,6 @@ class TableOrderDAO extends DatabaseAccessor<AppDatabase>
     Update
   */
   Future<int> updateTable(int tableId, TableOrdersCompanion tableUpdate) {
-    final ad = Value(2);
     return (update(tableOrders)..where((tbl) => tbl.id.equals(tableId)))
         .write(tableUpdate);
   }
