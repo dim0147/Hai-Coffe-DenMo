@@ -33,13 +33,13 @@ class CreateItemController extends GetxController {
   late CategoryDAO categoryDAO;
 
   final ImagePicker _picker = ImagePicker();
-
-  // Value
   final TextEditingController titleC = TextEditingController();
   final MoneyMaskedTextController priceC = MoneyMaskedTextController();
-  final RxList<CategoryCheckbox> categories = <CategoryCheckbox>[].obs;
   final TextEditingController propertyNameC = TextEditingController();
   final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController();
+
+  // Value
+  final RxList<CategoryCheckbox> categories = <CategoryCheckbox>[].obs;
   final RxList<Property> properties = <Property>[].obs;
   final visibility = true.obs;
   final img = Rxn<File>();
@@ -54,7 +54,7 @@ class CreateItemController extends GetxController {
     categoryDAO = CategoryDAO(db);
 
     // Load category
-    var listCategories = await categoryDAO.listAllCategory().then((value) =>
+    final listCategories = await categoryDAO.listAllCategory().then((value) =>
         value.map((e) => CategoryCheckbox(id: e.id, name: e.name)).toList());
     categories.assignAll(listCategories);
     isLoadingCategory.value = false;
@@ -85,26 +85,24 @@ class CreateItemController extends GetxController {
 
     propertyNameC.text = '';
     propertyAmountC.text = '0,000';
-
-    print(name);
   }
 
   void removeProperty(Property property) {
-    properties.removeWhere((element) =>
-        element.name == property.name && element.amount == property.amount);
+    properties.removeWhere(
+      (element) =>
+          element.name == property.name && element.amount == property.amount,
+    );
   }
 
   void onChangeVisibility(bool? newValue) {
     if (newValue == null) return;
-
     visibility.value = newValue;
   }
 
   void onAddImg() async {
     // Pick an image
-    var image = await _picker.pickImage(source: ImageSource.gallery);
+    final image = await _picker.pickImage(source: ImageSource.gallery);
     if (image == null) return;
-
     img.value = File(image.path);
   }
 
@@ -123,7 +121,6 @@ class CreateItemController extends GetxController {
       isCreateItem.value = false;
       return Utils.showSnackBar('Lỗi', 'Tên trống');
     }
-
     if (price == null) {
       isCreateItem.value = false;
       return Utils.showSnackBar('Lỗi', 'Giá không hợp lệ');
@@ -140,7 +137,7 @@ class CreateItemController extends GetxController {
     }
 
     // Create item to insert
-    ItemsCompanion itemToInsert = ItemsCompanion.insert(
+    final ItemsCompanion itemToInsert = ItemsCompanion.insert(
       name: title,
       image: imgName ?? '',
       price: price,
@@ -151,10 +148,15 @@ class CreateItemController extends GetxController {
     try {
       await itemDAO.createItem(itemToInsert, categories, properties);
       Get.offAllNamed('/item/list');
-      Utils.showSnackBar('Thành công', 'Tạo item \'$title\' thành công');
+      Utils.showSnackBar(
+        'Thành công',
+        'Tạo item \'$title\' thành công',
+      );
     } catch (err) {
       Utils.showSnackBar(
-          'Lỗi', 'Có lỗi xảy ra khi tạo item: \n ${err.toString()}');
+        'Lỗi',
+        'Có lỗi xảy ra khi tạo item: \n ${err.toString()}',
+      );
     }
     isCreateItem.value = false;
   }

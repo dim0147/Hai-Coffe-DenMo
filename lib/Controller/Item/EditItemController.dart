@@ -19,24 +19,24 @@ class EditItemScreenArgs {
 }
 
 class EditItemController extends GetxController {
-  final args = Utils.tryCast<EditItemScreenArgs>(Get.arguments);
+  final EditItemScreenArgs args = Get.arguments;
   final db = Get.find<AppDatabase>();
   late ItemsDAO itemDAO;
   late CategoryDAO categoryDAO;
 
   final ImagePicker _picker = ImagePicker();
-
-  // Value
   final TextEditingController titleC = TextEditingController();
   final MoneyMaskedTextController priceC = MoneyMaskedTextController(
     precision: 0,
   );
-  final RxList<CategoryCheckbox> categories = <CategoryCheckbox>[].obs;
-  final RxList<Property> properties = <Property>[].obs;
   final TextEditingController propertyNameC = TextEditingController();
   final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController(
     precision: 0,
   );
+
+  // Value
+  final RxList<CategoryCheckbox> categories = <CategoryCheckbox>[].obs;
+  final RxList<Property> properties = <Property>[].obs;
   final visibility = true.obs;
   final img = Rxn<File>();
 
@@ -48,56 +48,69 @@ class EditItemController extends GetxController {
   void onInit() async {
     try {
       super.onInit();
-      if (args == null) return;
 
       itemDAO = ItemsDAO(db);
       categoryDAO = CategoryDAO(db);
 
       // Load category
-      var listCategories = await categoryDAO.listAllCategory().then((value) =>
-          value.map((e) => CategoryCheckbox(id: e.id, name: e.name)).toList());
+      final listCategories = await categoryDAO.listAllCategory().then(
+            (value) => value
+                // Convert categories to checkbox
+                .map((e) => CategoryCheckbox(id: e.id, name: e.name))
+                .toList(),
+          );
       categories.assignAll(listCategories);
       isLoadingCategory.value = false;
 
       // Load Item
-      final itemId = args!.itemId;
+      final itemId = args.itemId;
       final itemData = await itemDAO.getItemById(itemId);
 
-      titleC.text = itemData.item.name;
-      priceC.updateValue(itemData.item.price);
-      visibility.value = itemData.item.visibility;
-
-      // Set Image
-      if (itemData.item.image != '') {
-        final imgFile = Utils.getImgFile(itemData.item.image);
-        if (imgFile != null) {
-          img.value = imgFile;
-        }
-      }
-
-      // Check Categories
-      if (itemData.categories != null) {
-        categories.value = categories.map((e) {
-          // Check if current category is one of item categories
-          final isIncludeInItemCategory =
-              itemData.categories?.any((i) => i.id == e.id);
-
-          if (isIncludeInItemCategory != null && isIncludeInItemCategory)
-            e.checked = true;
-
-          return e;
-        }).toList();
-      }
-
-      // Check Property
-      if (itemData.properties != null) {
-        properties.value = itemData.properties!
-            .map((e) => Property(name: e.name, amount: e.amount))
-            .toList();
-      }
+      setDefaultItemData(itemData);
     } catch (err) {
       Utils.showSnackBar('Lỗi', err.toString());
     }
+  }
+
+  void setDefaultItemData(ItemDataClass itemData) {
+    // Set data
+    titleC.text = itemData.item.name;
+    priceC.updateValue(itemData.item.price);
+    visibility.value = itemData.item.visibility;
+
+    setItemImg(itemData);
+    setCategoryCheckboxes(itemData);
+    setPropertyCheckboxes(itemData);
+  }
+
+  void setItemImg(ItemDataClass itemData) {
+    if (itemData.item.image == '') return;
+    final imgFile = Utils.getImgFile(itemData.item.image);
+    if (imgFile == null) return;
+    img.value = imgFile;
+  }
+
+  void setCategoryCheckboxes(ItemDataClass itemData) {
+    final itemCategories = itemData.categories;
+    if (itemCategories == null) return;
+
+    final newListCategoryCheckboxs = categories.map((e) {
+      // Check if current category is one of item categories
+      final isIncludeInItemCategory = itemCategories.any((i) => i.id == e.id);
+      if (isIncludeInItemCategory) e.checked = true;
+
+      return e;
+    }).toList();
+    categories.value = newListCategoryCheckboxs;
+  }
+
+  void setPropertyCheckboxes(ItemDataClass itemData) {
+    final itemProperties = itemData.properties;
+    if (itemProperties == null) return;
+    final listPropertyCheckboxes = itemProperties
+        .map((e) => Property(name: e.name, amount: e.amount))
+        .toList();
+    properties.value = listPropertyCheckboxes;
   }
 
   void onChangeCategoryCheckbox(bool? checked, int id) {
@@ -113,6 +126,10 @@ class EditItemController extends GetxController {
   void addProperty() {
     String name = propertyNameC.text;
     double? amount = Utils.convertStringToDouble(propertyAmountC.text);
+    if (name == '') {
+      Utils.showSnackBar('Lỗi', 'Nhập tên thuộc tính!');
+      return;
+    }
     if (amount == null) {
       Utils.showSnackBar('Lỗi', 'Giá thuộc tính không hợp lệ!');
       return;
@@ -153,7 +170,7 @@ class EditItemController extends GetxController {
   void onSaveItem() async {
     // Create item
     try {
-      final itemId = args?.itemId;
+      final itemId = args.itemId;
       if (itemId == null) return;
 
       isSaveItem.value = true;
