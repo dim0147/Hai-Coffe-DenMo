@@ -29,14 +29,11 @@ class PlaceBillCouponController extends GetxController {
 
   void onChangeCouponType(CouponType? value) {
     if (value == null) return;
-
     couponType.value = value;
   }
 
   void onChangePrice(String? value) {
     if (value == null) return;
-
-    // Parse to int
     double price = priceC.numberValue;
 
     // Calculate percent
@@ -44,14 +41,18 @@ class PlaceBillCouponController extends GetxController {
     percentC.text = priceWithPercent.toString();
   }
 
+  int priceToPercent(double price) {
+    double cartTotalPrice = cart.showTotalPrice();
+    double priceWithPercent = (price / cartTotalPrice) * 100;
+    return priceWithPercent.toInt();
+  }
+
   void onChangePercent(String? value) {
     if (value == null) return;
 
-    // Parse to int
     int? percent = int.tryParse(value);
     if (percent == null) return;
 
-    // Calculate price
     double price = percentToPrice(percent);
     priceC.updateValue(price);
   }
@@ -62,19 +63,13 @@ class PlaceBillCouponController extends GetxController {
     return priceWithPercent.toPrecision(2);
   }
 
-  int priceToPercent(double price) {
-    double cartTotalPrice = cart.showTotalPrice();
-    double priceWithPercent = (price / cartTotalPrice) * 100;
-    return priceWithPercent.toInt();
-  }
-
   void onAdd() {
     String name = nameC.text;
     double price = priceC.numberValue;
     int? percent = int.tryParse(percentC.text);
 
     if (name.length == 0) {
-      Utils.showSnackBar('Lỗi', 'Tên không hợp lệ');
+      Utils.showSnackBar('Lỗi', 'Nội dung không hợp lệ');
       return;
     }
 
