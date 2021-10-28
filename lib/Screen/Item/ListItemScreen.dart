@@ -16,95 +16,12 @@ class ListItemScreen extends GetView<ListItemController> {
         appBar: AppBar(title: Text('Tất cả Item')),
         drawer: NavigateMenu(),
         body: Container(
-          child: controller.obx(
-            (itemDatas) {
-              if (itemDatas == null)
-                return Center(child: Text('Không có data'));
-
-              // Filter item by string and visibility
-              final searchString = controller.searchString.value;
-              final visibility = controller.visibilityFilter.value;
-              final listItemData = itemDatas.where((e) {
-                final isIncludeSearchString = searchString == ''
-                    ? true
-                    : e.item.name
-                        .toLowerCase()
-                        .contains(searchString.toLowerCase());
-                final isInVisibilityFilter =
-                    visibility == null ? true : e.item.visibility == visibility;
-                return isIncludeSearchString && isInVisibilityFilter;
-              }).toList();
-
-              return Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        labelText: 'Nhập từ khoá tìm kiếm',
-                        prefixIcon: Icon(
-                          Icons.search,
-                        ),
-                      ),
-                      onChanged: controller.onChangeSearchBar,
-                    ),
-                  ),
-                  Obx(
-                    () => Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          OutlinedButton(
-                            style: controller.visibilityFilter.value == null
-                                ? OutlinedButton.styleFrom(
-                                    backgroundColor: AppConfig.MAIN_COLOR,
-                                  )
-                                : null,
-                            onPressed: () => controller
-                                .onChangeFilterStatus(null), // null mean all
-                            child: Text('Tất cả'),
-                          ),
-                          SizedBox(width: 10.0),
-                          OutlinedButton(
-                            style: controller.visibilityFilter.value == true
-                                ? OutlinedButton.styleFrom(
-                                    backgroundColor: AppConfig.MAIN_COLOR,
-                                  )
-                                : null,
-                            onPressed: () =>
-                                controller.onChangeFilterStatus(true),
-                            child: Text('Hiển thị'),
-                          ),
-                          SizedBox(width: 10.0),
-                          OutlinedButton(
-                            style: controller.visibilityFilter.value == false
-                                ? OutlinedButton.styleFrom(
-                                    backgroundColor: AppConfig.MAIN_COLOR,
-                                  )
-                                : null,
-                            onPressed: () =>
-                                controller.onChangeFilterStatus(false),
-                            child: Text('Không hiển thị'),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: listItemData.length,
-                      itemBuilder: (c, i) => Column(
-                        children: [
-                          ListItem(itemData: listItemData[i]),
-                          Divider(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
+          child: Column(
+            children: [
+              SearchInput(),
+              VisibleFilterSection(),
+              ItemListSection(),
+            ],
           ),
         ),
         floatingActionButton: FloatingActionButton(
@@ -117,10 +34,139 @@ class ListItemScreen extends GetView<ListItemController> {
   }
 }
 
-class ListItem extends GetView<ListItemController> {
+class SearchInput extends GetView<ListItemController> {
+  const SearchInput({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        decoration: InputDecoration(
+          labelText: 'Nhập từ khoá tìm kiếm',
+          prefixIcon: Icon(
+            Icons.search,
+          ),
+        ),
+        onChanged: controller.onChangeSearchBar,
+      ),
+    );
+  }
+}
+
+class VisibleFilterSection extends GetView<ListItemController> {
+  const VisibleFilterSection({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ButtonVisibleFilter(
+            displayString: 'Tất cả',
+            valueToFilter: null,
+          ),
+          SizedBox(width: 10.0),
+          ButtonVisibleFilter(
+            displayString: 'Hiển thị',
+            valueToFilter: true,
+          ),
+          SizedBox(width: 10.0),
+          ButtonVisibleFilter(
+            displayString: 'Không hiển thị',
+            valueToFilter: false,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ButtonVisibleFilter extends GetView<ListItemController> {
+  const ButtonVisibleFilter({
+    Key? key,
+    required this.displayString,
+    this.valueToFilter,
+  }) : super(key: key);
+
+  final String displayString;
+  final bool? valueToFilter;
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => OutlinedButton(
+        style: controller.visibilityFilter.value == valueToFilter
+            ? OutlinedButton.styleFrom(
+                backgroundColor: AppConfig.MAIN_COLOR,
+              )
+            : null,
+        onPressed: () =>
+            controller.onChangeFilterStatus(valueToFilter), // null mean all
+        child: Text(displayString),
+      ),
+    );
+  }
+}
+
+class ItemListSection extends GetView<ListItemController> {
+  const ItemListSection({
+    Key? key,
+  }) : super(key: key);
+
+  bool filterItem(ItemDataClass e, String searchString, bool? visibility) {
+    final String itemName = e.item.name;
+    final bool itemVisibility = e.item.visibility;
+
+    bool isIncludeSearchString = true;
+    if (searchString != '')
+      isIncludeSearchString =
+          itemName.toLowerCase().contains(searchString.toLowerCase());
+
+    bool isInVisibilityFilter = true;
+    if (visibility != null) isInVisibilityFilter = itemVisibility == visibility;
+
+    return isIncludeSearchString && isInVisibilityFilter;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      final itemDatas = controller.itemDatas;
+
+      // Filter item by string and visibility
+      final searchString = controller.searchString.value;
+      final visibility = controller.visibilityFilter.value;
+
+      final listItemData = itemDatas
+          .where((e) => filterItem(e, searchString, visibility))
+          .toList();
+
+      return Expanded(
+        child: ListView.builder(
+          itemCount: listItemData.length,
+          itemBuilder: (c, i) => Column(
+            children: [
+              ItemWidget(itemData: listItemData[i]),
+              Divider(),
+            ],
+          ),
+        ),
+      );
+    });
+  }
+}
+
+class ItemWidget extends GetView<ListItemController> {
   final ItemDataClass itemData;
 
-  const ListItem({
+  const ItemWidget({
     Key? key,
     required this.itemData,
   }) : super(key: key);
