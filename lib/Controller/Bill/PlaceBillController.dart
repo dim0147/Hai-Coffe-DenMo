@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Bill/PlaceBillCouponController.dart';
 import 'package:hai_noob/Controller/Bill/PlaceBillSuccessController.dart';
+import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -27,7 +28,7 @@ class PlaceBillController extends GetxController {
   final tableLocalDAO = Get.find<TableLocalDAO>();
   late final BillDAO billDAO;
 
-  final status = StatusPlaceBill.DONE.obs;
+  final Rx<CBaseState> cState = CBaseState(CState.DONE).obs;
   final cart = Cart(items: []).obs;
   final listCouponScreenData = <CouponScreenData>[].obs;
   final paymentType = BillPayment.Cash.obs;
@@ -37,6 +38,8 @@ class PlaceBillController extends GetxController {
   void onInit() {
     super.onInit();
     billDAO = BillDAO(appDatabase);
+    final cState = this.cState.value;
+    cState.setGetC(this.cState);
 
     if (args == null) return;
     cart.value = args!.cart;
@@ -67,22 +70,22 @@ class PlaceBillController extends GetxController {
   }
 
   void onConfirm() async {
+    final cState = this.cState.value;
     try {
-      status.value = StatusPlaceBill.LOADING;
+      cState.changeState(CState.LOADING);
 
-      // Create bill
       final billID = await billDAO.createBill(
         cart.value,
         paymentType.value,
         listCouponScreenData,
         showTotalPriceWithCoupon(),
       );
-      // Update table Cart
+
       await updateTableAfterPaymentDone(billID);
+      cState.changeState(CState.DONE);
 
       await _printReceipt();
 
-      // Goto success order screeen
       final placeOrderSuccesScreensArgs = PlaceBillSuccessScreenArgs(
         cart: cart.value,
         billID: billID,
@@ -92,13 +95,9 @@ class PlaceBillController extends GetxController {
         '/place-bill/success',
         arguments: placeOrderSuccesScreensArgs,
       );
-      status.value = StatusPlaceBill.DONE;
     } catch (err) {
-      status.value = StatusPlaceBill.ERROR;
-      Utils.showSnackBar(
-        'Lỗi',
-        'Không thể tạo order:\n- ${err.toString()}',
-      );
+      Utils.showSnackBar('Lỗi', err.toString());
+      cState.changeState(CState.ERROR, err.toString());
     }
   }
 
