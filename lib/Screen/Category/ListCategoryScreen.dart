@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Category/ListCategoryController.dart';
+import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DB/Database.dart';
 
 import '../Component.dart';
@@ -14,19 +16,7 @@ class ListCategoryScreen extends GetView<ListCategoryController> {
       child: Scaffold(
         appBar: AppBar(title: Text('Tất cả danh mục')),
         drawer: NavigateMenu(),
-        body: Container(
-          child: controller.obx(
-            (categories) {
-              if (categories == null)
-                return Center(child: Text('Không có data'));
-
-              return ListView.builder(
-                itemCount: categories.length,
-                itemBuilder: (c, i) => ListItem(category: categories[i]),
-              );
-            },
-          ),
-        ),
+        body: CategoryListViewWidget(),
         floatingActionButton: FloatingActionButton(
           onPressed: controller.onFloatingBtn,
           child: const Icon(Icons.add),
@@ -34,6 +24,29 @@ class ListCategoryScreen extends GetView<ListCategoryController> {
         ),
       ),
     );
+  }
+}
+
+class CategoryListViewWidget extends GetView<ListCategoryController> {
+  const CategoryListViewWidget({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(child: Obx(() {
+      final Widget? cStateWidget =
+          Utils.cStateInLoadingOrError(controller.cState.value);
+      if (cStateWidget != null) return cStateWidget;
+
+      final categories = controller.categories.value;
+      if (categories.length == 0) return Center(child: Text('Không có data'));
+
+      return ListView.builder(
+        itemCount: categories.length,
+        itemBuilder: (c, i) => ListItem(category: categories[i]),
+      );
+    }));
   }
 }
 

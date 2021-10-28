@@ -133,7 +133,8 @@ class Utils {
 
   /// Return either loading widget if cState is loading or text widget show error if cState is error, otherwise null
   static Widget? cStateInLoadingOrError(CBaseState cState) {
-    if (cState.state == CState.LOADING) return CircularProgressIndicator();
+    if (cState.state == CState.LOADING)
+      return Center(child: CircularProgressIndicator());
 
     if (cState.state == CState.ERROR) {
       final String errText =

@@ -1,31 +1,33 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Category/EditCategoryController.dart';
+import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 
-class ListCategoryController extends GetxController
-    with StateMixin<List<Category>> {
+class ListCategoryController extends GetxController {
   final appDB = Get.find<AppDatabase>();
   late final CategoryDAO categoryDAO;
 
+  final Rx<CBaseState> cState = CBaseState(CState.LOADING).obs;
   final categories = <Category>[].obs;
 
   void onInit() async {
+    super.onInit();
+    categoryDAO = CategoryDAO(appDB);
+    final cState = this.cState.value;
+    cState.setGetC(this.cState);
     try {
-      super.onInit();
-      categoryDAO = CategoryDAO(appDB);
       categories.value = await categoryDAO.listAllCategory();
-      change(categories, status: RxStatus.success());
+      cState.changeState(CState.DONE);
     } catch (err) {
-      change(null,
-          status: RxStatus.error('Có lỗi xảy ra:\n ${err.toString()}'));
+      Utils.showSnackBar('Lỗi', err.toString());
+      cState.changeState(CState.ERROR, err.toString());
     }
   }
 
   void refreshListCategory() async {
     categories.value = await categoryDAO.listAllCategory();
-    change(categories, status: RxStatus.success());
   }
 
   void onEditListItem(int categoryId) async {
@@ -46,9 +48,7 @@ class ListCategoryController extends GetxController
       if (resultDialog == null || resultDialog == false) return;
 
       await categoryDAO.deleteCategoryById(categoryId);
-
       refreshListCategory();
-
       Utils.showSnackBar('Thành công', 'Xoá danh mục thành công');
     } catch (err) {
       Utils.showSnackBar('Lỗi', err.toString());
