@@ -25,40 +25,65 @@ class PlaceBillSuccessScreen extends GetView<PlaceBillSuccessController> {
                   Icons.check_circle,
                   size: 80.0,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Thanh toán thành công, bill ID: #${billID.toString()}',
-                    style: TextStyle(fontSize: 22.0),
-                  ),
-                ),
+                BillStatus(billID: billID),
                 Spacer(),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      ElevatedButton(
-                        onPressed: controller.onGoMenu,
-                        child: Text('MENU'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(120, 40),
-                        ),
-                      ),
-                      SizedBox(height: 4.0),
-                      ElevatedButton(
-                        onPressed: controller.onGoTablePanel,
-                        child: Text('Quản Lí Bàn'),
-                        style: ElevatedButton.styleFrom(
-                          minimumSize: Size(120, 40),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
+                NavigateBtns(),
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class BillStatus extends GetView<PlaceBillSuccessController> {
+  const BillStatus({
+    Key? key,
+    this.billID,
+  }) : super(key: key);
+
+  final int? billID;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Text(
+        'Thanh toán thành công, bill ID: #${billID.toString()}',
+        style: TextStyle(fontSize: 22.0),
+      ),
+    );
+  }
+}
+
+class NavigateBtns extends GetView<PlaceBillSuccessController> {
+  const NavigateBtns({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: controller.onGoMenu,
+            child: Text('MENU'),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(120, 40),
+            ),
+          ),
+          SizedBox(height: 4.0),
+          ElevatedButton(
+            onPressed: controller.onGoTablePanel,
+            child: Text('Quản Lí Bàn'),
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(120, 40),
+            ),
+          ),
+        ],
       ),
     );
   }
