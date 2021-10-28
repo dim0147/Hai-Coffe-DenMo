@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/Model/ConfigGlobal.dart';
 import 'package:hai_noob/Model/Revenue.dart';
 import 'package:intl/intl.dart';
@@ -128,6 +129,21 @@ class Utils {
   static String formatDouble(double numb) {
     NumberFormat numberFormat = NumberFormat.decimalPattern('vi');
     return numberFormat.format(numb);
+  }
+
+  /// Return either loading widget if cState is loading or text widget show error if cState is error, otherwise null
+  static Widget? cStateInLoadingOrError(CBaseState cState) {
+    if (cState.state == CState.LOADING) return CircularProgressIndicator();
+
+    if (cState.state == CState.ERROR) {
+      final String errText =
+          cState.message != null ? 'Lỗi: ${cState.message}' : '';
+      return Center(
+        child: Text(errText),
+      );
+    }
+
+    return null;
   }
 }
 

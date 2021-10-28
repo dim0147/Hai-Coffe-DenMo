@@ -29,11 +29,13 @@ class ListItemController extends GetxController
   void onChangeSearchBar(String? string) {
     if (string == null) return;
     searchString.value = string;
+    // Update UI
     change(itemDatas, status: RxStatus.success());
   }
 
   void onChangeFilterStatus(bool? visibility) {
     visibilityFilter.value = visibility;
+    // Update UI
     change(itemDatas, status: RxStatus.success());
   }
 

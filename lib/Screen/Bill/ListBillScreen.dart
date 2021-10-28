@@ -44,8 +44,8 @@ class DateRangeSelected extends GetView<ListBillController> {
       () => Column(
         children: [
           TextButton.icon(
-            onPressed: () => controller
-                .setShowDateRangePicker(!controller.showDateRangePicker.value),
+            onPressed: () => controller.setVisibleDateRangePicker(
+                !controller.showDateRangePicker.value),
             icon: Icon(Icons.date_range),
             label: Text(
               'Chọn ngày',
@@ -97,6 +97,10 @@ class TotalDisplay extends GetView<ListBillController> {
   Widget build(BuildContext context) {
     return Obx(
       () {
+        final Widget? cStateWidget =
+            Utils.cStateInLoadingOrError(controller.cState.value);
+        if (cStateWidget != null) return cStateWidget;
+
         final double totalPriceAll = controller.listBill
             .fold(0.0, (pre, cur) => pre + cur.bill.totalPrice);
 
@@ -121,6 +125,10 @@ class ListBill extends GetView<ListBillController> {
     return Expanded(
       child: Obx(
         () {
+          final Widget? cStateWidget =
+              Utils.cStateInLoadingOrError(controller.cState.value);
+          if (cStateWidget != null) return cStateWidget;
+
           if (controller.listBill.length == 0)
             return Center(child: Text('Không có data'));
 

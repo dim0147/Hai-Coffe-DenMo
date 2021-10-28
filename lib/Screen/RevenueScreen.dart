@@ -90,16 +90,9 @@ class DateRangePicker extends GetView<RevenueController> {
   Widget build(BuildContext context) {
     return Obx(() {
       final RevenueScreenViewType viewType = controller.viewType.value;
-
-      final cState = controller.cState.value;
-      if (cState.state == CState.LOADING) return CircularProgressIndicator();
-      if (cState.state == CState.ERROR) {
-        final String errText =
-            cState.message != null ? 'Lỗi: ${cState.message}' : '';
-        return Center(
-          child: Text(errText),
-        );
-      }
+      final Widget? cStateWidget =
+          Utils.cStateInLoadingOrError(controller.cState.value);
+      if (cStateWidget != null) return cStateWidget;
 
       return Container(
         key: Key(viewType.toString()),
@@ -133,15 +126,9 @@ class GraphRevenue extends GetView<RevenueController> {
     final textColor = Colors.white;
 
     return Obx(() {
-      final cState = controller.cState.value;
-      if (cState.state == CState.LOADING) return CircularProgressIndicator();
-      if (cState.state == CState.ERROR) {
-        final String errText =
-            cState.message != null ? 'Lỗi: ${cState.message}' : '';
-        return Center(
-          child: Text(errText),
-        );
-      }
+      final Widget? cStateWidget =
+          Utils.cStateInLoadingOrError(controller.cState.value);
+      if (cStateWidget != null) return cStateWidget;
 
       final List<Revenue> listRevenues = controller.listRevenues.value;
       final String headerTitle =
@@ -212,15 +199,9 @@ class ListRevenue extends GetView<RevenueController> {
   @override
   Widget build(BuildContext context) {
     return Obx(() {
-      final cState = controller.cState.value;
-      if (cState.state == CState.LOADING) return CircularProgressIndicator();
-      if (cState.state == CState.ERROR) {
-        final String errText =
-            cState.message != null ? 'Lỗi: ${cState.message}' : '';
-        return Center(
-          child: Text(errText),
-        );
-      }
+      final Widget? cStateWidget =
+          Utils.cStateInLoadingOrError(controller.cState.value);
+      if (cStateWidget != null) return cStateWidget;
 
       final List<Revenue> listRevenues =
           List.from(controller.listRevenues.value);
