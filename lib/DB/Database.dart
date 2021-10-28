@@ -1,19 +1,16 @@
-// <Implement>
 import 'dart:io';
 
+import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Model/Phieu.dart';
 import 'package:moor/ffi.dart';
-// </Implement>
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
-import '../DAO/UserDAO.dart';
 import '../Model/Bill.dart';
 import '../Model/Category.dart';
 import '../Model/Item.dart';
 import '../Model/TableOrders.dart';
-import '../Model/User.dart';
 
 part 'Database.g.dart';
 
@@ -24,15 +21,12 @@ LazyDatabase _openConnection() {
     // put the database file, called db.sqlite here, into the documents folder
     // for your app.
     final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
+    final file = File(p.join(dbFolder.path, AppConfig.DB_FILE_NAME));
     return VmDatabase(file);
   });
 }
-// </Implement>
 
-// <Implement>
 @UseMoor(tables: [
-  Users,
   Categories,
   Items,
   ItemCategories,
@@ -50,57 +44,9 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  void insertTest() async {
-    into(users)
-        .insert(UsersCompanion.insert(username: 'Admon', password: '1234567'));
+  void insertTest() async {}
 
-    into(categories).insert(CategoriesCompanion.insert(name: 'Đồ Ăn'));
-
-    into(items).insert(ItemsCompanion.insert(
-      name: 'Trứng',
-      image: 'trung.jpg',
-      price: 300.000,
-    ));
-
-    into(itemCategories)
-        .insert(ItemCategoriesCompanion.insert(itemId: 1, categoryId: 1));
-
-    into(itemProperties).insert(ItemPropertiesCompanion.insert(
-        itemId: 1, name: 'Thêm đường', amount: 3000.50));
-
-    into(tableOrders)
-        .insert(TableOrdersCompanion.insert(name: 'Bàn 1', order: 1));
-
-    into(bills).insert(BillsCompanion.insert(
-        subTotal: 10.0,
-        totalQuantities: 10,
-        totalPrice: 1000,
-        paymentType: BillPayment.Cash));
-    into(billItems).insert(BillItemsCompanion.insert(
-        itemImg: '',
-        billId: 1,
-        itemName: 'Bia 333',
-        itemPrice: 30.0,
-        totalQuantity: 10,
-        totalPrice: 100,
-        totalPriceWithProperty: 200));
-
-    into(billItemProperties).insert(BillItemPropertiesCompanion.insert(
-      billItemId: 1,
-      name: 'Thêm muối',
-      propertyPrice: 10,
-      totalQuantity: 1,
-      totalPrice: 300.00,
-      totalPriceMinusItemQuantity: 400,
-    ));
-  }
-
-  void _seedData() async {
-    UserDAO userDAO = UserDAO(this);
-
-    // Create admin account
-    await userDAO.createAdminAccount();
-  }
+  void _seedData() async {}
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -118,25 +64,3 @@ class AppDatabase extends _$AppDatabase {
         print('beforeOpen');
       });
 }
-
-
-
-
-// </Implement>
-
-// <MockData>
-
-// @UseMoor(tables: [
-//   Users,
-//   Categories,
-//   Items,
-//   ItemCategories,
-//   ItemProperties,
-//   Tables,
-//   Bills,
-//   BillItems,
-//   BillItemProperties
-// ])
-// class AppDatabase {}
-
-// </MockData>

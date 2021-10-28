@@ -87,6 +87,9 @@ class AddSpecialItemController extends GetxController {
       String name = customNameC.text;
       double amount = customAmountC.numberValue;
 
+      if (name == '')
+        return Utils.showSnackBar('Lỗi', 'Hãy nhập tên thuộc tính');
+
       PropertyAdded newProperty = PropertyAdded(name, amount);
       listPropertyAdded.add(newProperty);
       customNameC.clear();

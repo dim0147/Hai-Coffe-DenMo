@@ -8,7 +8,6 @@ import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../DAO/UserDAO.dart';
 import '../DB/Database.dart';
 import '../Model/Cart.dart';
 
@@ -17,14 +16,6 @@ class DbService extends GetxService {
     // Generate DB
     AppDatabase db = AppDatabase();
 
-    // Checking have Admin
-    UserDAO userDAO = new UserDAO(db);
-    User? adminIsKnowledge = await userDAO.findUserByUsername('admin');
-
-    // If don't have admin create new one
-    if (adminIsKnowledge == null) {
-      await userDAO.createAdminAccount();
-    }
     return db;
   }
 }

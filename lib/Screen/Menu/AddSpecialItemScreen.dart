@@ -128,7 +128,7 @@ class PropertyContainer extends GetView<AddSpecialItemController> {
                       TextSpan(
                           text: property.quantity > 0
                               ? '${Utils.formatDouble(property.showTotalPrice())}đ'
-                              : '${property.amount.toString()}đ',
+                              : '${Utils.formatDouble(property.amount)}đ',
                           style: TextStyle(color: Colors.blueAccent)),
                       if (property.quantity > 0)
                         WidgetSpan(
@@ -321,7 +321,7 @@ class TotalPrice extends GetView<AddSpecialItemController> {
                 children: [
                   if (controller.totalProperty.value > 0.0)
                     Text(
-                      'Tổng thuộc tính: (${controller.totalProperty}đ * ${controller.itemAmount}) = ${allTotalPropertyMinusTotalDongia.toString()}đ +',
+                      'Tổng thuộc tính: (${Utils.formatDouble(controller.totalProperty.value)}đ * ${controller.itemAmount}) = ${Utils.formatDouble(allTotalPropertyMinusTotalDongia)}đ +',
                       style: TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.bold,

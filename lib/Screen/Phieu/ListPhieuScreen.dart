@@ -32,11 +32,13 @@ class ListPhieuScreen extends GetView<ListPhieuController> {
             ListPhieu(),
           ],
         ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: controller.onFloatingBtn,
-          child: const Icon(Icons.add),
-          backgroundColor: AppConfig.MAIN_COLOR,
-        ),
+        floatingActionButton: controller.args == null
+            ? FloatingActionButton(
+                onPressed: controller.onFloatingBtn,
+                child: const Icon(Icons.add),
+                backgroundColor: AppConfig.MAIN_COLOR,
+              )
+            : null,
       ),
     );
   }

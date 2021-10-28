@@ -3,8 +3,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 
-import 'Blinding/SpashBlinding.dart';
-
 void main() {
   runApp(MyApp());
 }
@@ -94,7 +92,6 @@ class MyApp extends StatelessWidget {
       ),
       title: 'Hải Bên Lề',
       initialRoute: '/startup',
-      initialBinding: SpashBinding(),
       getPages: AppConfig.GetPages,
     );
   }

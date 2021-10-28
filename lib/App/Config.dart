@@ -43,19 +43,17 @@ import 'package:hai_noob/Screen/Table/TableLocalInfoScreen.dart';
 import 'package:hai_noob/Screen/Table/TablePanelScreen.dart';
 
 import '../Controller/Category/CreateCategoryController.dart';
-import '../Controller/LoginController.dart';
 import '../Controller/StartupController.dart';
 import '../Screen/Category/CreateCategoryScreen.dart';
 import '../Screen/Item/CreateItemScreen.dart';
-import '../Screen/LoginScreen.dart';
 import '../Screen/StartupScreen.dart';
 
 class AppConfig {
   // RUN TEST CASE OR NOT
   static final runTestCase = false;
 
-  // Admin password
-  static final String DEFAULT_ADMIN_PASSWORD = '123456';
+  // DB file name
+  static final String DB_FILE_NAME = 'hai_noob.sqlite';
 
   // Box name and key names
   static final String BOX_NAME = 'cafe';
@@ -95,13 +93,6 @@ class AppConfig {
       page: () => StartupScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => StartupController());
-      }),
-    ),
-    GetPage(
-      name: '/login',
-      page: () => LoginScreen(),
-      binding: BindingsBuilder(() {
-        Get.lazyPut(() => LoginController());
       }),
     ),
     GetPage(

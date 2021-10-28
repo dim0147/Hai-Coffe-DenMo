@@ -60,7 +60,7 @@ class Utils {
     return pathStorage == null ? null : pathStorage.path;
   }
 
-  /// Get Img full path with name
+  /// Get img widget
   static ImageProvider<Object> getImg(String imgName) {
     ConfigGlobal config = Get.find<ConfigGlobal>();
     String? imgPath = config.imgPath;
@@ -71,7 +71,7 @@ class Utils {
     return FileImage(File('${p.join(imgPath, imgName)}'));
   }
 
-  /// Get file
+  /// Get image file
   static File? getImgFile(String fileName) {
     ConfigGlobal config = Get.find<ConfigGlobal>();
     String? imgPath = config.imgPath;
@@ -92,6 +92,8 @@ class Utils {
       snackStyle: SnackStyle.GROUNDED,
       messageText: Text(text),
       duration: duration,
+      isDismissible: true,
+      dismissDirection: SnackDismissDirection.HORIZONTAL,
     );
   }
 

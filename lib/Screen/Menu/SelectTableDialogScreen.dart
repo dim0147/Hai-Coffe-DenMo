@@ -21,7 +21,7 @@ class SelectTableDialogScreen extends GetView<SelectTableDialogController> {
               items: controller.listTable
                   .map((e) => DropdownMenuItem(
                         value: e.id,
-                        child: Text('Bàn ${e.name}'),
+                        child: Text('${e.name}'),
                       ))
                   .toList(),
               value: controller.tableIDSelected.value,
