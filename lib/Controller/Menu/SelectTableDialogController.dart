@@ -4,9 +4,9 @@ import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 
 class SelectTableDialogController extends GetxController {
-  final tableLocalDAO = Get.find<TableLocalDAO>();
-  final listTable = <TableLocal>[].obs;
-  final tableIDSelected = Rxn<int>();
+  final TableLocalDAO tableLocalDAO = Get.find<TableLocalDAO>();
+  final RxList<TableLocal> listTable = <TableLocal>[].obs;
+  final Rxn<int> tableIDSelected = Rxn<int>();
 
   @override
   void onInit() async {
@@ -20,10 +20,10 @@ class SelectTableDialogController extends GetxController {
   }
 
   void onBtnConfirm() {
-    final tableID = tableIDSelected.value;
+    final int? tableID = tableIDSelected.value;
     if (tableID == null) return Utils.showSnackBar('Lỗi', 'Hãy chọn bàn trống');
 
-    final table = tableLocalDAO.getTable(tableID);
+    final TableLocal? table = tableLocalDAO.getTable(tableID);
     if (table == null) return Utils.showSnackBar('Lỗi', 'Bàn không tìm thấy');
 
     if (table.status != TableStatus.Empty)

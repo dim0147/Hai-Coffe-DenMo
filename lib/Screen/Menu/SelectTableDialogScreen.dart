@@ -8,7 +8,11 @@ class SelectTableDialogScreen extends GetView<SelectTableDialogController> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Get.put(SelectTableDialogController());
+    // Dialog so not using route name
+    final SelectTableDialogController controller = Get.put(
+      SelectTableDialogController(),
+    );
+
     return Obx(
       () => Container(
         padding: EdgeInsets.all(8.0),
