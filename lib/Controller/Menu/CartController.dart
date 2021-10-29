@@ -14,24 +14,23 @@ class CartScreenArgs {
 }
 
 class CartController extends GetxController {
-  final args = Utils.tryCast<CartScreenArgs>(Get.arguments);
+  final CartScreenArgs args = Get.arguments;
   final cart = Cart(items: []).obs;
 
   @override
   void onInit() {
     super.onInit();
 
-    if (args == null) return;
-    cart.value = args!.cart;
+    cart.value = args.cart;
   }
 
   void onClickCartItem(CartItem cartItem) async {
-    CartItem? newCartItem =
-        await Get.toNamed('/menu/add-special-item', arguments: cartItem)
-            as CartItem?;
+    CartItem? newCartItem = await Get.toNamed(
+      '/menu/add-special-item',
+      arguments: cartItem,
+    ) as CartItem?;
     if (newCartItem == null) return;
 
-    // Because this will gerenate new cart id
     cart.value.updateCart(newCartItem);
     cart.refresh();
   }
@@ -42,8 +41,10 @@ class CartController extends GetxController {
   }
 
   void onPayment() {
-    final placeOrderScreenArgs =
-        PlaceBillScreenArgs(cart: cart.value, tableID: args!.tableID);
+    final placeOrderScreenArgs = PlaceBillScreenArgs(
+      cart: cart.value,
+      tableID: args.tableID,
+    );
     Get.toNamed('/place-bill', arguments: placeOrderScreenArgs);
   }
 }

@@ -132,7 +132,7 @@ class Cart {
   }
 
   void _updateCart(CartItem updatedCart) {
-    bool isExistInCart =
+    final bool isExistInCart =
         this.items.any((e) => e.uniqueKey == updatedCart.uniqueKey);
     if (!isExistInCart) return;
 
