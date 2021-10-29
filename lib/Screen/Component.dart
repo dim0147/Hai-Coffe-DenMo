@@ -91,7 +91,6 @@ class MainMenu extends StatelessWidget {
       ),
       onTap: () {
         final menuScreenArgs = MenuScreenArgs();
-        // Get.offNamed('/menu', arguments: menuScreenArgs);
         Get.offNamed('/menu', arguments: menuScreenArgs);
       },
     );
