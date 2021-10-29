@@ -27,110 +27,85 @@ class ItemDataReturn {
       required this.totalPrice});
 }
 
+final int DEFAULT_ITEM_AMOUNT = 1;
+final double DEFAULT_PRICE = 0.0;
+
 class AddSpecialItemController extends GetxController {
   final CartItem cartItem = Get.arguments;
-  final listPropertyAdded = <PropertyAdded>[].obs;
-  final itemAmount = 1.obs;
-  final totalDonGia = 0.0.obs;
-  final totalProperty = 0.0.obs;
 
   final TextEditingController customNameC = TextEditingController();
   final MoneyMaskedTextController customAmountC = MoneyMaskedTextController(
     precision: 0,
   );
 
+  final RxList<PropertyAdded> listPropertyAdded = <PropertyAdded>[].obs;
+  final Rx<int> itemAmount = DEFAULT_ITEM_AMOUNT.obs;
+
   @override
   void onInit() {
     super.onInit();
 
     // Setup default list property
-    List<PropertyAdded> defaultListPropertyAdded = cartItem.properties
+    final List<PropertyAdded> defaultListPropertyAdded = cartItem.properties
         .map((e) => PropertyAdded(e.name, e.amount, quantity: e.quantity))
         .toList();
-
     listPropertyAdded.value = defaultListPropertyAdded;
 
-    // Default
+    // Assign default item values
     itemAmount.value = cartItem.totalQuantity;
-    totalProperty.value = _getTotalProperty();
-    totalDonGia.value = cartItem.totalQuantity * cartItem.item.price;
-  }
-
-  void increaseProperty(PropertyAdded property) {
-    List<PropertyAdded> newListPropertyAdded = listPropertyAdded.map((element) {
-      if (element.name == property.name) {
-        element.quantity += 1;
-      }
-
-      return element;
-    }).toList();
-
-    listPropertyAdded.value = newListPropertyAdded;
-    totalProperty.value = _getTotalProperty();
-  }
-
-  void removeProperty(PropertyAdded property) {
-    var newListPropertyAdded = listPropertyAdded.map((element) {
-      if (element.name == property.name) {
-        element.quantity = 0;
-      }
-
-      return element;
-    }).toList();
-
-    listPropertyAdded.value = newListPropertyAdded;
-    totalProperty.value = _getTotalProperty();
   }
 
   void addCustomProperty() {
     try {
-      String name = customNameC.text;
-      double amount = customAmountC.numberValue;
+      final String name = customNameC.text;
+      final double amount = customAmountC.numberValue;
 
       if (name == '')
         return Utils.showSnackBar('Lỗi', 'Hãy nhập tên thuộc tính');
 
-      PropertyAdded newProperty = PropertyAdded(name, amount);
+      final PropertyAdded newProperty = PropertyAdded(name, amount);
       listPropertyAdded.add(newProperty);
+
       customNameC.clear();
       customAmountC.clear();
     } catch (err) {
       Utils.showSnackBar(
-          'Lỗi', 'Lỗi khi thêm nhanh thuộc tính\n: ${err.toString()}');
+        'Lỗi',
+        'Lỗi khi thêm nhanh thuộc tính\n: ${err.toString()}',
+      );
     }
   }
 
-  double _getTotalProperty() {
-    var propertiesHaveQuantity =
-        listPropertyAdded.where((e) => e.quantity > 0).toList();
+  void increaseProperty(PropertyAdded property) {
+    final List<PropertyAdded> newListPropertyAdded = listPropertyAdded.map(
+      (element) {
+        if (element.name == property.name) element.quantity += 1;
+        return element;
+      },
+    ).toList();
+    listPropertyAdded.value = newListPropertyAdded;
+  }
 
-    var total = propertiesHaveQuantity.fold(
-        0.0,
-        (double previousValue, element) =>
-            previousValue + element.showTotalPrice());
-
-    return total;
+  void removeProperty(PropertyAdded property) {
+    var newListPropertyAdded = listPropertyAdded.map(
+      (element) {
+        if (element.name == property.name) element.quantity = 0;
+        return element;
+      },
+    ).toList();
+    listPropertyAdded.value = newListPropertyAdded;
   }
 
   void onChangeItemAmount(String amountString) {
-    int? amount = int.tryParse(amountString);
+    final int? amount = int.tryParse(amountString);
     if (amount == null) {
-      totalDonGia.value = 0.0;
+      itemAmount.value = 0;
       return;
     }
     itemAmount.value = amount;
-    totalDonGia.value = itemAmount.value * cartItem.item.price;
   }
 
   void confirm() {
-    double allTotalPropertyMinusItemQuantity =
-        (totalProperty.value * itemAmount.value);
-
-    double totalPriceOfAll =
-        allTotalPropertyMinusItemQuantity + totalDonGia.value;
-
-    cartItem.totalQuantity = itemAmount.value;
-    cartItem.totalPrice = totalPriceOfAll;
     cartItem.properties = listPropertyAdded
         .map((e) => CartItemProperty(
               name: e.name,
@@ -138,9 +113,32 @@ class AddSpecialItemController extends GetxController {
               quantity: e.quantity,
             ))
         .toList();
+    cartItem.totalQuantity = itemAmount.value;
+    cartItem.totalPrice = totalPrice();
 
     Get.back(result: cartItem);
   }
+
+  double getTotalProperty() {
+    final List<PropertyAdded> propertiesHaveQuantity =
+        listPropertyAdded.where((e) => e.quantity > 0).toList();
+
+    final double total = propertiesHaveQuantity.fold(
+        0.0,
+        (double previousValue, element) =>
+            previousValue + element.showTotalPrice());
+
+    return total;
+  }
+
+  double totalPropertyMinusItemQuantity() =>
+      getTotalProperty() * itemAmount.value;
+
+  double getItemSubTotal() {
+    return itemAmount.value * cartItem.item.price;
+  }
+
+  double totalPrice() => totalPropertyMinusItemQuantity() + getItemSubTotal();
 
   void cancel() {
     Get.back();

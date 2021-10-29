@@ -107,8 +107,7 @@ class ButtonVisibleFilter extends GetView<ListItemController> {
                 backgroundColor: AppConfig.MAIN_COLOR,
               )
             : null,
-        onPressed: () =>
-            controller.onChangeFilterStatus(valueToFilter), // null mean all
+        onPressed: () => controller.onChangeFilterStatus(valueToFilter),
         child: Text(displayString),
       ),
     );

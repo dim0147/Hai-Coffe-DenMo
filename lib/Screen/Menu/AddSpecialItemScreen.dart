@@ -20,16 +20,14 @@ class AddSpecialItemScreen extends GetView<AddSpecialItemController> {
           child: SingleChildScrollView(
             child: Container(
               width: double.infinity,
-              child: Obx(() => Column(
-                    children: [
-                      if (controller.listPropertyAdded.length > 0)
-                        ListProperty(),
-                      AddCustomProperty(),
-                      Amount(),
-                      Divider(color: AppConfig.MAIN_COLOR, thickness: 2.0),
-                      TotalPrice(),
-                    ],
-                  )),
+              child: Column(
+                children: [
+                  PropertySection(),
+                  ItemAmountSection(),
+                  Divider(color: AppConfig.MAIN_COLOR, thickness: 2.0),
+                  TotalPrice(),
+                ],
+              ),
             ),
           ),
         ),
@@ -38,58 +36,64 @@ class AddSpecialItemScreen extends GetView<AddSpecialItemController> {
   }
 }
 
-class ListProperty extends GetView<AddSpecialItemController> {
-  const ListProperty({
+class PropertySection extends GetView<AddSpecialItemController> {
+  const PropertySection({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (controller.listPropertyAdded.length == 0) return SizedBox();
     return Column(
       children: [
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text('Chọn thuộc tính'),
         ),
-        Obx(
-          () => Column(
-            children: [
-              ...controller.listPropertyAdded
-                  .map((e) => PropertyContainer(
-                        property: e,
-                      ))
-                  .toList(),
-              if (controller.totalProperty.value > 0)
-                Row(
-                  children: [
-                    Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Tổng cộng: ${Utils.formatDouble(controller.totalProperty.value)}đ',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ],
-                )
-            ],
-          ),
+        Column(
+          children: [
+            PropertyList(),
+            TotalProperty(),
+            AddCustomProperty(),
+          ],
         ),
       ],
     );
   }
 }
 
-class PropertyContainer extends GetView<AddSpecialItemController> {
+class PropertyList extends GetView<AddSpecialItemController> {
+  const PropertyList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Column(
+        children: controller.listPropertyAdded
+            .map((e) => PropertyItemList(
+                  property: e,
+                ))
+            .toList(),
+      ),
+    );
+  }
+}
+
+class PropertyItemList extends GetView<AddSpecialItemController> {
   final PropertyAdded property;
 
-  const PropertyContainer({
+  const PropertyItemList({
     Key? key,
     required this.property,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final bool propertyHaveQuantity = property.quantity > 0;
+    final double defaultPropertyPrice = property.amount;
+
     return InkWell(
       onTap: () => controller.increaseProperty(property),
       child: Container(
@@ -103,55 +107,100 @@ class PropertyContainer extends GetView<AddSpecialItemController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: RichText(
-                    text: TextSpan(
-                      children: [
-                        if (property.quantity > 0)
-                          TextSpan(
-                              text: '${property.quantity}x',
-                              style: TextStyle(color: Colors.green)),
-                        WidgetSpan(
-                            child: SizedBox(
-                          width: 10.0,
-                        )),
-                        TextSpan(text: property.name),
-                      ],
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: RichText(
-                    text: TextSpan(children: [
-                      TextSpan(
-                          text: property.quantity > 0
-                              ? '${Utils.formatDouble(property.showTotalPrice())}đ'
-                              : '${Utils.formatDouble(property.amount)}đ',
-                          style: TextStyle(color: Colors.blueAccent)),
-                      if (property.quantity > 0)
-                        WidgetSpan(
-                          child: IconButton(
-                            color: Colors.red,
-                            constraints:
-                                BoxConstraints(maxWidth: 30, maxHeight: 30),
-                            onPressed: () =>
-                                controller.removeProperty(property),
-                            icon: Icon(
-                              Icons.delete,
-                            ),
-                          ),
-                        )
-                    ]),
-                  ),
-                )
+                PropertyQuantity(propertyHaveQuantity),
+                RightSection(propertyHaveQuantity, defaultPropertyPrice),
               ],
             )
           ],
         ),
       ),
     );
+  }
+
+  Padding PropertyQuantity(bool propertyHaveQuantity) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: RichText(
+        text: TextSpan(
+          children: [
+            // Display x2, x3,... if have quantity
+            if (propertyHaveQuantity)
+              TextSpan(
+                text: '${property.quantity}x',
+                style: TextStyle(color: Colors.green),
+              ),
+            WidgetSpan(
+                child: SizedBox(
+              width: 10.0,
+            )),
+            TextSpan(text: property.name),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding RightSection(bool propertyHaveQuantity, double defaultPropertyPrice) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 8.0),
+      child: RichText(
+        text: TextSpan(children: [
+          PropertyPrice(
+            propertyHaveQuantity,
+            defaultPropertyPrice,
+          ),
+          if (propertyHaveQuantity) PropertyDelBtn()
+        ]),
+      ),
+    );
+  }
+
+  TextSpan PropertyPrice(
+      bool propertyHaveQuantity, double defaultPropertyPrice) {
+    return TextSpan(
+      text: propertyHaveQuantity
+          ? '${Utils.formatDouble(property.showTotalPrice())}đ'
+          : '${Utils.formatDouble(defaultPropertyPrice)}đ',
+      style: TextStyle(color: Colors.blueAccent),
+    );
+  }
+
+  WidgetSpan PropertyDelBtn() {
+    return WidgetSpan(
+      child: IconButton(
+        color: Colors.red,
+        constraints: BoxConstraints(maxWidth: 30, maxHeight: 30),
+        onPressed: () => controller.removeProperty(property),
+        icon: Icon(
+          Icons.delete,
+        ),
+      ),
+    );
+  }
+}
+
+class TotalProperty extends GetView<AddSpecialItemController> {
+  const TotalProperty({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(() {
+      if (controller.getTotalProperty() == 0.0) return SizedBox();
+      return Row(
+        children: [
+          Spacer(),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              'Tổng cộng: ${Utils.formatDouble(controller.getTotalProperty())}đ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      );
+    });
   }
 }
 
@@ -210,8 +259,8 @@ class AddCustomProperty extends GetView<AddSpecialItemController> {
   }
 }
 
-class Amount extends GetView<AddSpecialItemController> {
-  const Amount({
+class ItemAmountSection extends GetView<AddSpecialItemController> {
+  const ItemAmountSection({
     Key? key,
   }) : super(key: key);
 
@@ -223,77 +272,121 @@ class Amount extends GetView<AddSpecialItemController> {
         children: [
           Row(
             children: [
-              Flexible(
-                flex: 3,
-                child: TextField(
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(labelText: 'Số lượng'),
-                  controller: TextEditingController(
-                      text: controller.itemAmount.toString()),
-                  onChanged: controller.onChangeItemAmount,
-                ),
-              ),
-              Flexible(
-                fit: FlexFit.tight,
-                flex: 1,
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0),
-                    child: Text(
-                      'x',
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 8,
-                fit: FlexFit.tight,
-                child: Column(
-                  children: [
-                    Text('Đơn Giá'),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        decoration: BoxDecoration(color: AppConfig.MAIN_COLOR),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: Text(
-                              '${Utils.formatDouble(controller.cartItem.item.price)} đ',
-                              style:
-                                  TextStyle(fontSize: 20, color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Flexible(
-                flex: 3,
-                child: Obx(
-                  () => Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
-                    child: Wrap(
-                      children: [
-                        Text(
-                          '=',
-                        ),
-                        Text(
-                          ' ${Utils.formatDouble(controller.totalDonGia.value)}đ',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              )
+              ItemAmountInput(),
+              ItemAmountMinusSymbol(),
+              ItemAmountSinglePrice(),
+              ItemAmountSubTotal(),
             ],
           ),
         ],
       ),
+    );
+  }
+}
+
+class ItemAmountInput extends GetView<AddSpecialItemController> {
+  const ItemAmountInput({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final String itemAmount = controller.itemAmount.toString();
+    return Flexible(
+      flex: 3,
+      child: TextField(
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(labelText: 'Số lượng'),
+        controller: TextEditingController(text: itemAmount),
+        onChanged: controller.onChangeItemAmount,
+      ),
+    );
+  }
+}
+
+class ItemAmountMinusSymbol extends StatelessWidget {
+  const ItemAmountMinusSymbol({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      fit: FlexFit.tight,
+      flex: 1,
+      child: Center(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text(
+            'x',
+            style: TextStyle(fontSize: 20),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class ItemAmountSinglePrice extends GetView<AddSpecialItemController> {
+  const ItemAmountSinglePrice({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final double itemSinglePrice = controller.cartItem.item.price;
+    return Flexible(
+      flex: 8,
+      fit: FlexFit.tight,
+      child: Column(
+        children: [
+          Text('Đơn Giá'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(color: AppConfig.MAIN_COLOR),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: Text(
+                    '${Utils.formatDouble(itemSinglePrice)} đ',
+                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ItemAmountSubTotal extends GetView<AddSpecialItemController> {
+  const ItemAmountSubTotal({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Flexible(
+      flex: 3,
+      child: Obx(() {
+        final double itemSubtotal = controller.getItemSubTotal();
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 10.0),
+          child: Wrap(
+            children: [
+              Text('='),
+              Text(
+                ' ${Utils.formatDouble(itemSubtotal)}đ',
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
@@ -308,27 +401,30 @@ class TotalPrice extends GetView<AddSpecialItemController> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Obx(() {
-        double allTotalPropertyMinusTotalDongia =
-            (controller.totalProperty.value * controller.itemAmount.value);
+        final bool havePropertyPrice = controller.getTotalProperty() > 0.0;
 
-        double allPrice =
-            allTotalPropertyMinusTotalDongia + controller.totalDonGia.value;
+        final double totalProperty = controller.getTotalProperty();
+        final int itemAmount = controller.itemAmount.value;
+        final double itemSubTotal = controller.getItemSubTotal();
+        final double totalPropertyMinusItemQuantity =
+            controller.totalPropertyMinusItemQuantity();
+        final double totalPrice = controller.totalPrice();
 
         return Column(
           children: [
             Container(
               child: Column(
                 children: [
-                  if (controller.totalProperty.value > 0.0)
+                  if (havePropertyPrice)
                     Text(
-                      'Tổng thuộc tính: (${Utils.formatDouble(controller.totalProperty.value)}đ * ${controller.itemAmount}) = ${Utils.formatDouble(allTotalPropertyMinusTotalDongia)}đ +',
+                      'Tổng thuộc tính: (${Utils.formatDouble(totalProperty)}đ * $itemAmount) = ${Utils.formatDouble(totalPropertyMinusItemQuantity)}đ +',
                       style: TextStyle(
                         fontSize: 14.0,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   Text(
-                    'Tổng đơn giá: ${Utils.formatDouble(controller.totalDonGia.value)}đ',
+                    'Tổng đơn giá: ${Utils.formatDouble(itemSubTotal)}đ',
                     style: TextStyle(
                       fontSize: 14.0,
                       fontWeight: FontWeight.bold,
@@ -345,7 +441,7 @@ class TotalPrice extends GetView<AddSpecialItemController> {
               ),
             ),
             Text(
-              'Thành tiền: ${Utils.formatDouble(allPrice)} đ',
+              'Thành tiền: ${Utils.formatDouble(totalPrice)} đ',
               style: TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
