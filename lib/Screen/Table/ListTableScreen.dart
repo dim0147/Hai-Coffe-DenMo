@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Table/ListTableController.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 
@@ -15,17 +16,7 @@ class ListTableScreen extends GetView<ListTableController> {
         appBar: AppBar(title: Text('Tất cả bàn')),
         drawer: NavigateMenu(),
         body: Container(
-          child: controller.obx(
-            (listTables) {
-              if (listTables == null)
-                return Center(child: Text('Không có data'));
-
-              return ListView.builder(
-                itemCount: listTables.length,
-                itemBuilder: (c, i) => ListItem(table: listTables[i]),
-              );
-            },
-          ),
+          child: TableList(),
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: controller.onFloatingBtn,
@@ -33,6 +24,31 @@ class ListTableScreen extends GetView<ListTableController> {
           backgroundColor: AppConfig.MAIN_COLOR,
         ),
       ),
+    );
+  }
+}
+
+class TableList extends GetView<ListTableController> {
+  const TableList({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () {
+        final Widget? cStateWidget =
+            Utils.cStateInLoadingOrError(controller.cState.value);
+        if (cStateWidget != null) return cStateWidget;
+
+        final List<TableLocal> listTables = controller.listTables.value;
+        if (listTables.length == 0) return Center(child: Text('Không có data'));
+
+        return ListView.builder(
+          itemCount: listTables.length,
+          itemBuilder: (c, i) => ListItem(table: listTables[i]),
+        );
+      },
     );
   }
 }
