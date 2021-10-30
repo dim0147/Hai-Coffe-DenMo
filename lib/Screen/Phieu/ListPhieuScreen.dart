@@ -93,37 +93,27 @@ class FilterPhieu extends GetView<ListPhieuController> {
       () => Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          OutlinedButton(
-            onPressed: () => controller.setFilterPhieuType(null),
-            style: controller.filterType.value == null
-                ? OutlinedButton.styleFrom(
-                    backgroundColor: AppConfig.MAIN_COLOR,
-                  )
-                : null,
-            child: Text('Tất cả'),
-          ),
+          FilterBtn(null, 'Tất cả'),
           SizedBox(width: 8.0),
-          OutlinedButton(
-            onPressed: () => controller.setFilterPhieuType(PhieuType.PHIEU_THU),
-            child: Text('Phiếu thu'),
-            style: controller.filterType.value == PhieuType.PHIEU_THU
-                ? OutlinedButton.styleFrom(
-                    backgroundColor: AppConfig.MAIN_COLOR,
-                  )
-                : null,
-          ),
+          FilterBtn(PhieuType.PHIEU_THU, 'Phiếu thu'),
           SizedBox(width: 8.0),
-          OutlinedButton(
-            onPressed: () => controller.setFilterPhieuType(PhieuType.PHIEU_CHI),
-            child: Text('Phiếu chi'),
-            style: controller.filterType.value == PhieuType.PHIEU_CHI
-                ? OutlinedButton.styleFrom(
-                    backgroundColor: AppConfig.MAIN_COLOR,
-                  )
-                : null,
-          ),
+          FilterBtn(PhieuType.PHIEU_CHI, 'Phiếu chi'),
         ],
       ),
+    );
+  }
+
+  OutlinedButton FilterBtn(PhieuType? phieuType, String displayText) {
+    final bool isSelected = controller.filterType.value == phieuType;
+
+    return OutlinedButton(
+      onPressed: () => controller.setFilterPhieuType(phieuType),
+      style: isSelected
+          ? OutlinedButton.styleFrom(
+              backgroundColor: AppConfig.MAIN_COLOR,
+            )
+          : null,
+      child: Text(displayText),
     );
   }
 }
@@ -137,6 +127,10 @@ class TotalDisplay extends GetView<ListPhieuController> {
   Widget build(BuildContext context) {
     return Obx(
       () {
+        final Widget? cStateWidget =
+            Utils.cStateInLoadingOrError(controller.cState.value);
+        if (cStateWidget != null) return cStateWidget;
+
         final double totalThu = controller.listPhieu
             .where((e) => e.type == PhieuType.PHIEU_THU)
             .fold(0.0, (prev, e) => prev + e.amount);
@@ -174,6 +168,10 @@ class ListPhieu extends GetView<ListPhieuController> {
     return Expanded(
       child: Obx(
         () {
+          final Widget? cStateWidget =
+              Utils.cStateInLoadingOrError(controller.cState.value);
+          if (cStateWidget != null) return cStateWidget;
+
           if (controller.listPhieu.length == 0)
             return Center(child: Text('Không có data'));
 
@@ -182,9 +180,7 @@ class ListPhieu extends GetView<ListPhieuController> {
 
           // Apply filter if have
           if (filterType != null)
-            listPhieu = controller.listPhieu
-                .where((p) => p.type == filterType)
-                .toList();
+            listPhieu = listPhieu.where((p) => p.type == filterType).toList();
 
           return ListView.builder(
             itemCount: listPhieu.length,

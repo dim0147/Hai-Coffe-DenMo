@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/PhieuDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Phieu.dart';
@@ -21,33 +22,39 @@ class ListPhieuController extends GetxController {
   final DateRangePickerController dateRangePickerC =
       DateRangePickerController();
 
+  final Rx<CBaseState> cState = CBaseState(CState.LOADING).obs;
   final RxList<Phieu> listPhieu = <Phieu>[].obs;
   final Rxn<PhieuType> filterType = Rxn<PhieuType>();
 
-  Future queryListBetweenDay(DateTime startDate, DateTime endDate) async {
-    final phieus = await phieuDAO.getPhieuBetweenDays(startDate, endDate);
-    listPhieu.assignAll(phieus);
-  }
-
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
     phieuDAO = PhieuDAO(appDb);
 
-    // Query today
-    DateTime startDate = Utils.dateExtension.getCurrentDay();
-    DateTime endDate = Utils.dateExtension.getNextDay();
+    final CBaseState cState = this.cState.value;
+    cState.setGetC(this.cState);
 
-    final args = this.args;
-    if (args != null) {
-      startDate = args.startDate;
-      endDate = args.endDate;
+    try {
+      // Query today
+      DateTime startDate = Utils.dateExtension.getCurrentDay();
+      DateTime endDate = Utils.dateExtension.getNextDay();
+
+      // If have argument
+      final args = this.args;
+      if (args != null) {
+        startDate = args.startDate;
+        endDate = args.endDate;
+      }
+
+      final PickerDateRange pickerDateRange =
+          PickerDateRange(startDate, endDate);
+      dateRangePickerC.selectedRange = pickerDateRange;
+      await queryListBetweenDay(startDate, endDate);
+      cState.changeState(CState.DONE);
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+      cState.changeState(CState.ERROR, err.toString());
     }
-
-    final PickerDateRange pickerDateRange = PickerDateRange(startDate, endDate);
-    dateRangePickerC.selectedRange = pickerDateRange;
-    queryListBetweenDay(startDate, endDate);
-    return;
   }
 
   void setShowDateRangePicker(bool value) {
@@ -57,17 +64,26 @@ class ListPhieuController extends GetxController {
   void onSubmitDateRange(Object? value) async {
     if (value == null || !(value is PickerDateRange)) return;
 
-    final DateTime? startDate = value.startDate;
-    DateTime? endDate = value.endDate;
+    final CBaseState cState = this.cState.value;
 
-    if (startDate == null) return;
-    // If end day not set or equal start date we set the endDate equal the start of next day of start day (start date is 17th 00:00:00=> end date will be 18th 00:00:00)
-    if (endDate == null || endDate == startDate)
-      endDate = startDate.add(Duration(hours: Duration.hoursPerDay));
+    try {
+      final DateTime? startDate = value.startDate;
+      DateTime? endDate = value.endDate;
 
-    await queryListBetweenDay(startDate, endDate);
+      if (startDate == null) return;
+      // If end day not set or equal start date we set the endDate equal the next day of start day (start date is 17th 00:00:00=> end date will be 18th 00:00:00)
+      if (endDate == null || endDate == startDate)
+        endDate = startDate.add(Duration(hours: Duration.hoursPerDay));
 
-    setShowDateRangePicker(false);
+      setShowDateRangePicker(false);
+
+      cState.changeState(CState.LOADING);
+      await queryListBetweenDay(startDate, endDate);
+      cState.changeState(CState.DONE);
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+      cState.changeState(CState.ERROR, err.toString());
+    }
   }
 
   void onCancelDateRange() {
@@ -90,5 +106,10 @@ class ListPhieuController extends GetxController {
 
   void onFloatingBtn() {
     Get.offNamed('/phieu/add');
+  }
+
+  Future<void> queryListBetweenDay(DateTime startDate, DateTime endDate) async {
+    final phieus = await phieuDAO.getPhieuBetweenDays(startDate, endDate);
+    listPhieu.assignAll(phieus);
   }
 }
