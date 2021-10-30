@@ -1,9 +1,14 @@
+import 'dart:io';
+
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DB/Database.dart' as db;
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Model/Cart.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:path/path.dart' as p;
 
 class TestCase {
   Future seedBillData() async {
@@ -70,7 +75,42 @@ class TestCase {
         Utils.randomExtension.randomNumber(startDay, endDay));
   }
 
+  void testDBPath() async {
+    final ExternalStorage = await getExternalStorageDirectory();
+    final ApplicationDocuments = await getApplicationDocumentsDirectory();
+
+    if (ExternalStorage == null) return;
+    createFolder('images');
+    final adaad = await ExternalStorage.list().toList();
+    var ad;
+  }
+
+  Future<dynamic> createFolder(String folderName) async {
+    try {
+      final externalStorage = await getExternalStorageDirectory();
+      if (externalStorage == null) return Future.error('Null external');
+      final String dir = p.join(externalStorage.path, folderName);
+
+      final path = Directory(dir);
+      // var status = await Permission.storage.status;
+      // if (!status.isGranted) {
+      //   await Permission.storage.request();
+      // }
+      if ((await path.exists())) {
+        return path.path;
+      } else {
+        print('create path');
+        path.create();
+        return path.path;
+      }
+    } catch (err) {
+      var ad = err;
+      var af;
+    }
+  }
+
   Future run() async {
     await seedBillData();
+    testDBPath();
   }
 }

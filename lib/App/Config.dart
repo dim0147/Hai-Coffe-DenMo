@@ -50,10 +50,13 @@ import '../Screen/StartupScreen.dart';
 
 class AppConfig {
   // RUN TEST CASE OR NOT
-  static final runTestCase = false;
+  static final runTestCase = true;
 
   // DB file name
   static final String DB_FILE_NAME = 'hai_noob.sqlite';
+
+  // Img Folder Name
+  static final String IMG_FOLDER_NAME = 'images';
 
   // Box name and key names
   static final String BOX_NAME = 'cafe';

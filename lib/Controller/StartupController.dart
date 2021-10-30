@@ -60,20 +60,6 @@ class StartupController extends GetxController with StateMixin<void> {
     }
   }
 
-  void testCase() async {
-    final appDb = Get.find<AppDatabase>();
-    // final billDAO = BillDAO(appDb);
-    // final ad = await billDAO.getBillBetweenDay();
-
-    final analyzeDAO = RevenueDAO(appDb);
-
-    final yesterDay =
-        Utils.dateExtension.getCurrentDay().subtract(Duration(hours: 24));
-    final toDay = Utils.dateExtension.getCurrentDay();
-
-    analyzeDAO.getRevenue(yesterDay, toDay);
-  }
-
   void queryTestData() async {}
 
   Future deleteFist() async {
