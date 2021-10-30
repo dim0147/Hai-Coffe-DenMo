@@ -10,6 +10,7 @@ import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Cart.dart' as CartModel;
+import 'package:hai_noob/Model/ConfigGlobal.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hai_noob/Screen/Menu/SelectTableDialogScreen.dart';
 
@@ -45,7 +46,6 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
   final RxList<Category> categories = <Category>[].obs;
   final Rxn<int> choosenCategoryId = Rxn<int>();
   final searchString = ''.obs;
-  late final Rxn<String> imgPath = Rxn<String>();
 
   Future<void> setDefaultArgs() async {
     final int? tableID = args.tableID;
@@ -73,8 +73,6 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
     cState.setGetC(this.cState);
 
     try {
-      imgPath.value = await Utils.getImgDirectory();
-
       await setDefaultArgs();
 
       // Get menu items

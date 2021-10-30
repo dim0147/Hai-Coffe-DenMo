@@ -108,7 +108,7 @@ class CartItemWidget extends GetView<CartController> {
             padding: const EdgeInsets.only(right: 8.0),
             child: FadeInImage(
               placeholder: AssetImage(AppConfig.DEFAULT_IMG_ITEM),
-              image: Utils.getImg(cartItem.item.img),
+              image: Utils.getImgProvider(cartItem.item.img),
               height: Get.height * 0.1,
               width: Get.width * 0.1,
             ),

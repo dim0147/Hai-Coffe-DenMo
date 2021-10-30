@@ -28,25 +28,23 @@ class Utils {
   }
 
   static Future<File?> saveImg(File image) async {
-    /// Get storage directory
-    var pathStorage = await getExternalStorageDirectory();
-    if (pathStorage == null) {
-      Utils.showSnackBar('Lỗi', 'Không thể lấy thư mục storage');
-      return null;
-    }
+    // Get image directory
+    final ConfigGlobal config = Get.find<ConfigGlobal>();
+    final String? imgPath = config.imgPath;
+    if (imgPath == null) return null;
 
-    /// Get file extension
+    // Get file extension
     String fileExtension = p.extension(image.path);
     if (fileExtension == '') {
       Utils.showSnackBar('Lỗi', 'Không thể lấy type ảnh');
       return null;
     }
 
-    /// Generate filename
+    // Generate filename
     String filename = Utils.generateRandomId() + fileExtension;
 
-    /// Copy image to storage
-    String newPathToSave = p.join(pathStorage.path, filename);
+    // Copy image to storage
+    String newPathToSave = p.join(imgPath, filename);
     try {
       return image.copy(newPathToSave);
     } catch (err) {
@@ -55,31 +53,47 @@ class Utils {
     }
   }
 
-  /// Get img directory
-  static Future<String?> getImgDirectory() async {
-    var pathStorage = await getExternalStorageDirectory();
-    return pathStorage == null ? null : pathStorage.path;
-  }
+  /// Get img provider for widget
+  static ImageProvider<Object> getImgProvider(String imgName) {
+    try {
+      final ConfigGlobal config = Get.find<ConfigGlobal>();
+      final String? imgPath = config.imgPath;
+      // Check img path or img name don't have value
+      if (imgPath == null || imgName == '')
+        return AssetImage(AppConfig.DEFAULT_IMG_ITEM);
 
-  /// Get img widget
-  static ImageProvider<Object> getImg(String imgName) {
-    ConfigGlobal config = Get.find<ConfigGlobal>();
-    String? imgPath = config.imgPath;
+      // Check image is exist
+      final String imgFullPath = p.join(imgPath, imgName);
+      if (!fileIsExist(imgFullPath))
+        return AssetImage(AppConfig.DEFAULT_IMG_ITEM);
 
-    if (imgPath == null || imgName == '')
+      return FileImage(File(imgFullPath));
+    } catch (err) {
       return AssetImage(AppConfig.DEFAULT_IMG_ITEM);
-
-    return FileImage(File('${p.join(imgPath, imgName)}'));
+    }
   }
 
-  /// Get image file
+  /// Get img file
   static File? getImgFile(String fileName) {
-    ConfigGlobal config = Get.find<ConfigGlobal>();
-    String? imgPath = config.imgPath;
+    try {
+      final ConfigGlobal config = Get.find<ConfigGlobal>();
+      final String? imgPath = config.imgPath;
+      // Check img path or img name don't have value
+      if (imgPath == null || fileName == '') return null;
 
-    if (imgPath == null || fileName == '') return null;
+      // Check image is exist
+      final String imgFullPath = p.join(imgPath, fileName);
+      if (!fileIsExist(imgFullPath)) return null;
 
-    return File(p.join(imgPath, fileName));
+      return File(imgFullPath);
+    } catch (err) {
+      return null;
+    }
+  }
+
+  static bool fileIsExist(String filePath) {
+    final File file = File(filePath);
+    return file.existsSync();
   }
 
   static showSnackBar(String title, String text, [Duration? duration]) {

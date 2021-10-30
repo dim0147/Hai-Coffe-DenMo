@@ -30,10 +30,8 @@ class TableLocalService extends GetxService {
 
 class ConfigService extends GetxService {
   Future<ConfigGlobal> init() async {
-    // Connect hiv and register adapter
-    String? imgPath = await Utils.getImgDirectory();
-
-    ConfigGlobal config = ConfigGlobal(imgPath: imgPath);
+    final ConfigGlobal config = ConfigGlobal();
+    await config.init();
 
     return config;
   }

@@ -1,11 +1,12 @@
 import 'dart:io';
 
+import 'package:get/get.dart' as getx;
 import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/Model/ConfigGlobal.dart';
 import 'package:hai_noob/Model/Phieu.dart';
 import 'package:moor/ffi.dart';
 import 'package:moor/moor.dart';
 import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
 
 import '../Model/Bill.dart';
 import '../Model/Category.dart';
@@ -18,11 +19,15 @@ part 'Database.g.dart';
 LazyDatabase _openConnection() {
   // the LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
-    // put the database file, called db.sqlite here, into the documents folder
-    // for your app.
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, AppConfig.DB_FILE_NAME));
-    return VmDatabase(file);
+    // Get DB Folder
+    final ConfigGlobal configGlobal = getx.Get.find<ConfigGlobal>();
+    final String? dbPath = configGlobal.dbPath;
+    if (dbPath == null) return Future.error('DB Path is null');
+
+    // Get DB File
+    final String dbFilePath = p.join(dbPath, AppConfig.DB_FILE_NAME);
+    final File dbFile = File(dbFilePath);
+    return VmDatabase(dbFile);
   });
 }
 

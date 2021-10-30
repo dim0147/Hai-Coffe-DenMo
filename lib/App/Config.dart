@@ -52,7 +52,8 @@ class AppConfig {
   // RUN TEST CASE OR NOT
   static final runTestCase = true;
 
-  // DB file name
+  // DB Config
+  static final String DB_FOLDER_NAME = 'db';
   static final String DB_FILE_NAME = 'hai_noob.sqlite';
 
   // Img Folder Name

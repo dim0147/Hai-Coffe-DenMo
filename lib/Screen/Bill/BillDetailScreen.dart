@@ -174,7 +174,7 @@ class BillItemHeader extends StatelessWidget {
       children: [
         FadeInImage(
           placeholder: AssetImage(AppConfig.DEFAULT_IMG_ITEM),
-          image: Utils.getImg(item.itemImg),
+          image: Utils.getImgProvider(item.itemImg),
           height: 50,
           width: 70,
         ),

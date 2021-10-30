@@ -181,7 +181,7 @@ class ItemWidget extends GetView<ListItemController> {
             width: 70,
             height: 100,
             placeholder: AssetImage(AppConfig.DEFAULT_IMG_ITEM),
-            image: Utils.getImg(itemData.item.image),
+            image: Utils.getImgProvider(itemData.item.image),
           ),
           title: Text(itemData.item.name),
           subtitle: Text(

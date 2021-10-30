@@ -224,7 +224,7 @@ class ItemDataDisplayWidget extends GetView<MenuController> {
       borderRadius: BorderRadius.circular(10.0),
       child: FadeInImage(
         placeholder: AssetImage(AppConfig.DEFAULT_IMG_ITEM),
-        image: Utils.getImg(itemDataDisplay.item.image),
+        image: Utils.getImgProvider(itemDataDisplay.item.image),
         height: Get.height * 0.1,
       ),
     );
