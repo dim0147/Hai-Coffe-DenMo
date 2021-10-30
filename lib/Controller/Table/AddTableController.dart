@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
+import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
@@ -9,44 +10,62 @@ import 'package:hai_noob/Model/TableLocal.dart';
 
 class AddTableController extends GetxController {
   late final TableOrderDAO tableOrderDAO;
-  final tableLocalDAO = Get.find<TableLocalDAO>();
-  final nameC = TextEditingController();
-  final orderC = TextEditingController();
+  final TableLocalDAO tableLocalDAO = Get.find<TableLocalDAO>();
+
+  final TextEditingController nameC = TextEditingController();
+  final TextEditingController orderC = TextEditingController();
+
+  final Rx<CBaseState> cState = CBaseState(CState.LOADING).obs;
 
   @override
   void onInit() async {
     super.onInit();
-
-    var db = Get.find<AppDatabase>();
+    final AppDatabase db = Get.find<AppDatabase>();
     tableOrderDAO = TableOrderDAO(db);
 
-    // Get highest table order
-    final highestOrder = await tableOrderDAO.getHighestTableOrder();
-    if (highestOrder == null)
-      orderC.text = '1';
-    else {
-      orderC.text = (highestOrder + 1).toString();
+    final CBaseState cState = this.cState.value;
+    cState.setGetC(this.cState);
+
+    try {
+      // Get highest table order
+      final int? highestOrder = await tableOrderDAO.getHighestTableOrder();
+      cState.changeState(CState.DONE);
+      if (highestOrder == null)
+        orderC.text = '1';
+      else {
+        orderC.text = (highestOrder + 1).toString();
+      }
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+      cState.changeState(CState.ERROR, err.toString());
     }
   }
 
   void onAdd() async {
+    final CBaseState cState = this.cState.value;
     try {
-      String name = nameC.text;
-      int? order = int.tryParse(orderC.text);
+      final String name = nameC.text;
+      final int? order = int.tryParse(orderC.text);
 
       if (name.length == 0)
         return Utils.showSnackBar('Lỗi', 'Tên không được để trống');
       if (order == null)
         return Utils.showSnackBar('Lỗi', 'Thứ tự không hợp lệ');
 
-      var tableOrderKnowledge = await tableOrderDAO.findTableByName(name);
-      if (tableOrderKnowledge != null)
+      cState.changeState(CState.LOADING);
+
+      // Check table is exist
+      final TableOrder? tableOrderKnowledge =
+          await tableOrderDAO.findTableByName(name);
+      if (tableOrderKnowledge != null) {
+        cState.changeState(CState.DONE);
         return Utils.showSnackBar('Lỗi', 'Bàn \' $name\' đã tồn tại');
+      }
 
-      int tableID = await tableOrderDAO.createTable(name, order);
+      final int tableID = await tableOrderDAO.createTable(name, order);
 
-      // Add to table locaL
-      final newTableLocal = TableLocal(
+      // Add to locaL table
+      final TableLocal newTableLocal = TableLocal(
         id: tableID,
         name: name,
         cart: Cart(tableId: tableID, items: []),
@@ -54,10 +73,13 @@ class AddTableController extends GetxController {
       );
       await tableLocalDAO.addNew(newTableLocal);
 
+      cState.changeState(CState.DONE);
+
       Utils.showSnackBar('Thành công', 'Tạo bàn \'$name\' thành công');
       orderC.text = (int.parse(orderC.text) + 1).toString();
     } catch (err) {
-      Utils.showSnackBar('Lỗi', 'Có lỗi xảy ra:\n ${err.toString()}');
+      Utils.showSnackBar('Lỗi', err.toString());
+      cState.changeState(CState.ERROR, err.toString());
     }
   }
 }
