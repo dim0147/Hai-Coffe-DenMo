@@ -20,14 +20,18 @@ class TableLocalInfoScreen extends GetView<TableLocalInfoController> {
               (state) {
                 if (state == null) return Text('Không có data');
 
-                final status = state.status == TableStatus.Empty
+                final String status = state.status == TableStatus.Empty
                     ? 'Bàn trống'
                     : 'Đang ngồi';
+                final bool cartHaveQuantity =
+                    state.cart.showTotalQuantity() > 0;
+                final bool haveLastBillID = state.lastOrderId != null;
 
-                final date = state.lastUpdate;
-                final dateToString = date != null
+                final DateTime? date = state.lastUpdate;
+                final String dateToString = date != null
                     ? '${date.hour}:${date.minute}  ${date.day}/${date.month}/${date.year}'
                     : '';
+
                 return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
@@ -47,7 +51,7 @@ class TableLocalInfoScreen extends GetView<TableLocalInfoController> {
                           ),
                         ),
                         SizedBox(height: 8.0),
-                        if (state.cart.showTotalQuantity() > 0)
+                        if (cartHaveQuantity)
                           Column(
                             children: [
                               Text(
@@ -55,14 +59,14 @@ class TableLocalInfoScreen extends GetView<TableLocalInfoController> {
                               SizedBox(height: 8.0),
                             ],
                           ),
-                        if (state.lastOrderId != null)
+                        if (haveLastBillID)
                           Column(
                             children: [
                               Text('Bill ID gần đây: #${state.lastOrderId}'),
                               SizedBox(height: 8.0),
                             ],
                           ),
-                        if (state.lastOrderId != null)
+                        if (haveLastBillID)
                           Column(
                             children: [
                               Text('Cập nhật lần cuối: $dateToString'),

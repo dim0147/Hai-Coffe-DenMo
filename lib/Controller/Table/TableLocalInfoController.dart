@@ -11,24 +11,23 @@ class TableLocalInfoArgs {
 
 class TableLocalInfoController extends GetxController
     with StateMixin<TableLocal> {
-  final args = Utils.tryCast<TableLocalInfoArgs>(Get.arguments);
-  final tableLocalDAO = Get.find<TableLocalDAO>();
+  final TableLocalInfoArgs args = Get.arguments;
+  final TableLocalDAO tableLocalDAO = Get.find<TableLocalDAO>();
 
   @override
   void onInit() async {
     super.onInit();
 
     // Get table ID arg
-    final tableID = args?.tableID;
-    if (tableID == null)
-      return change(null,
-          status: RxStatus.error('Argument Table ID not found'));
+    final int tableID = args.tableID;
 
     // Get table
-    final table = tableLocalDAO.getTable(tableID);
+    final TableLocal? table = tableLocalDAO.getTable(tableID);
     if (table == null)
       return change(null,
-          status: RxStatus.error('Không tìm thấy table, ID: $tableID'));
+          status: RxStatus.error(
+            'Không tìm thấy table, ID: $tableID',
+          ));
 
     change(table, status: RxStatus.success());
   }
