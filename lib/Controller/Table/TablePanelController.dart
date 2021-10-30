@@ -22,9 +22,9 @@ enum ViewTableOption {
 }
 
 class TablePanelController extends GetxController {
-  final _tableLocalDAO = Get.find<TableLocalDAO>();
-  final tableLocals = <TableLocal>[].obs;
-  final viewOption = ViewTableOption.ALL.obs;
+  final TableLocalDAO _tableLocalDAO = Get.find<TableLocalDAO>();
+  final RxList<TableLocal> tableLocals = <TableLocal>[].obs;
+  final Rx<ViewTableOption> viewOption = ViewTableOption.ALL.obs;
 
   @override
   void onInit() {
@@ -41,50 +41,70 @@ class TablePanelController extends GetxController {
     if (action == null) return;
 
     // Get tabble
-    final table = _tableLocalDAO.getTable(tableID);
+    final TableLocal? table = _tableLocalDAO.getTable(tableID);
     if (table == null)
       return Utils.showSnackBar(
           'Lỗi', 'Table không tìm thấy, ID: ${tableID.toString()}');
 
     switch (action) {
       case TableAction.MARK_EMPTY:
-        _tableLocalDAO.updateTable(
-          tableID,
-          status: TableStatus.Empty,
-          cart: Cart(tableId: tableID, items: []),
-        );
+        markTableEmpty(tableID);
         break;
       case TableAction.MARK_HOLDING:
-        _tableLocalDAO.updateTable(
-          tableID,
-          status: TableStatus.Holding,
-        );
+        markTableHolding(tableID);
         break;
       case TableAction.CLEAR_CART:
-        _tableLocalDAO.updateTable(
-          tableID,
-          cart: Cart(tableId: tableID, items: []),
-        );
+        cleatTableCart(tableID);
         break;
       case TableAction.GO_PAYMENT:
-        final placeOrderScreenArgs = PlaceBillScreenArgs(
-          cart: table.cart,
-          tableID: tableID,
-        );
-        Get.toNamed('/place-bill', arguments: placeOrderScreenArgs);
+        makePayment(table, tableID);
         break;
       case TableAction.SEE_INFO:
-        final tableLocalInfoArgs = TableLocalInfoArgs(tableID);
-        Get.toNamed('/table/local-info', arguments: tableLocalInfoArgs);
+        seeTableLocalInfo(tableID);
         break;
       default:
     }
   }
 
+  void markTableEmpty(int tableID) {
+    _tableLocalDAO.updateTable(
+      tableID,
+      status: TableStatus.Empty,
+      cart: Cart(tableId: tableID, items: []),
+    );
+  }
+
+  void markTableHolding(int tableID) {
+    _tableLocalDAO.updateTable(
+      tableID,
+      status: TableStatus.Holding,
+    );
+  }
+
+  void cleatTableCart(int tableID) {
+    _tableLocalDAO.updateTable(
+      tableID,
+      cart: Cart(tableId: tableID, items: []),
+    );
+  }
+
+  void makePayment(TableLocal table, int tableID) {
+    final placeOrderScreenArgs = PlaceBillScreenArgs(
+      cart: table.cart,
+      tableID: tableID,
+    );
+    Get.toNamed('/place-bill', arguments: placeOrderScreenArgs);
+  }
+
+  void seeTableLocalInfo(int tableID) {
+    final tableLocalInfoArgs = TableLocalInfoArgs(tableID);
+    Get.toNamed('/table/local-info', arguments: tableLocalInfoArgs);
+  }
+
   void onTapTable(int tableID) async {
     try {
       // Get table
-      final table = _tableLocalDAO.getTable(tableID);
+      final TableLocal? table = _tableLocalDAO.getTable(tableID);
       if (table == null)
         return Utils.showSnackBar(
             'Lỗi', 'Không tìm thấy bàn ID: ' + tableID.toString());
@@ -94,7 +114,7 @@ class TablePanelController extends GetxController {
         await _tableLocalDAO.updateTable(tableID, status: TableStatus.Holding);
 
       // Go to menu
-      final menuScreenArgs = MenuScreenArgs(tableID: tableID);
+      final MenuScreenArgs menuScreenArgs = MenuScreenArgs(tableID: tableID);
       Get.toNamed('/menu', arguments: menuScreenArgs);
     } catch (err) {
       Utils.showSnackBar('Lỗi', err.toString());
