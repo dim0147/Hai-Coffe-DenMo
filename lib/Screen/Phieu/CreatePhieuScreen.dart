@@ -18,71 +18,87 @@ class CreatePhieuScreen extends GetView<CreatePhieuController> {
           child: Center(
             child: Column(
               children: [
-                SizedBox(
-                  width: 150,
-                  child: TextField(
-                    controller: controller.amountC,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'Giá',
-                      prefixIcon: Icon(
-                        Icons.title,
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 350,
-                  child: TextField(
-                    controller: controller.textC,
-                    decoration: InputDecoration(
-                      labelText: 'Nội dung',
-                      prefixIcon: Icon(
-                        Icons.title,
-                      ),
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      'Loại',
-                      style: TextStyle(color: AppConfig.HEADER_COLOR),
-                    ),
-                    Obx(
-                      () => Padding(
-                        padding: EdgeInsets.all(10),
-                        child: DropdownButton<PhieuType>(
-                          dropdownColor: AppConfig.MAIN_COLOR,
-                          items: [
-                            DropdownMenuItem<PhieuType>(
-                              value: PhieuType.PHIEU_CHI,
-                              child: Text('Phiếu chi'),
-                            ),
-                            DropdownMenuItem<PhieuType>(
-                              value: PhieuType.PHIEU_THU,
-                              child: Text('Phiếu thu'),
-                            ),
-                          ],
-                          value: controller.phieuType.value,
-                          onChanged: controller.onChangePhieuType,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                Center(
-                  child: ElevatedButton.icon(
-                    onPressed: controller.onAdd,
-                    icon: Icon(Icons.add),
-                    label: Text('Thêm'),
-                  ),
-                )
+                PriceInput(),
+                TextInput(),
+                PhieuTypeDropdown(),
+                AddBtn()
               ],
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  SizedBox PriceInput() {
+    return SizedBox(
+      width: 150,
+      child: TextField(
+        controller: controller.amountC,
+        keyboardType: TextInputType.number,
+        decoration: InputDecoration(
+          labelText: 'Giá',
+          prefixIcon: Icon(
+            Icons.title,
+          ),
+        ),
+      ),
+    );
+  }
+
+  SizedBox TextInput() {
+    return SizedBox(
+      width: 350,
+      child: TextField(
+        controller: controller.textC,
+        decoration: InputDecoration(
+          labelText: 'Nội dung',
+          prefixIcon: Icon(
+            Icons.title,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Row PhieuTypeDropdown() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Loại',
+          style: TextStyle(color: AppConfig.HEADER_COLOR),
+        ),
+        Obx(
+          () => Padding(
+            padding: EdgeInsets.all(10),
+            child: DropdownButton<PhieuType>(
+              dropdownColor: AppConfig.MAIN_COLOR,
+              items: [
+                DropdownMenuItem<PhieuType>(
+                  value: PhieuType.PHIEU_CHI,
+                  child: Text('Phiếu chi'),
+                ),
+                DropdownMenuItem<PhieuType>(
+                  value: PhieuType.PHIEU_THU,
+                  child: Text('Phiếu thu'),
+                ),
+              ],
+              value: controller.phieuType.value,
+              onChanged: controller.onChangePhieuType,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Center AddBtn() {
+    return Center(
+      child: ElevatedButton.icon(
+        onPressed: controller.onAdd,
+        icon: Icon(Icons.add),
+        label: Text('Thêm'),
       ),
     );
   }

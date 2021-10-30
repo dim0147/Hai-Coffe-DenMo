@@ -114,7 +114,6 @@ class RightPanel extends GetView<MenuController> {
     final bool isIncludeSearchString = searchString == ''
         ? true
         : e.item.name.toLowerCase().contains(searchString.toLowerCase());
-
     bool isIncludeCategory = true;
 
     // All categories (equal null)
