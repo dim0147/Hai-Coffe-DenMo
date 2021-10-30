@@ -15,19 +15,19 @@ class EditTableScreenArgs {
 class EditTableController extends GetxController {
   final EditTableScreenArgs args = Get.arguments;
   late final TableOrderDAO tableOrderDAO;
-  final tableLocalDAO = Get.find<TableLocalDAO>();
-  final nameC = TextEditingController();
-  final orderC = TextEditingController();
+  final TableLocalDAO tableLocalDAO = Get.find<TableLocalDAO>();
+  final TextEditingController nameC = TextEditingController();
+  final TextEditingController orderC = TextEditingController();
 
   @override
   void onInit() async {
     try {
       super.onInit();
 
-      var db = Get.find<AppDatabase>();
+      final AppDatabase db = Get.find<AppDatabase>();
       tableOrderDAO = TableOrderDAO(db);
 
-      final table = await tableOrderDAO.findTableById(args.tableId);
+      final TableOrder? table = await tableOrderDAO.findTableById(args.tableId);
       if (table == null) {
         return Utils.showSnackBar('Lỗi', 'Bàn không tìm thấy');
       }
@@ -41,8 +41,8 @@ class EditTableController extends GetxController {
 
   void onSave() async {
     try {
-      String name = nameC.text;
-      int? order = int.tryParse(orderC.text);
+      final String name = nameC.text;
+      final int? order = int.tryParse(orderC.text);
 
       if (name.length == 0)
         return Utils.showSnackBar('Lỗi', 'Tên không được để trống');

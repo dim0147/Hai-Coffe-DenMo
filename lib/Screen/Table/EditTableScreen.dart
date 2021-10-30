@@ -14,41 +14,49 @@ class EditTableScreen extends GetView<EditTableController> {
         ),
         body: Container(
           child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: controller.nameC,
-                  decoration: InputDecoration(
-                    labelText: 'Tên',
-                    prefixIcon: Icon(Icons.title),
-                  ),
-                ),
-              ),
-              Center(
-                child: SizedBox(
-                  width: Get.width * 0.5,
-                  child: TextField(
-                    controller: controller.orderC,
-                    keyboardType: TextInputType.number,
-                    decoration: InputDecoration(
-                      labelText: 'Thứ tự',
-                      prefixIcon: Icon(Icons.filter_9),
-                    ),
-                  ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton.icon(
-                  onPressed: controller.onSave,
-                  icon: Icon(Icons.add),
-                  label: Text('Lưu'),
-                ),
-              )
-            ],
+            children: [NameInput(), OrderInput(), SaveBtn()],
           ),
         ),
+      ),
+    );
+  }
+
+  Padding NameInput() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextField(
+        controller: controller.nameC,
+        decoration: InputDecoration(
+          labelText: 'Tên',
+          prefixIcon: Icon(Icons.title),
+        ),
+      ),
+    );
+  }
+
+  Center OrderInput() {
+    return Center(
+      child: SizedBox(
+        width: Get.width * 0.5,
+        child: TextField(
+          controller: controller.orderC,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            labelText: 'Thứ tự',
+            prefixIcon: Icon(Icons.filter_9),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Padding SaveBtn() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ElevatedButton.icon(
+        onPressed: controller.onSave,
+        icon: Icon(Icons.add),
+        label: Text('Lưu'),
       ),
     );
   }
