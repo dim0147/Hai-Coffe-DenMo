@@ -79,7 +79,7 @@ class TestCase {
   }
 
   Future run() async {
-    await seedBillData();
+    // await seedBillData();
     testDBPath();
   }
 }

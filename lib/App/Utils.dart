@@ -14,6 +14,7 @@ import 'package:path/path.dart' as p;
 class Utils {
   static DateExtension dateExtension = DateExtension();
   static RandomExtension randomExtension = RandomExtension();
+  static FileExtension fileExtension = FileExtension();
 
   static double? convertStringToDouble(String str) {
     return double.tryParse(str.replaceAll('.', '').replaceAll(',', '.'));
@@ -285,5 +286,57 @@ class DateExtension {
     }
 
     return listDayRanges;
+  }
+}
+
+class FolderStatExtension {
+  final int totalFiles;
+  final int size;
+
+  FolderStatExtension(this.totalFiles, this.size);
+
+  String sizeToString() {
+    return Utils.fileExtension.getFileSizeString(bytes: size);
+  }
+}
+
+class FileExtension {
+  String getFileSizeString({required int bytes, int decimals = 0}) {
+    try {
+      const List<String> suffixes = ["b", "KB", "MB", "GB", "TB"];
+      final int i = (log(bytes) / log(1024)).floor();
+      final result =
+          ((bytes / pow(1024, i)).toStringAsFixed(decimals)) + suffixes[i];
+      return result;
+    } catch (err) {
+      return bytes.toString();
+    }
+  }
+
+  FolderStatExtension dirStatSync(String dirPath) {
+    int fileNum = 0;
+    int totalSize = 0;
+    final Directory dir = Directory(dirPath);
+    try {
+      if (dir.existsSync()) {
+        dir
+            .listSync(recursive: true, followLinks: false)
+            .forEach((FileSystemEntity entity) {
+          if (entity is File) {
+            fileNum++;
+            totalSize += entity.lengthSync();
+          }
+        });
+      }
+    } catch (e) {
+      print(e.toString());
+    }
+
+    return FolderStatExtension(fileNum, totalSize);
+  }
+
+  Future deleteFolder(String folderPath) async {
+    final Directory dir = Directory(folderPath);
+    return dir.delete(recursive: true);
   }
 }
