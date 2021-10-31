@@ -1,18 +1,17 @@
-// <Implement>
-import 'package:flutter/foundation.dart';
-import 'package:moor/ffi.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart' as p;
 import 'dart:io';
-// </Implement>
-import 'package:moor/moor.dart';
 
-import '../DAO/UserDAO.dart';
-import '../Model/User.dart';
+import 'package:get/get.dart' as getx;
+import 'package:hai_noob/App/Config.dart';
+import 'package:hai_noob/Model/ConfigGlobal.dart';
+import 'package:hai_noob/Model/Phieu.dart';
+import 'package:moor/ffi.dart';
+import 'package:moor/moor.dart';
+import 'package:path/path.dart' as p;
+
+import '../Model/Bill.dart';
 import '../Model/Category.dart';
 import '../Model/Item.dart';
-import '../Model/Table.dart';
-import '../Model/Bill.dart';
+import '../Model/TableOrders.dart';
 
 part 'Database.g.dart';
 
@@ -20,26 +19,29 @@ part 'Database.g.dart';
 LazyDatabase _openConnection() {
   // the LazyDatabase util lets us find the right location for the file async.
   return LazyDatabase(() async {
-    // put the database file, called db.sqlite here, into the documents folder
-    // for your app.
-    final dbFolder = await getApplicationDocumentsDirectory();
-    final file = File(p.join(dbFolder.path, 'db.sqlite'));
-    return VmDatabase(file);
+    // Get DB Folder
+    final ConfigGlobal configGlobal = getx.Get.find<ConfigGlobal>();
+    final String? dbPath = configGlobal.dbPath;
+    if (dbPath == null) return Future.error('DB Path is null');
+
+    // Get DB File
+    final String dbFilePath = p.join(dbPath, AppConfig.DB_FILE_NAME);
+    final File dbFile = File(dbFilePath);
+    return VmDatabase(dbFile);
   });
 }
-// </Implement>
 
-// <Implement>
 @UseMoor(tables: [
-  Users,
   Categories,
   Items,
   ItemCategories,
   ItemProperties,
-  Tables,
+  TableOrders,
   Bills,
   BillItems,
-  BillItemProperties
+  BillItemProperties,
+  BillCoupons,
+  Phieus,
 ])
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
@@ -47,44 +49,9 @@ class AppDatabase extends _$AppDatabase {
   @override
   int get schemaVersion => 1;
 
-  void insertTest() async {
-    into(users)
-        .insert(UsersCompanion.insert(username: 'Admon', password: '1234567'));
+  void insertTest() async {}
 
-    into(categories).insert(CategoriesCompanion.insert(name: 'Đồ Ăn'));
-
-    into(items).insert(ItemsCompanion.insert(
-        name: 'Trứng',
-        image: 'trung.jpg',
-        price: 300.000,
-        status: Status.InStock));
-
-    into(itemCategories)
-        .insert(ItemCategoriesCompanion.insert(itemId: 1, categoryId: 1));
-
-    into(itemProperties).insert(ItemPropertiesCompanion.insert(
-        itemId: 1, name: 'Thêm đường', amount: 3000.50));
-
-    into(tables).insert(TablesCompanion.insert(name: 'Bàn 1', order: 1));
-
-    into(bills).insert(BillsCompanion.insert(
-        totalQuantities: 10,
-        totalPrice: 1000,
-        issueId: 1,
-        payment: BillPayment.Cash));
-    into(billItems).insert(BillItemsCompanion.insert(
-        billId: 1, itemId: 1, quality: 10, price: 100));
-
-    into(billItemProperties).insert(BillItemPropertiesCompanion.insert(
-        billItemId: 1, name: 'Thêm muối', amount: 10));
-  }
-
-  void _seedData() async {
-    UserDAO userDAO = UserDAO(this);
-
-    // Create admin account
-    await userDAO.createAdminAccount();
-  }
+  void _seedData() async {}
 
   @override
   MigrationStrategy get migration => MigrationStrategy(onCreate: (Migrator m) {
@@ -102,25 +69,3 @@ class AppDatabase extends _$AppDatabase {
         print('beforeOpen');
       });
 }
-
-
-
-
-// </Implement>
-
-// <MockData>
-
-// @UseMoor(tables: [
-//   Users,
-//   Categories,
-//   Items,
-//   ItemCategories,
-//   ItemProperties,
-//   Tables,
-//   Bills,
-//   BillItems,
-//   BillItemProperties
-// ])
-// class AppDatabase {}
-
-// </MockData>

@@ -1,7 +1,5 @@
 import 'package:moor/moor.dart';
 
-enum Status { InStock, OutStock }
-
 class Items extends Table {
   IntColumn get id => integer().autoIncrement()();
   TextColumn get name => text().withLength(min: 1, max: 250)();
@@ -10,7 +8,6 @@ class Items extends Table {
   IntColumn get ancestorItemId =>
       integer().nullable().customConstraint('REFERENCES items(id)')();
   BoolColumn get visibility => boolean().withDefault(Constant(true))();
-  IntColumn get status => intEnum<Status>()();
 }
 
 // One item have many categories

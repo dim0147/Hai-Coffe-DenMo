@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/Controller/StartupController.dart';
 
-class StartupScreen extends GetWidget<StartupController> {
+class StartupScreen extends GetView<StartupController> {
   const StartupScreen({Key? key}) : super(key: key);
 
   @override
@@ -40,7 +40,8 @@ class StartupScreen extends GetWidget<StartupController> {
                               ),
                               onError: (err) => Text(''),
                             )),
-                        Obx(() => Text(controller.statusText.value)),
+                        Obx(() => Text(controller.statusText.value,
+                            style: TextStyle(color: Colors.white))),
                       ],
                     ),
                   ),
