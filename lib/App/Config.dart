@@ -17,6 +17,7 @@ import 'package:hai_noob/Controller/Phieu/CreatePhieuController.dart';
 import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/Controller/RevenueController.dart';
 import 'package:hai_noob/Controller/System/ImportExportController.dart';
+import 'package:hai_noob/Controller/System/SystemInfo.dart';
 import 'package:hai_noob/Controller/Table/AddTableController.dart';
 import 'package:hai_noob/Controller/Table/EditTableController.dart';
 import 'package:hai_noob/Controller/Table/ListTableController.dart';
@@ -38,6 +39,7 @@ import 'package:hai_noob/Screen/Phieu/CreatePhieuScreen.dart';
 import 'package:hai_noob/Screen/Phieu/ListPhieuScreen.dart';
 import 'package:hai_noob/Screen/RevenueScreen.dart';
 import 'package:hai_noob/Screen/System/ImportExportScreen.dart';
+import 'package:hai_noob/Screen/System/SystemInfo.dart';
 import 'package:hai_noob/Screen/Table/AddTableScreen.dart';
 import 'package:hai_noob/Screen/Table/EditTableScreen.dart';
 import 'package:hai_noob/Screen/Table/ListTableScreen.dart';
@@ -52,7 +54,7 @@ import '../Screen/StartupScreen.dart';
 
 class AppConfig {
   // RUN TEST CASE OR NOT
-  static final runTestCase = true;
+  static final runTestCase = false;
 
   // DB Config
   static final String DB_FOLDER_NAME = 'db';
@@ -263,6 +265,13 @@ class AppConfig {
       page: () => ImportExportScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => ImportExportController());
+      }),
+    ),
+    GetPage(
+      name: '/system/info',
+      page: () => SystemInfoScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => SystemInfoController());
       }),
     ),
   ];
