@@ -75,7 +75,6 @@ class ListBillController extends GetxController {
         endDate = Utils.dateExtension.getNextDay(startDate);
 
       cState.changeState(CState.LOADING);
-      await Future.delayed(Duration(seconds: 5));
       await queryListBetweenDay(startDate, endDate);
       cState.changeState(CState.DONE);
       setVisibleDateRangePicker(false);

@@ -56,15 +56,21 @@ class ImportTab extends GetView<ImportExportController> {
           final ExportInfo? exportInfo = controller.exportInfo.value;
           if (exportInfo == null) return Text('Không có thông tin export');
 
+          final CBaseState cStateImport = controller.cStateImport.value;
+          final String? importText = cStateImport.message;
+
           return Column(
             children: [
               CurrentDataWidget(exportInfo: exportInfo),
               Text('* Lưu ý: Import sẽ xoá hoàn toàn dữ liệu hiện tại'),
               ElevatedButton.icon(
-                onPressed: () {},
+                onPressed: cStateImport.state == CState.LOADING
+                    ? null
+                    : controller.onImport,
                 icon: Icon(Icons.add),
                 label: Text('Chọn ZIP File Import'),
               ),
+              if (importText != null) Text(importText),
             ],
           );
         }),
@@ -93,18 +99,18 @@ class ExportTab extends GetView<ImportExportController> {
           final CBaseState cStateExport = controller.cStateExport.value;
           final String? exportText = cStateExport.message;
 
-          print(exportText);
-
           return Column(
             children: [
               CurrentDataWidget(exportInfo: exportInfo),
               Text('* Export tất cả dữ liệu hiện tại thành file ZIP'),
-              if (exportText != null && exportText.length > 0) Text(exportText),
               ElevatedButton.icon(
-                onPressed: controller.onExport,
+                onPressed: cStateExport.state == CState.LOADING
+                    ? null
+                    : controller.onExport,
                 icon: Icon(Icons.upload),
                 label: Text('Export Thành ZIP File'),
               ),
+              if (exportText != null && exportText.length > 0) Text(exportText),
             ],
           );
         }),

@@ -10,6 +10,10 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 
 class TestCase {
+  Future run() async {
+    // await seedBillData();
+  }
+
   Future seedBillData() async {
     final appDb = Get.find<db.AppDatabase>();
     final billDAO = BillDAO(appDb);
@@ -72,14 +76,5 @@ class TestCase {
         2021,
         Utils.randomExtension.randomNumber(startMonth, endMonth),
         Utils.randomExtension.randomNumber(startDay, endDay));
-  }
-
-  void testDBPath() async {
-    final ExternalStorage = await getExternalStorageDirectory();
-  }
-
-  Future run() async {
-    // await seedBillData();
-    testDBPath();
   }
 }

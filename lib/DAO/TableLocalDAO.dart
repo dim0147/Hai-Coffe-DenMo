@@ -84,4 +84,8 @@ class TableLocalDAO {
   Future<void> removeTable(int tableID) {
     return _box.delete(tableID);
   }
+
+  Future<void> removeAll() {
+    return _box.clear();
+  }
 }

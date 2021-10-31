@@ -50,16 +50,19 @@ class CreateItemController extends GetxController {
 
   @override
   void onInit() async {
+    super.onInit();
     itemDAO = ItemsDAO(db);
     categoryDAO = CategoryDAO(db);
 
-    // Load category
-    final listCategories = await categoryDAO.listAllCategory().then((value) =>
-        value.map((e) => CategoryCheckbox(id: e.id, name: e.name)).toList());
-    categories.assignAll(listCategories);
-    isLoadingCategory.value = false;
-
-    super.onInit();
+    try {
+      // Load category
+      final listCategories = await categoryDAO.listAllCategory().then((value) =>
+          value.map((e) => CategoryCheckbox(id: e.id, name: e.name)).toList());
+      categories.assignAll(listCategories);
+      isLoadingCategory.value = false;
+    } catch (err) {
+      Utils.showSnackBar('Lỗi', err.toString());
+    }
   }
 
   void onChangeCategoryCheckbox(bool? checked, int id) {
