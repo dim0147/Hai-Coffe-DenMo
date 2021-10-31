@@ -30,7 +30,10 @@ Widget NavigateMenu() {
           MenuItem(),
           MenuDivider(),
 
-          CategoyMenu(),
+          CategoryMenu(),
+          MenuDivider(),
+
+          SystemMenu(),
         ],
       ),
     ),
@@ -380,8 +383,8 @@ class PhieuMenu extends StatelessWidget {
   }
 }
 
-class CategoyMenu extends StatelessWidget {
-  const CategoyMenu({
+class CategoryMenu extends StatelessWidget {
+  const CategoryMenu({
     Key? key,
   }) : super(key: key);
 
@@ -540,6 +543,90 @@ class MenuItem extends StatelessWidget {
           ),
           onTap: () {
             Get.offNamed('/item/list');
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class SystemMenu extends StatelessWidget {
+  const SystemMenu({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                color: AppConfig.HEADER_COLOR,
+                fontSize: 25,
+                fontWeight: FontWeight.bold,
+              ),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.settings,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Hệ thống',
+                )
+              ],
+            ),
+          ),
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.import_export,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Import/Export',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/system/import-export');
+          },
+        ),
+        ListTile(
+          title: RichText(
+            text: TextSpan(
+              style: TextStyle(
+                  color: AppConfig.HEADER_COLOR,
+                  fontSize: 15,
+                  fontWeight: FontWeight.bold),
+              children: [
+                WidgetSpan(
+                  child: Icon(
+                    Icons.info,
+                    color: AppConfig.HEADER_COLOR,
+                  ),
+                ),
+                TextSpan(
+                  text: ' Thông tin ứng dụng',
+                )
+              ],
+            ),
+          ),
+          onTap: () {
+            Get.offNamed('/system/info');
           },
         ),
       ],

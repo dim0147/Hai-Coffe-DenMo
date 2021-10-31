@@ -16,6 +16,7 @@ import 'package:hai_noob/Controller/Menu/MenuController.dart';
 import 'package:hai_noob/Controller/Phieu/CreatePhieuController.dart';
 import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/Controller/RevenueController.dart';
+import 'package:hai_noob/Controller/System/ImportExportController.dart';
 import 'package:hai_noob/Controller/Table/AddTableController.dart';
 import 'package:hai_noob/Controller/Table/EditTableController.dart';
 import 'package:hai_noob/Controller/Table/ListTableController.dart';
@@ -36,6 +37,7 @@ import 'package:hai_noob/Screen/Menu/MenuScreen.dart';
 import 'package:hai_noob/Screen/Phieu/CreatePhieuScreen.dart';
 import 'package:hai_noob/Screen/Phieu/ListPhieuScreen.dart';
 import 'package:hai_noob/Screen/RevenueScreen.dart';
+import 'package:hai_noob/Screen/System/ImportExportScreen.dart';
 import 'package:hai_noob/Screen/Table/AddTableScreen.dart';
 import 'package:hai_noob/Screen/Table/EditTableScreen.dart';
 import 'package:hai_noob/Screen/Table/ListTableScreen.dart';
@@ -58,6 +60,9 @@ class AppConfig {
 
   // Img Folder Name
   static final String IMG_FOLDER_NAME = 'images';
+
+  // Backup Folde name
+  static final String BACKUP_FOLDER_NAME = 'backups';
 
   // Box name and key names
   static final String BOX_NAME = 'cafe';
@@ -251,6 +256,13 @@ class AppConfig {
       page: () => RevenueScreen(),
       binding: BindingsBuilder(() {
         Get.lazyPut(() => RevenueController());
+      }),
+    ),
+    GetPage(
+      name: '/system/import-export',
+      page: () => ImportExportScreen(),
+      binding: BindingsBuilder(() {
+        Get.lazyPut(() => ImportExportController());
       }),
     ),
   ];

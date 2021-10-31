@@ -7,10 +7,13 @@ import 'package:path/path.dart' as p;
 class ConfigGlobal {
   late final String? imgPath;
   late final String? dbPath;
+  late final String? backupPath;
 
   Future<void> init() async {
     imgPath = await createFolderInExternalStorage(AppConfig.IMG_FOLDER_NAME);
     dbPath = await createFolderInExternalStorage(AppConfig.DB_FOLDER_NAME);
+    backupPath =
+        await createFolderInExternalStorage(AppConfig.BACKUP_FOLDER_NAME);
   }
 
   Future<String?> createFolderInExternalStorage(String folderName) async {
