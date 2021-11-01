@@ -49,3 +49,6 @@ app.*.map.json
 lib/DAO/*.g.dart
 lib/DB/*.g.dart
 lib/Model/*.g.dart
+
+# .env
+.env

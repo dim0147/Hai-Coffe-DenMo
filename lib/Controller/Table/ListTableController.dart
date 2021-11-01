@@ -6,6 +6,7 @@ import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ListTableController extends GetxController {
   final AppDatabase appDb = Get.find<AppDatabase>();
@@ -27,9 +28,13 @@ class ListTableController extends GetxController {
       listTables.value = tableLocalDAO.getAllWithList();
       listTables.bindStream(tableLocalDAO.getTableLocalsStream());
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -42,8 +47,12 @@ class ListTableController extends GetxController {
     try {
       await tableOrderDAO.removeTable(itemId);
       await tableLocalDAO.removeTable(itemId);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 

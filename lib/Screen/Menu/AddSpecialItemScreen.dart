@@ -100,7 +100,8 @@ class PropertyItemList extends GetView<AddSpecialItemController> {
         width: double.infinity,
         decoration: BoxDecoration(
           color: AppConfig.MAIN_COLOR,
-          border: Border(bottom: BorderSide(width: 1.0, color: Colors.white)),
+          border: Border(
+              bottom: BorderSide(width: 1.0, color: AppConfig.DIVIDER_COLOR)),
         ),
         child: Column(
           children: [
@@ -127,7 +128,7 @@ class PropertyItemList extends GetView<AddSpecialItemController> {
             if (propertyHaveQuantity)
               TextSpan(
                 text: '${property.quantity}x',
-                style: TextStyle(color: Colors.green),
+                style: TextStyle(color: AppConfig.FONT_COLOR),
               ),
             WidgetSpan(
                 child: SizedBox(
@@ -161,14 +162,14 @@ class PropertyItemList extends GetView<AddSpecialItemController> {
       text: propertyHaveQuantity
           ? '${Utils.formatDouble(property.showTotalPrice())}đ'
           : '${Utils.formatDouble(defaultPropertyPrice)}đ',
-      style: TextStyle(color: Colors.blueAccent),
+      style: TextStyle(color: AppConfig.FONT_COLOR),
     );
   }
 
   WidgetSpan PropertyDelBtn() {
     return WidgetSpan(
       child: IconButton(
-        color: Colors.red,
+        color: Colors.red.withOpacity(0.7),
         constraints: BoxConstraints(maxWidth: 30, maxHeight: 30),
         onPressed: () => controller.removeProperty(property),
         icon: Icon(

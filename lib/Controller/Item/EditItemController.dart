@@ -11,6 +11,7 @@ import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class EditItemScreenArgs {
   final int itemId;
@@ -27,10 +28,12 @@ class EditItemController extends GetxController {
   final ImagePicker _picker = ImagePicker();
   final TextEditingController titleC = TextEditingController();
   final MoneyMaskedTextController priceC = MoneyMaskedTextController(
+    decimalSeparator: '',
     precision: 0,
   );
   final TextEditingController propertyNameC = TextEditingController();
   final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController(
+    decimalSeparator: '',
     precision: 0,
   );
 
@@ -67,8 +70,12 @@ class EditItemController extends GetxController {
       final itemData = await itemDAO.getItemById(itemId);
 
       setDefaultItemData(itemData);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -215,9 +222,13 @@ class EditItemController extends GetxController {
       );
       Get.back();
       Utils.showSnackBar('Thành công', 'Lưu item \'$title\' thành công');
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar(
           'Lỗi', 'Có lỗi xảy ra khi lưu item: \n ${err.toString()}');
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
     isSaveItem.value = false;
   }

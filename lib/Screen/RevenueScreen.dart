@@ -102,13 +102,29 @@ class DateRangePicker extends GetView<RevenueController> {
               viewType == RevenueScreenViewType.MONTH ? false : true,
           selectionMode: DateRangePickerSelectionMode.range,
           showActionButtons: true,
+          onSubmit: controller.onSubmitDateRange,
+          onCancel: () => controller.dateRangePickerC.selectedRange = null,
+          headerStyle: DateRangePickerHeaderStyle(
+            textStyle: TextStyle(
+                color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR),
+          ),
+          yearCellStyle: DateRangePickerYearCellStyle(
+            textStyle: TextStyle(
+                color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR),
+          ),
+          monthCellStyle: DateRangePickerMonthCellStyle(
+            textStyle:
+                TextStyle(color: AppConfig.REVENUE_DATEPICKER_RANGE_TEXT_COLOR),
+          ),
+          rangeTextStyle: TextStyle(
+            color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR,
+          ),
+          backgroundColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
           selectionColor: AppConfig.MAIN_COLOR,
           todayHighlightColor: AppConfig.MAIN_COLOR,
           rangeSelectionColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
           startRangeSelectionColor: AppConfig.MAIN_COLOR,
           endRangeSelectionColor: AppConfig.MAIN_COLOR,
-          onSubmit: controller.onSubmitDateRange,
-          onCancel: () => controller.dateRangePickerC.selectedRange = null,
         ),
       );
     });
@@ -122,7 +138,7 @@ class GraphRevenue extends GetView<RevenueController> {
 
   @override
   Widget build(BuildContext context) {
-    final gridColor = AppConfig.MENU_ITEM_CONTAINER_COLOR;
+    final gridColor = AppConfig.REVENUE_GRAPH_GRID_COLOR;
     final textColor = Colors.white;
 
     return Obx(() {
@@ -266,18 +282,13 @@ class RevenueItem extends GetView<RevenueController> {
           subtitle: Text(
               'Bill: +${Utils.formatDouble(bill)}đ $phieuThuText $phieuChiText'),
           trailing: Text('Tổng cộng: ${Utils.formatDouble(revenue.total())}đ'),
+          onTap: () => controller.onSeeBill(revenue),
         ),
       ),
       secondaryActions: <Widget>[
         IconSlideAction(
-          caption: 'Xem Bill',
-          color: Colors.red,
-          icon: Icons.receipt,
-          onTap: () => controller.onSeeBill(revenue),
-        ),
-        IconSlideAction(
           caption: 'Xem Phiếu',
-          color: Colors.black,
+          color: Colors.amberAccent[100],
           icon: Icons.receipt_long,
           onTap: () => controller.onSeePhieu(revenue),
         ),

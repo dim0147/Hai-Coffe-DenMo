@@ -5,12 +5,14 @@ import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/DAO/PhieuDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Phieu.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class CreatePhieuController extends GetxController {
   final AppDatabase appDb = Get.find<AppDatabase>();
   late final PhieuDAO phieuDAO;
   final TextEditingController textC = TextEditingController();
   final MoneyMaskedTextController amountC = MoneyMaskedTextController(
+    decimalSeparator: '',
     precision: 0,
   );
   final Rx<PhieuType> phieuType = PhieuType.PHIEU_CHI.obs;
@@ -44,8 +46,12 @@ class CreatePhieuController extends GetxController {
       final String phieuName =
           phieuType.value == PhieuType.PHIEU_CHI ? 'phiếu chi' : 'phiếu thu';
       Utils.showSnackBar('Thành công', 'Tạo  $phieuName thành công');
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

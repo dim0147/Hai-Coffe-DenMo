@@ -56,13 +56,29 @@ class DateRangeSelected extends GetView<ListBillController> {
               controller: controller.dateRangePickerC,
               selectionMode: DateRangePickerSelectionMode.range,
               showActionButtons: true,
+              onSubmit: controller.onSubmitDateRange,
+              onCancel: controller.onCancelDateRange,
+              headerStyle: DateRangePickerHeaderStyle(
+                textStyle: TextStyle(
+                    color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR),
+              ),
+              yearCellStyle: DateRangePickerYearCellStyle(
+                textStyle: TextStyle(
+                    color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR),
+              ),
+              monthCellStyle: DateRangePickerMonthCellStyle(
+                textStyle: TextStyle(
+                    color: AppConfig.REVENUE_DATEPICKER_RANGE_TEXT_COLOR),
+              ),
+              rangeTextStyle: TextStyle(
+                color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR,
+              ),
+              backgroundColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
               selectionColor: AppConfig.MAIN_COLOR,
               todayHighlightColor: AppConfig.MAIN_COLOR,
               rangeSelectionColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
               startRangeSelectionColor: AppConfig.MAIN_COLOR,
               endRangeSelectionColor: AppConfig.MAIN_COLOR,
-              onSubmit: controller.onSubmitDateRange,
-              onCancel: controller.onCancelDateRange,
             ),
         ],
       ),

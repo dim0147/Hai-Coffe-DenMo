@@ -13,6 +13,7 @@ import 'package:hai_noob/Model/Cart.dart' as CartModel;
 import 'package:hai_noob/Model/ConfigGlobal.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
 import 'package:hai_noob/Screen/Menu/SelectTableDialogScreen.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class MenuScreenArgs {
   final int? tableID;
@@ -93,9 +94,13 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       // Assign default as the first category
       if (categories.length > 0) choosenCategoryId.value = categories.first.id;
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -261,8 +266,12 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       tableIDLocal.value = table.id;
       tableName.value = table.name;
       Utils.showSnackBar('Thành công', 'Chọn bàn ${table.name} thành công');
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 

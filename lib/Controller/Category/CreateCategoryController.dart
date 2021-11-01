@@ -4,6 +4,7 @@ import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class CreateCategoryController extends GetxController {
   final TextEditingController nameC = TextEditingController();
@@ -51,9 +52,13 @@ class CreateCategoryController extends GetxController {
       );
       cState.changeState(CState.DONE);
       nameC.clear();
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

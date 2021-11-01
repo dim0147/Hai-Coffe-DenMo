@@ -2,7 +2,7 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/TestCase.dart';
 import 'package:hai_noob/App/Utils.dart';
-import 'package:hai_noob/DAO/RevenueDAO.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import '../App/Services.dart';
 import '../DB/Database.dart';
@@ -49,14 +49,16 @@ class StartupController extends GetxController with StateMixin<void> {
         final testCase = TestCase();
         await testCase.run();
       }
-    } catch (error) {
+    } catch (err, stackTrace) {
       change(null, status: RxStatus.error());
       Utils.showSnackBar(
         'Lỗi',
-        error.toString(),
+        err.toString(),
       );
-      // statusText.value =
-      //     'Có lỗi khi khởi tạo, liên hệ anh đức đẹp trai, lỗi: \n${error.toString()} \nStack Trace: ${stack.toString()}';
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 

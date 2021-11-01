@@ -4,6 +4,7 @@ import 'package:hai_noob/Controller/Category/EditCategoryController.dart';
 import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ListCategoryController extends GetxController {
   final appDB = Get.find<AppDatabase>();
@@ -20,9 +21,13 @@ class ListCategoryController extends GetxController {
     try {
       categories.value = await categoryDAO.listAllCategory();
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -50,8 +55,12 @@ class ListCategoryController extends GetxController {
       await categoryDAO.deleteCategoryById(categoryId);
       refreshListCategory();
       Utils.showSnackBar('Thành công', 'Xoá danh mục thành công');
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 

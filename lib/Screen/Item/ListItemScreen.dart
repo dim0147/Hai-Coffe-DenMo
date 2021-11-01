@@ -191,15 +191,10 @@ class ItemWidget extends GetView<ListItemController> {
             ),
           ),
           trailing: Text(Utils.formatDouble(itemData.item.price) + 'đ'),
+          onTap: () => controller.onEditListItem(itemData.item.id),
         ),
       ),
       secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Chỉnh sửa',
-          color: Colors.black87,
-          icon: Icons.edit,
-          onTap: () => controller.onEditListItem(itemData.item.id),
-        ),
         IconSlideAction(
           caption: 'Xoá',
           color: Colors.red,

@@ -39,7 +39,7 @@ import 'package:hai_noob/Screen/Phieu/CreatePhieuScreen.dart';
 import 'package:hai_noob/Screen/Phieu/ListPhieuScreen.dart';
 import 'package:hai_noob/Screen/RevenueScreen.dart';
 import 'package:hai_noob/Screen/System/ImportExportScreen.dart';
-import 'package:hai_noob/Screen/System/SystemInfo.dart';
+import 'package:hai_noob/Screen/System/SystemInfoScreen.dart';
 import 'package:hai_noob/Screen/Table/AddTableScreen.dart';
 import 'package:hai_noob/Screen/Table/EditTableScreen.dart';
 import 'package:hai_noob/Screen/Table/ListTableScreen.dart';
@@ -70,25 +70,41 @@ class AppConfig {
   static final String BOX_NAME = 'cafe';
 
   // Color For App
-  static final Color BACKGROUND_COLOR =
-      Color.fromRGBO(218, 172, 88, 1.0) as Color;
-  static final Color MAIN_COLOR = Colors.amber[300] as Color;
+  static final Color BACKGROUND_COLOR = Colors.black as Color;
+  static final Color MAIN_COLOR = Colors.green as Color;
+
   static final Color FONT_COLOR = Colors.white;
 
   // Header
-  static final Color HEADER_COLOR = Colors.amberAccent;
+  static final Color HEADER_COLOR = Colors.green;
 
   // Button
-  static final Color TEXT_BTN_COLOR = Colors.yellowAccent[400] as Color;
-  static final Color ELEVATED_TEXT_BTN_COLOR =
-      (Colors.yellowAccent[100] as Color);
+  static final Color TEXT_BTN_COLOR = Colors.white as Color;
+  static final Color ELEVATED_TEXT_BTN_COLOR = Colors.white as Color;
   static final Color OUTLINE_TEXT_BTN_COLOR = Colors.white;
 
   // Chip
-  static final Color? CHIP_DELETE_ICON_COLOR = Colors.amber[800];
+  static final Color CHIP_DELETE_ICON_COLOR = Colors.white;
 
-  // Item menu
-  static final Color MENU_ITEM_CONTAINER_COLOR = Colors.yellowAccent as Color;
+  // Divider
+  static final Color DIVIDER_COLOR = Colors.white;
+
+  // Revenue
+  static final Color REVENUE_DATEPICKER_HEADER_TEXT_COLOR =
+      Colors.white as Color;
+  static final Color REVENUE_DATEPICKER_RANGE_TEXT_COLOR =
+      Colors.white as Color;
+  static final Color REVENUE_GRAPH_GRID_COLOR = Colors.green as Color;
+
+  // MENU + CART
+  static final Color ITEM_IN_MENU_CONTAINER_BACKGROUND =
+      Colors.white.withOpacity(0.1);
+  static final Color FOOTER_MENU_CONTAINER_COLOR =
+      AppConfig.MAIN_COLOR.withOpacity(0.7) as Color;
+  static final Color FOOTER_CART_MENU_COLOR = Colors.amber as Color;
+  static final Color FOOTER_CART_TEXT_MENU_COLOR = Colors.white as Color;
+  static final Color FOOTER_CART_BACKGROUND_TEXT_MENU_COLOR =
+      Colors.amber[800] as Color;
 
   // Default img item
   static final String DEFAULT_IMG_ITEM = 'assets/img/background.png';

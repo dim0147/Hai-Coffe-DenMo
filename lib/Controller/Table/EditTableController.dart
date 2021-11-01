@@ -5,6 +5,7 @@ import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:moor/src/runtime/data_class.dart' as moorRuntime;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class EditTableScreenArgs {
   final int tableId;
@@ -34,8 +35,12 @@ class EditTableController extends GetxController {
 
       nameC.text = table.name;
       orderC.text = table.order.toString();
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -62,8 +67,12 @@ class EditTableController extends GetxController {
       Get.back();
       Utils.showSnackBar('Thành công', 'Lưu bàn \'$name\' thành công');
       orderC.text = (int.parse(orderC.text) + 1).toString();
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', 'Có lỗi xảy ra:\n ${err.toString()}');
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

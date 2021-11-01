@@ -1,10 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
-void main() {
-  runApp(MyApp());
+Future<void> main() async {
+  await dotenv.load();
+  await SentryFlutter.init(
+    (options) {
+      options.dsn = dotenv.env['SENTRY_DSN'];
+    },
+    appRunner: () => runApp(MyApp()),
+  );
+  // runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -73,10 +82,10 @@ class MyApp extends StatelessWidget {
             color: AppConfig.MAIN_COLOR,
           ),
           focusedBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.amber, width: 2.0),
+            borderSide: BorderSide(color: AppConfig.MAIN_COLOR, width: 2.0),
           ),
           enabledBorder: UnderlineInputBorder(
-            borderSide: BorderSide(color: Colors.amber, width: 2.0),
+            borderSide: BorderSide(color: AppConfig.MAIN_COLOR, width: 2.0),
           ),
         ),
 
@@ -88,7 +97,7 @@ class MyApp extends StatelessWidget {
         iconTheme: IconThemeData(color: AppConfig.MAIN_COLOR),
 
         // Divider
-        dividerColor: AppConfig.MAIN_COLOR,
+        dividerColor: AppConfig.DIVIDER_COLOR,
       ),
       title: 'Hải Bên Lề',
       initialRoute: '/startup',

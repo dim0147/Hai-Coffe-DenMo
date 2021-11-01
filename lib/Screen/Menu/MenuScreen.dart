@@ -94,7 +94,8 @@ class LeftPanel extends GetView<MenuController> {
       child: Text('Tất cả'),
       style: controller.choosenCategoryId.value == null
           ? OutlinedButton.styleFrom(
-              backgroundColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
+              backgroundColor: AppConfig.MAIN_COLOR,
+              // backgroundColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
             )
           : null,
     );
@@ -196,8 +197,8 @@ class ItemDataDisplayWidget extends GetView<MenuController> {
             width: Get.width * (context.isPhone ? 0.3 : 0.2),
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: Colors.black12,
               borderRadius: BorderRadius.circular(10),
+              color: AppConfig.ITEM_IN_MENU_CONTAINER_BACKGROUND,
               // Quantity border
               border: itemHaveQuantity
                   ? Border.all(color: AppConfig.MAIN_COLOR, width: 2.0)
@@ -269,8 +270,7 @@ class ItemDataDisplayWidget extends GetView<MenuController> {
     if (!itemHaveQuantity) return SizedBox();
     return Container(
       padding: EdgeInsets.all(8.0),
-      decoration:
-          BoxDecoration(color: AppConfig.BACKGROUND_COLOR.withOpacity(0.8)),
+      decoration: BoxDecoration(color: AppConfig.MAIN_COLOR),
       child: Text(
         itemQuantity.toString(),
         style: TextStyle(fontWeight: FontWeight.bold),
@@ -291,7 +291,7 @@ class Footer extends GetView<MenuController> {
         padding: EdgeInsets.all(10),
         height: 90,
         decoration: BoxDecoration(
-          color: Colors.orangeAccent[200],
+          color: AppConfig.FOOTER_MENU_CONTAINER_COLOR,
         ),
         child: Column(
           children: [
@@ -335,14 +335,12 @@ class Footer extends GetView<MenuController> {
           'Tổng cộng: ',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.amber[100],
           ),
         ),
         Text(
           Utils.formatDouble(controller.cart.value.showTotalPrice()) + 'đ',
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.amber[100],
           ),
         )
       ],
@@ -356,7 +354,7 @@ class Footer extends GetView<MenuController> {
           onPressed: controller.onClickShowCart,
           icon: Icon(
             Icons.shopping_cart,
-            color: Colors.deepPurpleAccent,
+            color: AppConfig.FOOTER_CART_MENU_COLOR,
           ),
         ),
         if (controller.cart.value.showTotalQuantity() > 0)
@@ -364,7 +362,7 @@ class Footer extends GetView<MenuController> {
             child: new Container(
               padding: EdgeInsets.all(2),
               decoration: new BoxDecoration(
-                color: Colors.deepPurpleAccent,
+                color: AppConfig.FOOTER_CART_BACKGROUND_TEXT_MENU_COLOR,
                 borderRadius: BorderRadius.circular(6),
               ),
               constraints: BoxConstraints(
@@ -374,7 +372,7 @@ class Footer extends GetView<MenuController> {
               child: Text(
                 controller.cart.value.showTotalQuantity().toString(),
                 style: TextStyle(
-                  color: Colors.white,
+                  color: AppConfig.FOOTER_CART_TEXT_MENU_COLOR,
                   fontSize: 12,
                 ),
                 textAlign: TextAlign.center,

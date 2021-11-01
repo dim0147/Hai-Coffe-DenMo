@@ -23,6 +23,7 @@ class PlaceBillCouponController extends GetxController {
   final couponType = CouponType.decrease.obs;
   final nameC = TextEditingController();
   final priceC = MoneyMaskedTextController(
+    decimalSeparator: '',
     precision: 0,
   );
   final percentC = TextEditingController();

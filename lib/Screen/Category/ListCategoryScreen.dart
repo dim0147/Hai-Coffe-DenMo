@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Controller/Category/ListCategoryController.dart';
-import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DB/Database.dart';
 
 import '../Component.dart';
@@ -69,15 +68,10 @@ class ListItem extends GetView<ListCategoryController> {
             child: Text(category.id.toString()),
           ),
           title: Text(category.name),
+          onTap: () => controller.onEditListItem(category.id),
         ),
       ),
       secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Chỉnh sửa',
-          color: Colors.black87,
-          icon: Icons.edit,
-          onTap: () => controller.onEditListItem(category.id),
-        ),
         IconSlideAction(
           caption: 'Xoá',
           color: Colors.red,

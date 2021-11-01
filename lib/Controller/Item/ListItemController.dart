@@ -4,6 +4,7 @@ import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/Controller/Item/EditItemController.dart';
 import 'package:hai_noob/DAO/ItemDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ListItemController extends GetxController {
   final appDB = Get.find<AppDatabase>();
@@ -22,9 +23,13 @@ class ListItemController extends GetxController {
     try {
       itemDatas.value = await itemDAO.getAllItems();
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -49,21 +54,16 @@ class ListItemController extends GetxController {
 
   void onRemoveListItem(int itemId) async {
     try {
-      final resultDialog = await Utils.showDialog<bool>(
-        'Chú ý',
-        'Bạn có muốn xoá?',
-        onConfirm: () => Get.back(result: true),
-        onCancel: () {},
-      );
-
-      if (resultDialog == null || resultDialog == false) return;
-
       await itemDAO.deleteItemByItemId(itemId);
       refreshListItem();
 
       Utils.showSnackBar('Thành công', 'Xoá Item thành công');
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 

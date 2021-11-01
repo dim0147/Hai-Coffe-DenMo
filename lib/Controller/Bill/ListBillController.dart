@@ -4,6 +4,7 @@ import 'package:hai_noob/Controller/Bill/BillDetailController.dart';
 import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/BillDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ListBillsScreenArgs {
@@ -52,9 +53,13 @@ class ListBillController extends GetxController {
       dateRangePickerC.selectedRange = pickerDateRange;
       await queryListBetweenDay(startDate, endDate);
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -78,9 +83,13 @@ class ListBillController extends GetxController {
       await queryListBetweenDay(startDate, endDate);
       cState.changeState(CState.DONE);
       setVisibleDateRangePicker(false);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -111,9 +120,13 @@ class ListBillController extends GetxController {
       if (bill == null) return listBill.clear();
 
       listBill.assignAll([bill]);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -126,8 +139,12 @@ class ListBillController extends GetxController {
     try {
       await billDAO.removeById(billId);
       listBill.removeWhere((e) => e.bill.id == billId);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

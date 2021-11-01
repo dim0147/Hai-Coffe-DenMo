@@ -10,6 +10,7 @@ import 'package:hai_noob/DB/Database.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:moor/moor.dart' as moor;
 import 'package:path/path.dart' as p;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class CategoryCheckbox {
   int id;
@@ -34,9 +35,15 @@ class CreateItemController extends GetxController {
 
   final ImagePicker _picker = ImagePicker();
   final TextEditingController titleC = TextEditingController();
-  final MoneyMaskedTextController priceC = MoneyMaskedTextController();
+  final MoneyMaskedTextController priceC = MoneyMaskedTextController(
+    decimalSeparator: '',
+    precision: 0,
+  );
   final TextEditingController propertyNameC = TextEditingController();
-  final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController();
+  final MoneyMaskedTextController propertyAmountC = MoneyMaskedTextController(
+    decimalSeparator: '',
+    precision: 0,
+  );
 
   // Value
   final RxList<CategoryCheckbox> categories = <CategoryCheckbox>[].obs;
@@ -60,8 +67,12 @@ class CreateItemController extends GetxController {
           value.map((e) => CategoryCheckbox(id: e.id, name: e.name)).toList());
       categories.assignAll(listCategories);
       isLoadingCategory.value = false;
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -155,10 +166,14 @@ class CreateItemController extends GetxController {
         'Thành công',
         'Tạo item \'$title\' thành công',
       );
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar(
         'Lỗi',
         'Có lỗi xảy ra khi tạo item: \n ${err.toString()}',
+      );
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
       );
     }
     isCreateItem.value = false;

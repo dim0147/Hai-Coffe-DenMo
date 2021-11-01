@@ -9,6 +9,7 @@ import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Bill.dart';
 import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 enum StatusPlaceBill { LOADING, DONE, ERROR }
 
@@ -95,9 +96,13 @@ class PlaceBillController extends GetxController {
         '/place-bill/success',
         arguments: placeOrderSuccesScreensArgs,
       );
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 

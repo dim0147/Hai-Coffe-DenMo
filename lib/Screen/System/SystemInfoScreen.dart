@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Config.dart';
 import 'package:hai_noob/Controller/System/SystemInfo.dart';
@@ -29,7 +30,7 @@ class SystemInfoScreen extends GetView<SystemInfoController> {
                     Text('- Tên App: ${packageInfo.appName}'),
                     Text('- Version: ${packageInfo.version}'),
                     Text(
-                      '- Github Repo: https://github.com/dim0147/Hai-Coffe-DenMo',
+                      '- Github Repo: ${dotenv.env['GITHUB_REPO']}',
                     ),
                     Text(
                         '- Copyright 2021 ${String.fromCharCode(0x00A9)} Đứcc rồ'),

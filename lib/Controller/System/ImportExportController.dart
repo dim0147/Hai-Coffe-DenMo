@@ -13,6 +13,7 @@ import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/ConfigGlobal.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ImportExportController extends GetxController {
   final AppDatabase appDB = Get.find<AppDatabase>();
@@ -40,9 +41,13 @@ class ImportExportController extends GetxController {
     try {
       exportInfo.value = await ieDAO.getExportInfo();
       cStateMain.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cStateMain.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -69,8 +74,12 @@ class ImportExportController extends GetxController {
       );
       cStateExport.value.changeState(
           CState.DONE, 'Tạo backup thành công, nơi lưu: \'${zipFile.path}\'');
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -105,18 +114,27 @@ class ImportExportController extends GetxController {
       await clearDataBeforeImport();
 
       await extractZipFile(zipPath);
+
+      await clearDataAfterImport();
       cStateImport.value.changeState(CState.DONE,
           '- Import thành công, app sẽ tự tắt trong vòng 5 giây, vui lòng mở lại app!');
       closeAppAfter(Duration(seconds: 5));
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cStateImport.value.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
   Future<void> clearDataBeforeImport() async {
-    await tableLocalDAO.removeAll();
     await appDB.close();
+  }
+
+  Future<void> clearDataAfterImport() async {
+    await tableLocalDAO.removeAll();
   }
 
   Future<void> extractZipFile(String zipPath) async {

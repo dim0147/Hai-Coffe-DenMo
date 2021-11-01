@@ -5,6 +5,7 @@ import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/CategoryDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:moor/src/runtime/data_class.dart' as MOOR_RUNTIME;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class EditCategoryScreenArgs {
   final int categoryId;
@@ -46,9 +47,13 @@ class EditCategoryController extends GetxController {
 
       nameC.text = category.value!.name;
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -81,9 +86,13 @@ class EditCategoryController extends GetxController {
       );
       cState.changeState(CState.DONE);
       Utils.showSnackBar('Thành công', 'Chỉnh sửa thành công');
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

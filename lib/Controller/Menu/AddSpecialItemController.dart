@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:hai_noob/App/Utils.dart';
 import 'package:hai_noob/Model/Cart.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class PropertyAdded {
   final String name;
@@ -35,6 +36,7 @@ class AddSpecialItemController extends GetxController {
 
   final TextEditingController customNameC = TextEditingController();
   final MoneyMaskedTextController customAmountC = MoneyMaskedTextController(
+    decimalSeparator: '',
     precision: 0,
   );
 
@@ -68,10 +70,14 @@ class AddSpecialItemController extends GetxController {
 
       customNameC.clear();
       customAmountC.clear();
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar(
         'Lỗi',
         'Lỗi khi thêm nhanh thuộc tính\n: ${err.toString()}',
+      );
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
       );
     }
   }

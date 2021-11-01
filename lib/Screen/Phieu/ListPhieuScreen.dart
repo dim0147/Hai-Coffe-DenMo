@@ -68,13 +68,29 @@ class DateRangeSelected extends GetView<ListPhieuController> {
               controller: controller.dateRangePickerC,
               selectionMode: DateRangePickerSelectionMode.range,
               showActionButtons: true,
+              onSubmit: controller.onSubmitDateRange,
+              onCancel: controller.onCancelDateRange,
+              headerStyle: DateRangePickerHeaderStyle(
+                textStyle: TextStyle(
+                    color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR),
+              ),
+              yearCellStyle: DateRangePickerYearCellStyle(
+                textStyle: TextStyle(
+                    color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR),
+              ),
+              monthCellStyle: DateRangePickerMonthCellStyle(
+                textStyle: TextStyle(
+                    color: AppConfig.REVENUE_DATEPICKER_RANGE_TEXT_COLOR),
+              ),
+              rangeTextStyle: TextStyle(
+                color: AppConfig.REVENUE_DATEPICKER_HEADER_TEXT_COLOR,
+              ),
+              backgroundColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
               selectionColor: AppConfig.MAIN_COLOR,
               todayHighlightColor: AppConfig.MAIN_COLOR,
               rangeSelectionColor: AppConfig.MAIN_COLOR.withOpacity(0.5),
               startRangeSelectionColor: AppConfig.MAIN_COLOR,
               endRangeSelectionColor: AppConfig.MAIN_COLOR,
-              onSubmit: controller.onSubmitDateRange,
-              onCancel: controller.onCancelDateRange,
             ),
         ],
       ),
@@ -139,19 +155,30 @@ class TotalDisplay extends GetView<ListPhieuController> {
             .fold(0.0, (prev, e) => prev + e.amount);
         final double totalAll = totalThu - totalChi;
 
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text('Tổng chi phí: ${Utils.formatDouble(totalAll)}đ'),
-            Text(
-              'Tổng thu: +${Utils.formatDouble(totalThu)}đ',
-              style: TextStyle(color: Colors.green),
-            ),
-            Text(
-              'Tổng chi: -${Utils.formatDouble(totalChi)}đ',
-              style: TextStyle(color: Colors.red),
-            ),
-          ],
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Tổng chi phí: ${Utils.formatDouble(totalAll)}đ'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Tổng thu: +${Utils.formatDouble(totalThu)}đ',
+                  style: TextStyle(color: Colors.green),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'Tổng chi: -${Utils.formatDouble(totalChi)}đ',
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
+            ],
+          ),
         );
       },
     );

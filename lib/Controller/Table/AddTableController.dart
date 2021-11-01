@@ -7,6 +7,7 @@ import 'package:hai_noob/DAO/TableOrderDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class AddTableController extends GetxController {
   late final TableOrderDAO tableOrderDAO;
@@ -35,9 +36,13 @@ class AddTableController extends GetxController {
       else {
         orderC.text = (highestOrder + 1).toString();
       }
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -77,9 +82,13 @@ class AddTableController extends GetxController {
 
       Utils.showSnackBar('Thành công', 'Tạo bàn \'$name\' thành công');
       orderC.text = (int.parse(orderC.text) + 1).toString();
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

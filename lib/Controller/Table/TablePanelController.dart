@@ -6,6 +6,7 @@ import 'package:hai_noob/Controller/Table/TableLocalInfoController.dart';
 import 'package:hai_noob/DAO/TableLocalDAO.dart';
 import 'package:hai_noob/Model/Cart.dart';
 import 'package:hai_noob/Model/TableLocal.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 enum TableAction {
   GO_PAYMENT,
@@ -116,8 +117,12 @@ class TablePanelController extends GetxController {
       // Go to menu
       final MenuScreenArgs menuScreenArgs = MenuScreenArgs(tableID: tableID);
       Get.toNamed('/menu', arguments: menuScreenArgs);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

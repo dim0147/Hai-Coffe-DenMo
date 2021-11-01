@@ -6,6 +6,7 @@ import 'package:hai_noob/Controller/Phieu/ListPhieuController.dart';
 import 'package:hai_noob/DAO/RevenueDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Revenue.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 enum RevenueScreenViewType {
@@ -37,13 +38,11 @@ class RevenueController extends GetxController {
       cState.setGetC(this.cState);
 
       // Default query start day of current month to now
-      final now = Utils.dateExtension.getCurrentDay();
-      final startDate = Utils.dateExtension.getFirstDateOfMonth(now);
-      // Now is same day with start date
-      if (now.isAtSameMomentAs(startDate)) {
-        cState.changeState(CState.DONE);
-        return;
-      }
+      DateTime now = Utils.dateExtension.getCurrentDay();
+      final DateTime startDate = Utils.dateExtension.getFirstDateOfMonth(now);
+      // Now is same day with start date, we change now to tomorrow
+      if (now.isAtSameMomentAs(startDate))
+        now = Utils.dateExtension.getNextDay(startDate);
 
       await queryOnDayViewType(startDate, now);
 
@@ -51,9 +50,13 @@ class RevenueController extends GetxController {
       dateRangePickerC.selectedRange = pickerDateRange;
 
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       cState.value.changeState(CState.ERROR, err.toString());
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -80,11 +83,15 @@ class RevenueController extends GetxController {
         await queryOnDayViewType(startDate, endDate);
 
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       cState.changeState(CState.ERROR, err.toString());
       Utils.showSnackBar(
         'Lỗi',
         err.toString(),
+      );
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
       );
     }
   }

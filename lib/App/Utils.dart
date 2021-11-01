@@ -10,6 +10,7 @@ import 'package:hai_noob/Model/Revenue.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class Utils {
   static DateExtension dateExtension = DateExtension();
@@ -48,8 +49,12 @@ class Utils {
     String newPathToSave = p.join(imgPath, filename);
     try {
       return image.copy(newPathToSave);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', 'Không thể lưu ảnh: \n ${err.toString()}');
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }
@@ -69,7 +74,11 @@ class Utils {
         return AssetImage(AppConfig.DEFAULT_IMG_ITEM);
 
       return FileImage(File(imgFullPath));
-    } catch (err) {
+    } catch (err, stackTrace) {
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
       return AssetImage(AppConfig.DEFAULT_IMG_ITEM);
     }
   }
@@ -87,7 +96,11 @@ class Utils {
       if (!fileIsExist(imgFullPath)) return null;
 
       return File(imgFullPath);
-    } catch (err) {
+    } catch (err, stackTrace) {
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }
@@ -101,12 +114,15 @@ class Utils {
     Get.snackbar(
       title,
       '',
-      colorText: AppConfig.FONT_COLOR,
+      colorText: Colors.black,
       snackPosition: SnackPosition.BOTTOM,
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       margin: const EdgeInsets.all(8.0),
-      snackStyle: SnackStyle.GROUNDED,
-      messageText: Text(text),
+      snackStyle: SnackStyle.FLOATING,
+      messageText: Text(
+        text,
+        style: TextStyle(color: Colors.black),
+      ),
       duration: duration,
       isDismissible: true,
       dismissDirection: SnackDismissDirection.HORIZONTAL,
@@ -328,9 +344,7 @@ class FileExtension {
           }
         });
       }
-    } catch (e) {
-      print(e.toString());
-    }
+    } catch (e) {}
 
     return FolderStatExtension(fileNum, totalSize);
   }

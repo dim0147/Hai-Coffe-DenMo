@@ -230,7 +230,7 @@ class Footer extends GetView<CartController> {
     return Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.orangeAccent[200],
+        color: AppConfig.FOOTER_MENU_CONTAINER_COLOR,
       ),
       child: Row(
         children: [

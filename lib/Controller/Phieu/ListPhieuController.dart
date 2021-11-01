@@ -4,6 +4,7 @@ import 'package:hai_noob/Controller/Constant.dart';
 import 'package:hai_noob/DAO/PhieuDAO.dart';
 import 'package:hai_noob/DB/Database.dart';
 import 'package:hai_noob/Model/Phieu.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class ListPhieuScreenArgs {
@@ -51,9 +52,13 @@ class ListPhieuController extends GetxController {
       dateRangePickerC.selectedRange = pickerDateRange;
       await queryListBetweenDay(startDate, endDate);
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -80,9 +85,13 @@ class ListPhieuController extends GetxController {
       cState.changeState(CState.LOADING);
       await queryListBetweenDay(startDate, endDate);
       cState.changeState(CState.DONE);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       cState.changeState(CState.ERROR, err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 
@@ -99,8 +108,12 @@ class ListPhieuController extends GetxController {
     try {
       await phieuDAO.removePhieuById(phieuId);
       listPhieu.removeWhere((e) => e.id == phieuId);
-    } catch (err) {
+    } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
     }
   }
 

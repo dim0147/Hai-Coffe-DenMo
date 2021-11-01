@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:hai_noob/App/Config.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 class ConfigGlobal {
   late final String? imgPath;
@@ -32,7 +33,11 @@ class ConfigGlobal {
 
       await folderPath.create();
       return folderPath.path;
-    } catch (err) {
+    } catch (err, stackTrace) {
+      Sentry.captureException(
+        err,
+        stackTrace: stackTrace,
+      );
       return null;
     }
   }

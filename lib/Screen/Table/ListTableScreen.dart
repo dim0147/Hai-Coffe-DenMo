@@ -73,15 +73,10 @@ class ListItem extends GetView<ListTableController> {
           ),
           title: Text('Tên: ${table.name}'),
           subtitle: Text('Order: ${table.order.toString()}'),
+          onTap: () => controller.onEditListItem(table.id),
         ),
       ),
       secondaryActions: <Widget>[
-        IconSlideAction(
-          caption: 'Chỉnh sửa',
-          color: Colors.black87,
-          icon: Icons.edit,
-          onTap: () => controller.onEditListItem(table.id),
-        ),
         IconSlideAction(
           caption: 'Xoá',
           color: Colors.red,
