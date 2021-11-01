@@ -33,7 +33,7 @@ class SystemInfoScreen extends GetView<SystemInfoController> {
                       '- Github Repo: ${dotenv.env['GITHUB_REPO']}',
                     ),
                     Text(
-                        '- Copyright 2021 ${String.fromCharCode(0x00A9)} Đứcc rồ'),
+                        '- Copyright 2021 ${String.fromCharCode(0x00A9)} Đức rồ'),
                   ],
                 );
               },

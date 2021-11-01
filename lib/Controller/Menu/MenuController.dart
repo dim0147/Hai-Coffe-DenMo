@@ -265,7 +265,7 @@ class MenuController extends GetxController with SingleGetTickerProviderMixin {
       // Set display field
       tableIDLocal.value = table.id;
       tableName.value = table.name;
-      Utils.showSnackBar('Thành công', 'Chọn bàn ${table.name} thành công');
+      Utils.showSnackBar('Thành công', 'Chọn bàn \'${table.name}\' thành công');
     } catch (err, stackTrace) {
       Utils.showSnackBar('Lỗi', err.toString());
       Sentry.captureException(

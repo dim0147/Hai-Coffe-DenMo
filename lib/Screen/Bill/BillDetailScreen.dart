@@ -178,6 +178,9 @@ class BillItemHeader extends StatelessWidget {
           height: 50,
           width: 70,
         ),
+        SizedBox(
+          width: 5.0,
+        ),
         Text('${item.itemName} (${Utils.formatDouble(item.itemPrice)}đ)'),
         Spacer(),
         Text('x${item.totalQuantity}'),

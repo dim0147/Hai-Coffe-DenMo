@@ -43,15 +43,6 @@ class ListCategoryController extends GetxController {
 
   void onRemoveListItem(int categoryId) async {
     try {
-      final resultDialog = await Utils.showDialog<bool>(
-        'Chú ý',
-        'Bạn có muốn xoá?',
-        onConfirm: () => Get.back(result: true),
-        onCancel: () {},
-      );
-
-      if (resultDialog == null || resultDialog == false) return;
-
       await categoryDAO.deleteCategoryById(categoryId);
       refreshListCategory();
       Utils.showSnackBar('Thành công', 'Xoá danh mục thành công');
